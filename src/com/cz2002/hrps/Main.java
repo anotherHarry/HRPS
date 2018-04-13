@@ -1,5 +1,7 @@
 package com.cz2002.hrps;
 
+import com.cz2002.hrps.boundaries.MainMenu;
+
 /**
  * Main Class
  */
@@ -10,7 +12,8 @@ public class Main {
    * @param args
    */
   public static void main(String[] args) {
-    System.out.println("Hello, World!");
+    MainMenu mainMenu = new MainMenu();
+    mainMenu.processMenu();
   }
 
 }
