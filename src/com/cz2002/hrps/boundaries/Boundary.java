@@ -1,12 +1,19 @@
 package com.cz2002.hrps.boundaries;
 
+import com.cz2002.hrps.models.InputModel;
+import com.cz2002.hrps.models.Menu;
+import com.cz2002.hrps.models.MenuOption;
+
+import java.util.Date;
 import java.util.Scanner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Super Class of all Boundaries
  * Handle I/O
  */
-public abstract class Boundary {
+public class Boundary {
 
   private static Scanner scanner;
 
@@ -22,31 +29,174 @@ public abstract class Boundary {
    * @param promptMessage the message to print before input
    * @return input from console
    */
-  public String inputString(String promptMessage) {
-    System.out.println(promptMessage);
-    return inputString();
+  public InputModel<String> inputString(String promptMessage, boolean inputRequired) {
+    System.out.print(promptMessage);
+    return inputString(inputRequired);
   }
 
   /**
    * Get a string from console
    * @return input from console
    */
-  public String inputString() {
+  public InputModel<String> inputString(boolean inputRequired) {
     System.out.print(" >> ");
     String input = scanner.nextLine();
     System.out.println();
-    return input;
+    if (!input.equals("") || !inputRequired) {
+      return new InputModel(!input.equals(""), input);
+    }
+    alertInvalidInput();
+    return inputString(inputRequired);
+  }
+
+  /**
+   * Get an integer from console
+   * @param promptMessage the message to print before input
+   * @return input from console
+   */
+  public InputModel<Integer> inputInteger(String promptMessage, boolean inputRequired) {
+    System.out.print(promptMessage);
+    return inputInteger(inputRequired);
   }
 
   /**
    * Get an integer from console
    * @return input from console
    */
-  public int inputInteger() {
-    int input = -1;
+  public InputModel<Integer> inputInteger(boolean inputRequired) {
     try {
-      input =  Integer.parseInt(inputString());
+      Integer input =  Integer.parseInt(inputString(inputRequired).getValue());
+      return new InputModel(true, input);
     } catch (NumberFormatException e) {}
-    return input;
+    if (!inputRequired) {
+      return new InputModel(false, -1);
+    }
+    alertInvalidInput();
+    return inputInteger(inputRequired);
+  }
+
+  /**
+   * Get an integer from console
+   * @param promptMessage the message to print before input
+   * @return input from console
+   */
+  public InputModel<Double> inputDouble(String promptMessage, boolean inputRequired) {
+    System.out.print(promptMessage);
+    return inputDouble(inputRequired);
+  }
+
+  /**
+   * Get an integer from console
+   * @return input from console
+   */
+  public InputModel<Double> inputDouble(boolean inputRequired) {
+    try {
+      Double input =  Double.parseDouble(inputString(inputRequired).getValue());
+      return new InputModel(true, input);
+    } catch (NumberFormatException e) {}
+    if (!inputRequired) {
+      return new InputModel(false, -1.0);
+    }
+    alertInvalidInput();
+    return inputDouble(inputRequired);
+  }
+
+  /**
+   * Get an integer from console
+   * @param promptMessage the message to print before input
+   * @return input from console
+   */
+  public InputModel<Boolean> inputBoolean(String promptMessage, boolean inputRequired) {
+    System.out.print(promptMessage + " (Y/N)");
+    return inputBoolean(inputRequired);
+  }
+
+  /**
+   * Get an integer from console
+   * @return input from console
+   */
+  public InputModel<Boolean> inputBoolean(boolean inputRequired) {
+    String input = inputString(inputRequired).getValue();
+    if (input.equals("Y")) {
+      return new InputModel(true, true);
+    } else if (input.equals("N")) {
+      return new InputModel(true, false);
+    }
+    if (!inputRequired) {
+      return new InputModel(false, false);
+    }
+    alertInvalidInput();
+    return inputBoolean(inputRequired);
+  }
+
+  /**
+   * Get an integer from console
+   * @param promptMessage the message to print before input
+   * @return input from console
+   */
+  public InputModel<Date> inputDate(String promptMessage, boolean inputRequired) {
+    System.out.print(promptMessage);
+    return inputDate(inputRequired);
+  }
+
+  /**
+   * Get an integer from console
+   * @return input from console
+   */
+  public InputModel<Date> inputDate(boolean inputRequired) {
+    try {
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
+      Date input = sdf.parse(inputString(inputRequired).getValue());
+      return new InputModel(true, input);
+    } catch (ParseException e) {}
+    if (!inputRequired) {
+      return new InputModel(false, new Date());
+    }
+    alertInvalidInput();
+    return inputDate(inputRequired);
+  }
+
+  /**
+   * Get an integer from console
+   * @param promptMessage the message to print before input
+   * @return input from console
+   */
+  public InputModel<String> inputGender(String promptMessage, boolean inputRequired) {
+    System.out.print(promptMessage);
+    return inputGender(inputRequired);
+  }
+
+  /**
+   * Get an integer from console
+   * @return input from console
+   */
+  public InputModel<String> inputGender(boolean inputRequired) {
+    String input = inputString(inputRequired).getValue();
+    if (input.equals("M")) {
+      return new InputModel(true, "M");
+    } else if (input.equals("F")) {
+      return new InputModel(true, "F");
+    }
+    if (!inputRequired) {
+      return new InputModel(false, "NULL");
+    }
+    alertInvalidInput();
+    return inputGender(inputRequired);
+  }
+
+  public void alertSuccessful() {
+    System.out.println("Successful!\n");
+  }
+
+  public void alertFailed() {
+    System.out.println("Failed!\n");
+  }
+
+  public void alertNoItemExisted() {
+    System.out.println("No item existed!\n");
+  }
+
+  public void alertInvalidInput() {
+    System.out.println("Invalid Input!\n");
   }
 }

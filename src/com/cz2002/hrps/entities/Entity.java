@@ -1,6 +1,7 @@
 package com.cz2002.hrps.entities;
 
 import com.cz2002.hrps.controls.DatabaseManager;
+import com.cz2002.hrps.models.PromptModelContainer;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -118,7 +119,8 @@ public abstract class Entity {
    * Creates a new object and save to database
    * @return true if success, false otherwise
    */
-  public boolean update() {
+  public boolean update(HashMap<String, String> hashMap) {
+    fromHashMap(hashMap);
     return writeToDatabase();
   }
 
@@ -141,8 +143,32 @@ public abstract class Entity {
   /**
    * Convert a HashMap to an Entity
    * @param hashMap is the hashmap
-   * @return Guest Returns a Guest object
    */
   public abstract void fromHashMap(HashMap<String, String> hashMap);
+
+  /**
+   * Create input models for creating an entity
+   * @return an array of input models
+   */
+  public abstract PromptModelContainer promptModelContainer();
+
+  /**
+   * Create input models for creating an entity
+   * @return an array of input models
+   */
+  public abstract PromptModelContainer creationPromptModelContainer();
+
+  /**
+   * Create input models for creating an entity
+   * @return an array of input models
+   */
+  public abstract PromptModelContainer findingPromptModelContainer();
+
+
+  /**
+   * Create input models for creating an entity
+   * @return an array of input models
+   */
+  public abstract PromptModelContainer editingPromptModelContainer();
 
 }

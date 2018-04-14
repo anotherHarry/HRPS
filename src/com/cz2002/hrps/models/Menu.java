@@ -1,18 +1,19 @@
 package com.cz2002.hrps.models;
 
 /**
- * The menu to be displayed in a MenuBoundary
+ * The menu to be displayed in a Boundary
  */
 public class Menu {
+
   private String title;
-  private String[] menuOptions;
+  private MenuOption[] menuOptions;
 
   /**
    * Constructor
    * @param title is the title of the menu
    * @param menuOptions is all the options to be displayed
    */
-  public Menu(String title, String[] menuOptions) {
+  public Menu(String title, MenuOption[] menuOptions) {
     this.title = title;
     this.menuOptions = menuOptions;
   }
@@ -27,7 +28,8 @@ public class Menu {
   /**
    * @return all options
    */
-  public String[] getMenuOptions() {
+  public MenuOption[] getMenuOptions() {
     return menuOptions;
   }
+
 }

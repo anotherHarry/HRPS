@@ -1,5 +1,13 @@
 package com.cz2002.hrps.entities;
 
+import com.cz2002.hrps.models.MenuOption;
+import com.cz2002.hrps.models.PromptModel;
+import com.cz2002.hrps.models.PromptModelContainer;
+import com.cz2002.hrps.models.Menu;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -124,6 +132,107 @@ public class Room extends Entity {
     setBedType(BedType.valueOf(hashMap.get("bedType")));
     setFacing(FacingType.valueOf(hashMap.get("facing")));
     setStatus(RoomStatus.valueOf(hashMap.get("status")));
+  }
+
+  @Override
+  public PromptModelContainer promptModelContainer() {
+    return new PromptModelContainer(
+      "",
+      new PromptModel[] {
+        new PromptModel("roomId", "Room Id", PromptModel.InputType.STRING),
+        new PromptModel("roomType", new Menu(
+          "Room Type",
+          new MenuOption[] {
+            new MenuOption("SINGLE", "Single"),
+            new MenuOption("STANDARD", "Standard"),
+            new MenuOption("DELUXE", "Deluxe"),
+            new MenuOption("VIP", "Vip"),
+          }
+        )),
+        new PromptModel("roomRate", "Room Rate", PromptModel.InputType.POSITIVE_DOUBLE),
+        new PromptModel("roomWeekendRate", "Room Weekend Rate", PromptModel.InputType.POSITIVE_DOUBLE),
+        new PromptModel("roomFloor", "Room Floor", PromptModel.InputType.POSITIVE_INT),
+        new PromptModel("roomNumber", "Room Number", PromptModel.InputType.POSITIVE_INT),
+        new PromptModel("wifiEnabled", "Wifi Enabled", PromptModel.InputType.BOOLEAN),
+        new PromptModel("smokingAllowed", "Smoking Allowed", PromptModel.InputType.BOOLEAN),
+        new PromptModel("bedType", new Menu(
+          "Bed Type",
+          new MenuOption[] {
+            new MenuOption("SINGLE_BED", "Single Bed"),
+            new MenuOption("DOUBLE_BED", "Double Bed"),
+            new MenuOption("MASTER_BED", "Master Bed"),
+          }
+        )),
+        new PromptModel("facing", new Menu(
+          "Facing View",
+          new MenuOption[] {
+            new MenuOption("SEA_VIEW", "Sea View"),
+            new MenuOption("CITY_VIEW", "City View"),
+            new MenuOption("MOUNTAIN_VIEW", "Mountain View"),
+            new MenuOption("NO_VIEW", "No View"),
+          }
+        )),
+        new PromptModel("status", new Menu(
+          "Room Status",
+          new MenuOption[] {
+            new MenuOption("VACANT", "Vacant"),
+            new MenuOption("OCCUPIED", "Occupied"),
+            new MenuOption("RESERVED", "Reserved"),
+            new MenuOption("UNDER_MAINTENANCE", "Under Maintainance"),
+          }
+        )),
+      }
+    );
+  }
+
+  @Override
+  public PromptModelContainer creationPromptModelContainer() {
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (promptModel.getKey() == "roomId") {
+        continue;
+      } else if (promptModel.getKey() == "status") {
+        promptModels.add(new PromptModel(
+          "status",
+          new Menu(
+            "Room Status",
+            new MenuOption[] {
+              new MenuOption("VACANT", "Vacant"),
+              new MenuOption("UNDER_MAINTENANCE", "Under Maintainance"),
+            }
+          )
+        ));
+      } else {
+        promptModels.add(promptModel);
+      }
+    }
+    return new PromptModelContainer(
+      "Create New Room",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
+  }
+
+  @Override
+  public PromptModelContainer findingPromptModelContainer() {
+    return new PromptModelContainer(
+      "Search Rooms",
+      promptModelContainer().getPromptModels()
+    );
+  }
+
+  @Override
+  public PromptModelContainer editingPromptModelContainer() {
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (Arrays.asList("roomId", "roomFloor", "roomNumber").contains(promptModel.getKey())) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Create New Room",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
   }
 
   public Room[] findRooms(HashMap<String, String> queries) {

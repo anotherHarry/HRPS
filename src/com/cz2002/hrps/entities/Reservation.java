@@ -1,5 +1,7 @@
 package com.cz2002.hrps.entities;
 
+import com.cz2002.hrps.models.PromptModelContainer;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -232,6 +234,26 @@ public class Reservation extends Entity {
     } catch (ParseException e) {
       System.out.println("Error loading Check in or Check out dates");
     }
+  }
+
+  @Override
+  public PromptModelContainer promptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer creationPromptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer findingPromptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer editingPromptModelContainer() {
+    return null;
   }
 
   public Reservation[] findReservations(HashMap<String, String> queries) {

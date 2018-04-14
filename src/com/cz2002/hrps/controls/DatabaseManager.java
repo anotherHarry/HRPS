@@ -87,7 +87,7 @@ public class DatabaseManager {
         String result = "";
 
         for (String key : keys)
-          result += String.format("%s\t%s\n", key.toString(), hashMap.get(key));
+          result += String.format("%s\t\t%s\n", key.toString(), hashMap.get(key));
 
         out.print(result.trim());
       }

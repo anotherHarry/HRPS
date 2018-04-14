@@ -31,12 +31,12 @@
 - When a guest check-out, the total bill will be presented for payment. After payment, the room/s will become available.
 - Total bill include room charges, tax, room services. Room charges can be different for weekends and weekdays. In addition, discount could be provided for promotion.
 - Payment can be made in cash, credit card with details such as billing address, etc.
-- Room occupancy report can be generated based on the percentage of occupied rooms in a particular day.
+- Room occupancy report can be generated based on the percentage of occupied roomIds in a particular day.
 
 **Functional Requirements**
 - Create/Update/Search guests detail (Search by name using keyword/s)
 - Create/Update/Remove/Printreservation
-- Create/Update rooms details (include setting status like ‘Under Maintenance”,
+- Create/Update roomIds details (include setting status like ‘Under Maintenance”,
 - Entering room service orders - list menu items for selection
 - Create/Update/Remove room service menu items.
 - Check room availability
@@ -64,9 +64,9 @@
 - There is no need to interface with external system, eg Payment, printer, etc.
 - Payment is always successful.
 - No need to log in - features
-- No graphical interface for selection of rooms.
+- No graphical interface for selection of roomIds.
 - The room service bill is entered as an amount and time stamp. There is no need to specify the items consumed.
-- The hotel has 48 rooms (of various type) from 02 – 07 level and the room number format is <2 digit floor level><running number from 01>, eg 0702.
+- The hotel has 48 roomIds (of various type) from 02 – 07 level and the room number format is <2 digit floor level><running number from 01>, eg 0702.
 
 ## UML Class Diagram
 

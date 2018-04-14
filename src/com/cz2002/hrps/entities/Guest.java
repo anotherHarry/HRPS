@@ -1,6 +1,7 @@
 package com.cz2002.hrps.entities;
 
 import com.cz2002.hrps.models.GuestIdentity;
+import com.cz2002.hrps.models.PromptModelContainer;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -212,6 +213,26 @@ public class Guest extends Entity {
     setNationality(hashMap.get("nationality"));
     setContact(hashMap.get("contact"));
     setCreditCard(hashMap.get("creditCard"));
+  }
+
+  @Override
+  public PromptModelContainer promptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer creationPromptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer findingPromptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer editingPromptModelContainer() {
+    return null;
   }
 
   public Guest[] findGuests(HashMap<String, String> queries) {

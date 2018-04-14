@@ -1,6 +1,6 @@
 package com.cz2002.hrps;
 
-import com.cz2002.hrps.boundaries.MainMenu;
+import com.cz2002.hrps.controls.MainController;
 
 /**
  * Main Class
@@ -12,8 +12,8 @@ public class Main {
    * @param args
    */
   public static void main(String[] args) {
-    MainMenu mainMenu = new MainMenu();
-    mainMenu.processMenu();
+    MainController mainController = new MainController();
+    mainController.index();
   }
 
 }

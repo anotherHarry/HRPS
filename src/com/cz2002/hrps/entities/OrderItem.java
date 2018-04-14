@@ -1,5 +1,7 @@
 package com.cz2002.hrps.entities;
 
+import com.cz2002.hrps.models.PromptModelContainer;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -101,6 +103,26 @@ public class OrderItem extends Entity {
     setQuantity(Integer.parseInt(hashMap.get("quantity")));
     setRoomServiceId(hashMap.get("roomServiceId"));
     setMenuItemId(hashMap.get("menuItemId"));
+  }
+
+  @Override
+  public PromptModelContainer promptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer creationPromptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer findingPromptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer editingPromptModelContainer() {
+    return null;
   }
 
   public OrderItem[] findOrderItems(HashMap<String, String> queries) {

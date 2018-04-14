@@ -1,5 +1,7 @@
 package com.cz2002.hrps.entities;
 
+import com.cz2002.hrps.models.PromptModelContainer;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -73,6 +75,26 @@ public class MenuItem extends Entity {
     setName(hashMap.get("name"));
     setDescription(hashMap.get("description"));
     setPrice(Double.parseDouble(hashMap.get("price")));
+  }
+
+  @Override
+  public PromptModelContainer promptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer creationPromptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer findingPromptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer editingPromptModelContainer() {
+    return null;
   }
 
   public MenuItem[] findMenuItems(HashMap<String, String> queries) {

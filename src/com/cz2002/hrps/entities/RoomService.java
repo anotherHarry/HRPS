@@ -1,5 +1,7 @@
 package com.cz2002.hrps.entities;
 
+import com.cz2002.hrps.models.PromptModelContainer;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -107,6 +109,26 @@ public class RoomService extends Entity {
     } catch (ParseException e) {
       e.printStackTrace();
     }
+  }
+
+  @Override
+  public PromptModelContainer promptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer creationPromptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer findingPromptModelContainer() {
+    return null;
+  }
+
+  @Override
+  public PromptModelContainer editingPromptModelContainer() {
+    return null;
   }
 
   public RoomService[] findRoomServices(HashMap<String, String> queries) {
