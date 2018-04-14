@@ -1,0 +1,19 @@
+id               OI20485028
+quantity         2
+roomServiceId    2016-12-04-16-23-0602
+menuItemId       MI63423412
+
+id               OI52352462
+quantity         1
+roomServiceId    2016-12-14-13-23-0201
+menuItemId       MI51646145
+
+id               OI72542363
+quantity         4
+roomServiceId    2016-10-21-13-23-0703
+menuItemId       MI63423412
+
+id               OI78245265
+quantity         5
+roomServiceId    2016-04-17-13-23-0402
+menuItemId       MI92058594

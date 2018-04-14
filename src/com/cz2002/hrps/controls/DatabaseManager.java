@@ -52,7 +52,7 @@ public class DatabaseManager {
           continue;
         }
 
-        String arr[] = line.trim().split("\t", 2);
+        String arr[] = line.trim().split("\\s+", 2);
         hashMap.put(arr[0], arr.length == 1 ? "" : arr[1]);
       }
       if (hashMap.keySet().size() != 0)
@@ -114,8 +114,7 @@ public class DatabaseManager {
       ArrayList<Entity> entityList = new ArrayList<>();
 
       for (int i = 0; i < hashMapList.size(); i++) {
-        Entity newEntity = entity.newInstance();
-        newEntity.fromHashMap(hashMapList.get(i));
+        Entity newEntity = entity.newInstance(hashMapList.get(i));
         entityList.add(newEntity);
       }
 

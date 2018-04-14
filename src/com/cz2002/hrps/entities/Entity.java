@@ -24,7 +24,7 @@ public abstract class Entity {
     loadEntitiesIfNeeded();
   }
 
-  public abstract Entity newInstance();
+  public abstract Entity newInstance(HashMap<String, String> data);
 
   /**
    * Load database for current class and put data in entities
@@ -62,7 +62,7 @@ public abstract class Entity {
    * @param queries is the queries to search
    * @return null if not found, Object Array of size results if found
    */
-  public Entity[] findList(HashMap<String, String> queries) {
+  protected Entity[] findEntities(HashMap<String, String> queries) {
 
     // Get Objects of Entities and create a resultList
     ArrayList<Entity> resultList = entities.get(this.getClass());
@@ -73,7 +73,7 @@ public abstract class Entity {
       String queryValue = query.getValue();
 
       for (Entity entity : resultList) {
-        String value = entity.toHashMap().get(queryKey).toLowerCase();
+        String value = entity.toHashMap().get(queryKey);
 
         if (value.equals(queryValue)) {
           bufferList.add(entity);
@@ -110,8 +110,8 @@ public abstract class Entity {
    * @param queries is the queries to search
    * @return null if not found, Object Array of size results if found
    */
-  public Entity find(HashMap<String, String> queries) {
-    return findList(queries)[0];
+  protected Entity findEntity(HashMap<String, String> queries) {
+    return findEntities(queries)[0];
   }
 
   /**
@@ -140,9 +140,9 @@ public abstract class Entity {
 
   /**
    * Convert a HashMap to an Entity
-   * @param guestData String of guestData
+   * @param hashMap is the hashmap
    * @return Guest Returns a Guest object
    */
-  public abstract void fromHashMap(HashMap<String, String> guestData);
+  public abstract void fromHashMap(HashMap<String, String> hashMap);
 
 }

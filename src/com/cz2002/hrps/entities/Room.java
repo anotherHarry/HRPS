@@ -90,8 +90,8 @@ public class Room extends Entity {
   }
 
   @Override
-  public Entity newInstance() {
-    return new Room();
+  public Entity newInstance(HashMap<String, String> data) {
+    return new Room(data);
   }
 
   @Override
@@ -113,17 +113,25 @@ public class Room extends Entity {
   }
 
   @Override
-  public void fromHashMap(HashMap<String, String> result) {
-    setRoomType(RoomType.valueOf(result.get("roomType")));
-    setRoomRate(Double.parseDouble(result.get("roomRate")));
-    setRoomWeekendRate(Double.parseDouble(result.get("roomWeekendRate")));
-    setRoomFloor(Integer.parseInt(result.get("roomFloor")));
-    setRoomNumber(Integer.parseInt(result.get("roomNumber")));
-    setWifiEnabled(Boolean.parseBoolean(result.get("wifiEnabled")));
-    setSmokingAllowed(Boolean.parseBoolean(result.get("smokingAllowed")));
-    setBedType(BedType.valueOf(result.get("bedType")));
-    setFacing(FacingType.valueOf(result.get("facing")));
-    setStatus(RoomStatus.valueOf(result.get("status")));
+  public void fromHashMap(HashMap<String, String> hashMap) {
+    setRoomType(RoomType.valueOf(hashMap.get("roomType")));
+    setRoomRate(Double.parseDouble(hashMap.get("roomRate")));
+    setRoomWeekendRate(Double.parseDouble(hashMap.get("roomWeekendRate")));
+    setRoomFloor(Integer.parseInt(hashMap.get("roomFloor")));
+    setRoomNumber(Integer.parseInt(hashMap.get("roomNumber")));
+    setWifiEnabled(Boolean.parseBoolean(hashMap.get("wifiEnabled")));
+    setSmokingAllowed(Boolean.parseBoolean(hashMap.get("smokingAllowed")));
+    setBedType(BedType.valueOf(hashMap.get("bedType")));
+    setFacing(FacingType.valueOf(hashMap.get("facing")));
+    setStatus(RoomStatus.valueOf(hashMap.get("status")));
+  }
+
+  public Room[] findRooms(HashMap<String, String> queries) {
+    return (Room[]) findEntities(queries);
+  }
+
+  public Room findRoom(HashMap<String, String> queries) {
+    return (Room) findEntity(queries);
   }
 
 }

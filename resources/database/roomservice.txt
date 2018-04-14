@@ -1,0 +1,29 @@
+id	2016-12-01-13-23-0201
+remarks	
+status	PREPARING
+created	2016-12-01-13-23
+reservationId	20160415-221-A0831180
+
+id	2016-12-04-16-23-0602
+remarks	Remark A
+status	PREPARING
+created	2016-12-04-16-23
+reservationId	20160415-224-A0831175
+
+id	2016-04-17-13-23-0402
+remarks
+status	DELIVERED
+created	2016-04-17-13-23
+reservationId	20160415-224-A0831177
+
+id	2016-12-14-13-23-0201
+remarks	Remark B
+status	CONFIRMED
+created	2016-12-14-13-23
+reservationId	20160415-221-A0831180
+
+id	2016-10-21-13-23-0703
+remarks	Remark C
+status	DELIVERED
+created	2016-10-21-13-23
+reservationId	20160415-38-A0831170
