@@ -428,7 +428,7 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		MASTER_BED
 facing		MOUNTAIN_VIEW
-status		RESERVED
+status		VACANT
 
 roomId		0605
 roomType		DELUXE
@@ -512,7 +512,7 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		MASTER_BED
 facing		CITY_VIEW
-status		RESERVED
+status		VACANT
 
 roomId		0704
 roomType		VIP
@@ -536,7 +536,7 @@ wifiEnabled		true
 smokingAllowed		false
 bedType		MASTER_BED
 facing		SEA_VIEW
-status		VACANT
+status		RESERVED
 
 roomId		0706
 roomType		VIP
@@ -608,7 +608,7 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		SINGLE_BED
 facing		NO_VIEW
-status		UNDER_MAINTENANCE
+status		VACANT
 
 roomId		0805
 roomType		SINGLE
@@ -620,7 +620,7 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		SINGLE_BED
 facing		NO_VIEW
-status		UNDER_MAINTENANCE
+status		VACANT
 
 roomId		0806
 roomType		SINGLE
@@ -644,4 +644,4 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		MASTER_BED
 facing		SEA_VIEW
-status		VACANT
+status		UNDER_MAINTENANCE

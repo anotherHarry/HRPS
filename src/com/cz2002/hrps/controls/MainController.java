@@ -1,14 +1,11 @@
 package com.cz2002.hrps.controls;
 
 import com.cz2002.hrps.boundaries.InputBoundary;
-import com.cz2002.hrps.entities.OrderItem;
 import com.cz2002.hrps.models.Menu;
 import com.cz2002.hrps.models.MenuOption;
 import com.cz2002.hrps.models.PromptModel;
 
-import java.util.HashMap;
-
-public class MainController implements Control {
+public class MainController extends EntityController {
 
   @Override
   public void index() {
@@ -33,7 +30,7 @@ public class MainController implements Control {
       menuSelection = inputBoundary.processMenu(true).getValue();
       switch(menuSelection) {
         case 1:
-          System.out.println(menuSelection);
+          new CheckInController().index();
           break;
         case 2:
           System.out.println(menuSelection);

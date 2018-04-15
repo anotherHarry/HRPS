@@ -9,11 +9,9 @@ import com.cz2002.hrps.entities.Reservation;
 import com.cz2002.hrps.entities.Room;
 import com.cz2002.hrps.models.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
-public class ReservationController implements Control {
+public class ReservationController extends EntityController {
 
   @Override
   public void index() {
@@ -36,16 +34,16 @@ public class ReservationController implements Control {
       menuSelection = inputBoundary.processMenu(true).getValue();
       switch (menuSelection) {
         case 1:
-          create();
+          create(new Reservation());
           break;
         case 2:
-          update();
+          update(new Reservation());
           break;
         case 3:
-          delete();
+          delete(new Reservation());
           break;
         case 4:
-          printAll();
+          printAll("Reservations", new Reservation());
           break;
         default:
           break;
@@ -54,10 +52,16 @@ public class ReservationController implements Control {
   }
 
   @Override
-  public Entity create() {
+  public <T extends Entity> T create(T t) {
+    if (!(t instanceof Reservation)) {
+      return null;
+    }
     Guest guest = creationGuest();
-    Room room = new RoomController().findVacantRoom();
-    if (guest == null || room == null) {
+    if (guest == null) {
+      return null;
+    }
+    Room room = new RoomController().find(new Room());
+    if (room == null) {
       return null;
     }
 
@@ -71,99 +75,10 @@ public class ReservationController implements Control {
     reservation.setRoom(room);
     if (reservation.create()) {
       new Boundary().alertSuccessful();
-      return reservation;
+      return (T) reservation;
     }
     new Boundary().alertFailed();
     return null;
-  }
-
-  @Override
-  public Entity find() {
-    Reservation[] reservations = (Reservation[]) findList();
-    if (reservations.length == 0) {
-      new Boundary().alertNotFound();
-      return null;
-    } else if (reservations.length == 1) {
-      return reservations[0];
-    }
-    printEntities("Search Results", reservations);
-    String[] items = new String[reservations.length];
-    for (int i = 0; i < reservations.length; i++) {
-      items[i] = reservations[i].itemsListKey();
-    }
-    InputBoundary inputBoundary = new InputBoundary(
-      new PromptModel("find", new ItemsList(
-        "Choose the item",
-        items
-      ))
-    );
-    String key = inputBoundary.getInput(true).getValue();
-    for (Reservation reservation: reservations) {
-      if (reservation.itemsListKey().equals(key)) {
-        return reservation;
-      }
-    }
-    return null;
-  }
-
-  @Override
-  public Entity[] findList() {
-    InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
-      new Reservation().findingPromptModelContainer()
-    );
-    HashMap<String, String> queries = inputContainerBoundary.getInputContainer(false);
-    Reservation[] reservations = new Reservation().findReservations(queries);
-    HashMap<String, String>[] hashMaps = (HashMap<String, String>[]) new HashMap<?,?>[reservations.length];
-    for (int i = 0; i < reservations.length; i++) {
-      hashMaps[i] = reservations[i].toHashMap();
-    }
-    return reservations;
-  }
-
-  @Override
-  public Entity update() {
-    Reservation reservation = (Reservation) find();
-    printEntity("Target Reservation", reservation);
-    HashMap<String, String> hashMap = reservation.toHashMap();
-    InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
-      reservation.editingPromptModelContainer()
-    );
-    HashMap<String, String> updatedHashMap = inputContainerBoundary.getInputContainer(false);
-    for (Map.Entry<String, String> entry : updatedHashMap.entrySet()) {
-      String key = entry.getKey();
-      String value = entry.getValue();
-      hashMap.replace(key, value);
-    }
-    if (reservation.update(hashMap)) {
-      new Boundary().alertSuccessful();
-      return reservation;
-    }
-    new Boundary().alertFailed();
-    return null;
-  }
-
-  @Override
-  public Entity delete() {
-    Reservation reservation = (Reservation) find();
-    printEntity("Target Reservation", reservation);
-    if(new Boundary().inputBoolean(
-      "Are you sure you want to delete this reservation?",
-      true).getValue()
-      ) {
-      if (reservation.delete()) {
-        new Boundary().alertSuccessful();
-        return reservation;
-      } {
-        new Boundary().alertFailed();
-      }
-    }
-    return null;
-  }
-
-  private void printAll() {
-    Reservation[] reservations = new Reservation().findReservations(new HashMap<String, String>() {{
-    }});
-    printEntities("All Reservations", reservations);
   }
 
   private Guest creationGuest() {
@@ -184,11 +99,11 @@ public class ReservationController implements Control {
       menuSelection = inputBoundary.processMenu(true).getValue();
       switch (menuSelection) {
         case 1:
-          Guest newGuest = (Guest) new GuestController().create();
+          Guest newGuest = new GuestController().create(new Guest());
           printEntity("New Guest", newGuest);
           return newGuest;
         case 2:
-          Guest oldGuest = (Guest) new GuestController().find();
+          Guest oldGuest = new GuestController().find(new Guest());
           printEntity("Target Guest", oldGuest);
           return oldGuest;
         default:
@@ -199,53 +114,10 @@ public class ReservationController implements Control {
   }
 
   public Reservation findCheckInReservaton() {
-    Reservation[] reservations = findCheckInReservatons();
-    if (reservations.length == 0) {
-      new Boundary().alertNotFound();
-      return null;
-    } else if (reservations.length == 1) {
-      return reservations[0];
-    }
-    printEntities("Check-In Reservation", reservations);
-    String[] items = new String[reservations.length];
-    for (int i = 0; i < reservations.length; i++) {
-      items[i] = reservations[i].itemsListKey();
-    }
-    InputBoundary inputBoundary = new InputBoundary(
-      new PromptModel("find", new ItemsList(
-        "Choose the item",
-        items
-      ))
-    );
-    String key = inputBoundary.getInput(true).getValue();
-    for (Reservation reservation: reservations) {
-      if (reservation.itemsListKey().equals(key)) {
-        printEntity("Target Room", reservation);
-        return reservation;
-      }
-    }
-    return null;
-  }
-
-  private Reservation[] findCheckInReservatons() {
-    ArrayList<PromptModel> promptModels = new ArrayList<>();
-    for (PromptModel promptModel: new Reservation().findingPromptModelContainer().getPromptModels()) {
-      if (promptModel.getKey().equals("reservationStatus")) {
-        continue;
-      }
-      promptModels.add(promptModel);
-    }
-    PromptModelContainer promptModelContainer = new PromptModelContainer(
-      "Search for check-in Reservations",
-      promptModels.toArray(new PromptModel[promptModels.size()])
-    );
-    InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
-      promptModelContainer
-    );
-    HashMap<String, String> queries = inputContainerBoundary.getInputContainer(false);
-    queries.put("reservationStatus", Reservation.ReservationStatus.CHECKED_IN.toString());
-    Reservation[] reservations = new Reservation().findReservations(queries);
-    return reservations;
+    HashMap<String, String> queries = new HashMap<>() {{
+      put("reservationStatus", Reservation.ReservationStatus.CHECKED_IN.toString());
+    }};
+    return findWith(queries, "Check-in Reservation", new Reservation());
   }
 
 }

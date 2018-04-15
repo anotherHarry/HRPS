@@ -61,11 +61,30 @@ public abstract class Entity {
   }
 
   /**
+   * Creates a new object and save to database
+   * @return true if success, false otherwise
+   */
+  public boolean create() {
+    ArrayList<Entity> entity =  entities.get(this.getClass());
+    entity.add(this);
+    return writeToDatabase();
+  }
+
+  /**
+   * Find the first entity match queries
+   * @param queries is the queries to search
+   * @return null if not found, Object Array of size results if found
+   */
+  public Entity findEntity(HashMap<String, String> queries) {
+    return findEntities(queries)[0];
+  }
+
+  /**
    * Find a list of entities
    * @param queries is the queries to search
    * @return null if not found, Object Array of size results if found
    */
-  protected Entity[] findEntities(HashMap<String, String> queries) {
+  public Entity[] findEntities(HashMap<String, String> queries) {
 
     // Get Objects of Entities and create a resultList
     ArrayList<Entity> resultList = entities.get(this.getClass());
@@ -96,25 +115,6 @@ public abstract class Entity {
     entityArray = resultList.toArray(entityArray);
 
     return entityArray;
-  }
-
-  /**
-   * Creates a new object and save to database
-   * @return true if success, false otherwise
-   */
-  public boolean create() {
-    ArrayList<Entity> entity =  entities.get(this.getClass());
-    entity.add(this);
-    return writeToDatabase();
-  }
-
-  /**
-   * Find the first entity match queries
-   * @param queries is the queries to search
-   * @return null if not found, Object Array of size results if found
-   */
-  protected Entity findEntity(HashMap<String, String> queries) {
-    return findEntities(queries)[0];
   }
 
   /**

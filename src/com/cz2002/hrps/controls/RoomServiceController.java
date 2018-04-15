@@ -4,16 +4,14 @@ import com.cz2002.hrps.boundaries.Boundary;
 import com.cz2002.hrps.boundaries.InputBoundary;
 import com.cz2002.hrps.boundaries.InputContainerBoundary;
 import com.cz2002.hrps.entities.*;
-import com.cz2002.hrps.models.ItemsList;
 import com.cz2002.hrps.models.Menu;
 import com.cz2002.hrps.models.MenuOption;
 import com.cz2002.hrps.models.PromptModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
-public class RoomServiceController implements Control {
+public class RoomServiceController extends EntityController {
 
   @Override
   public void index() {
@@ -35,10 +33,10 @@ public class RoomServiceController implements Control {
       menuSelection = inputBoundary.processMenu(true).getValue();
       switch (menuSelection) {
         case 1:
-          create();
+          create(new RoomService());
           break;
         case 2:
-          update();
+          update(new RoomService());
           break;
         case 3:
           new MenuItemController().index();
@@ -50,7 +48,11 @@ public class RoomServiceController implements Control {
   }
 
   @Override
-  public Entity create() {
+  public <T extends Entity> T create(T t) {
+    if (!(t instanceof RoomService)) {
+      return null;
+    }
+
     Reservation reservation = new ReservationController().findCheckInReservaton();
     if (reservation == null) {
       return null;
@@ -69,72 +71,7 @@ public class RoomServiceController implements Control {
         orderItem.create();
       }
       new Boundary().alertSuccessful();
-      return reservation;
-    }
-    new Boundary().alertFailed();
-    return null;
-  }
-
-  @Override
-  public Entity find() {
-    RoomService[] roomServices = (RoomService[]) findList();
-    if (roomServices.length == 0) {
-      new Boundary().alertNotFound();
-      return null;
-    } else if (roomServices.length == 1) {
-      return roomServices[0];
-    }
-    printEntities("Search Results", roomServices);
-    String[] items = new String[roomServices.length];
-    for (int i = 0; i < roomServices.length; i++) {
-      items[i] = roomServices[i].itemsListKey();
-    }
-    InputBoundary inputBoundary = new InputBoundary(
-      new PromptModel("find", new ItemsList(
-        "Choose the item",
-        items
-      ))
-    );
-    String key = inputBoundary.getInput(true).getValue();
-    for (RoomService roomService: roomServices) {
-      if (roomService.itemsListKey().equals(key)) {
-        return roomService;
-      }
-    }
-    return null;
-  }
-
-  @Override
-  public Entity[] findList() {
-    InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
-      new RoomService().findingPromptModelContainer()
-    );
-    HashMap<String, String> queries = inputContainerBoundary.getInputContainer(false);
-    RoomService[] roomServices = new RoomService().findRoomServices(queries);
-    HashMap<String, String>[] hashMaps = (HashMap<String, String>[]) new HashMap<?,?>[roomServices.length];
-    for (int i = 0; i < roomServices.length; i++) {
-      hashMaps[i] = roomServices[i].toHashMap();
-    }
-    return roomServices;
-  }
-
-  @Override
-  public Entity update() {
-    RoomService roomService = (RoomService) find();
-    printEntity("Target Room Service", roomService);
-    HashMap<String, String> hashMap = roomService.toHashMap();
-    InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
-      roomService.editingPromptModelContainer()
-    );
-    HashMap<String, String> updatedHashMap = inputContainerBoundary.getInputContainer(false);
-    for (Map.Entry<String, String> entry : updatedHashMap.entrySet()) {
-      String key = entry.getKey();
-      String value = entry.getValue();
-      hashMap.replace(key, value);
-    }
-    if (roomService.update(hashMap)) {
-      new Boundary().alertSuccessful();
-      return roomService;
+      return (T) roomService;
     }
     new Boundary().alertFailed();
     return null;
@@ -172,7 +109,7 @@ public class RoomServiceController implements Control {
   }
 
   private OrderItem createOrderItem(RoomService roomService) {
-    MenuItem menuItem = (MenuItem) new MenuItemController().find();
+    MenuItem menuItem = new MenuItemController().find(new MenuItem());
     if (menuItem == null) {
       return null;
     }

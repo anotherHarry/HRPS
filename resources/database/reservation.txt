@@ -2,6 +2,7 @@ reservationId		20160415-223-A0831179-0202
 reservationStatus		CHECKED_IN
 numberOfChildren		2
 numberOfAdult		5
+createdAt		2018-04-15-18-39
 checkInDate		2016-04-15-2-0
 checkOutDate		2016-04-18-2-23
 guestId		A0831179
@@ -11,6 +12,7 @@ reservationId		20160415-224-A0831177-0402
 reservationStatus		CHECKED_IN
 numberOfChildren		2
 numberOfAdult		5
+createdAt		2018-04-15-18-39
 checkInDate		2016-04-15-2-0
 checkOutDate		2016-04-18-2-24
 guestId		A0831177
@@ -20,6 +22,7 @@ reservationId		20160415-224-A0831176-0601
 reservationStatus		CHECKED_IN
 numberOfChildren		2
 numberOfAdult		5
+createdAt		2018-04-15-18-39
 checkInDate		2016-04-15-2-0
 checkOutDate		2016-04-18-2-24
 guestId		A0831176
@@ -29,6 +32,7 @@ reservationId		20160415-224-A0831175-0602
 reservationStatus		CHECKED_IN
 numberOfChildren		2
 numberOfAdult		5
+createdAt		2018-04-15-18-39
 checkInDate		2016-04-15-2-0
 checkOutDate		2016-04-18-2-24
 guestId		A0831175
@@ -38,6 +42,7 @@ reservationId		20160415-224-A0831174-0701
 reservationStatus		CHECKED_IN
 numberOfChildren		2
 numberOfAdult		5
+createdAt		2018-04-15-18-39
 checkInDate		2016-04-15-2-0
 checkOutDate		2016-04-18-2-24
 guestId		A0831174
@@ -47,6 +52,7 @@ reservationId		20160415-224-A0831173-0702
 reservationStatus		CHECKED_IN
 numberOfChildren		2
 numberOfAdult		5
+createdAt		2018-04-15-18-39
 checkInDate		2016-04-15-2-0
 checkOutDate		2016-04-18-2-24
 guestId		A0831173
@@ -56,50 +62,25 @@ reservationId		20160415-249-A0831172-0403
 reservationStatus		CONFIRMED
 numberOfChildren		0
 numberOfAdult		2
+createdAt		2018-04-15-18-39
 checkInDate		2016-04-22-14-0
 checkOutDate		2016-04-30-14-0
 guestId		A0831172
 roomId		0403
 
-reservationId		20160415-252-A0831171-0604
-reservationStatus		CONFIRMED
-numberOfChildren		0
-numberOfAdult		2
-checkInDate		2016-04-22-14-0
-checkOutDate		2016-04-30-14-0
-guestId		A0831171
-roomId		0604
-
-reservationId		20160415-38-A0831170-0703
-reservationStatus		CONFIRMED
-numberOfChildren		0
-numberOfAdult		2
-checkInDate		2016-04-22-14-0
-checkOutDate		2016-04-30-14-0
-guestId		A0831170
-roomId		0703
-
 reservationId		20180414-1535-A0831176-0301
 reservationStatus		CONFIRMED
 numberOfChildren		0
 numberOfAdult		0
-checkInDate		2018-04-14-15-35
+createdAt		2018-04-15-18-39
 guestId		A0831176
-roomId		0301
-
-reservationId		20180313-1253-A0831181-0301
-reservationStatus		WAITLIST
-numberOfChildren		3
-numberOfAdult		9
-checkInDate		2018-03-13-12-53
-guestId		A0831181
 roomId		0301
 
 reservationId		20180416-324-A0831170-0807
 reservationStatus		CHECKED_IN
 numberOfChildren		3
 numberOfAdult		2
-checkInDate		2018-04-16-3-24
+createdAt		2018-04-15-18-39
 guestId		A0831170
 roomId		0807
 
@@ -107,6 +88,14 @@ reservationId		20180424-1525-A0831181-0708
 reservationStatus		CHECKED_OUT
 numberOfChildren		4
 numberOfAdult		0
-checkInDate		2018-04-24-15-25
+createdAt		2018-04-15-18-39
 guestId		A0831181
 roomId		0708
+
+reservationId		20180415-1925-A94810593-0705
+reservationStatus		CONFIRMED
+numberOfChildren		0
+numberOfAdult		0
+createdAt		2018-04-15-18-39
+guestId		A94810593
+roomId		0705

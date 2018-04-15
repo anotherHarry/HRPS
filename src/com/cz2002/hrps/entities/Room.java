@@ -194,7 +194,6 @@ public class Room extends Entity {
     ArrayList<PromptModel> promptModels = new ArrayList<>();
     for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
       if (promptModel.getKey().equals("roomId")) {
-        continue;
       } else if (promptModel.getKey().equals("status")) {
         promptModels.add(new PromptModel(
           "status",
@@ -250,6 +249,10 @@ public class Room extends Entity {
 
   public Room findRoom(HashMap<String, String> queries) {
     return (Room) findEntity(queries);
+  }
+
+  public boolean isAvailable() {
+    return status == RoomStatus.VACANT;
   }
 
 }

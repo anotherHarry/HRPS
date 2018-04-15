@@ -11,13 +11,14 @@ import java.util.*;
 public class Reservation extends Entity {
 
   public enum ReservationStatus {
-    CONFIRMED, WAITLIST, CHECKED_IN, CHECKED_OUT, EXPIRED
+    WAITLIST, CONFIRMED, CHECKED_IN, CHECKED_OUT, EXPIRED
   }
 
   private ReservationStatus reservationStatus;
   private String reservationId = null;
   private int numberOfChildren;
   private int numberOfAdults;
+  private Date createdAt;
   private Date checkInDate;
   private Date checkOutDate;
   private String guestId;
@@ -54,7 +55,7 @@ public class Reservation extends Entity {
   public String getReservationId() {
     if (reservationId == null) {
       SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-Hm");
-      reservationId = String.format("%s-%s-%s", sdf.format(getCheckInDate()), getGuestId(), getRoomId());
+      reservationId = String.format("%s-%s-%s", sdf.format(getCreatedAt()), getGuestId(), getRoomId());
     }
     return reservationId;
   }
@@ -101,6 +102,14 @@ public class Reservation extends Entity {
    */
   public void setNumberOfChildren(int numberOfChildren) {
     this.numberOfChildren = numberOfChildren;
+  }
+
+  public Date getCreatedAt() {
+    return createdAt;
+  }
+
+  private void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
   }
 
   /**
@@ -213,16 +222,25 @@ public class Reservation extends Entity {
 
   @Override
   public boolean create() {
-    if (!super.create()) {
-      return false;
-    }
-
     Room room = getRoom();
-    Room.RoomStatus roomStatus = getReservationStatus() == ReservationStatus.CHECKED_IN
-      ? Room.RoomStatus.OCCUPIED
-      : Room.RoomStatus.RESERVED;
-    room.setStatus(roomStatus);
-    return room.update();
+    Room.RoomStatus oldRoomStatus = room.getStatus();
+    if (reservationStatus == ReservationStatus.CHECKED_IN) {
+      room.setStatus(Room.RoomStatus.OCCUPIED);
+    } else {
+      if (room.getStatus() == Room.RoomStatus.VACANT) {
+        setReservationStatus(ReservationStatus.CONFIRMED);
+        room.setStatus(Room.RoomStatus.RESERVED);
+      } else {
+        setReservationStatus(ReservationStatus.WAITLIST);
+      }
+    }
+    createdAt = new Date();
+    if (super.create()) {
+      room.update();
+      return true;
+    }
+    room.setStatus(oldRoomStatus);
+    return false;
   }
 
   @Override
@@ -261,7 +279,10 @@ public class Reservation extends Entity {
     results.put("reservationStatus", getReservationStatus().toString());
     results.put("numberOfChildren", Integer.toString(getNumberOfChildren()));
     results.put("numberOfAdult", Integer.toString(getNumberOfAdults()));
-    results.put("checkInDate", sdf.format(getCheckInDate()));
+    results.put("createdAt", sdf.format(getCreatedAt()));
+    if (getCheckInDate() != null) {
+      results.put("checkInDate", sdf.format(getCheckInDate()));
+    }
     if (getCheckOutDate() != null) {
       results.put("checkOutDate", sdf.format(getCheckOutDate()));
     }
@@ -276,13 +297,20 @@ public class Reservation extends Entity {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
 
     setReservationId(hashMap.get("reservationId"));
-    setReservationStatus(ReservationStatus.valueOf(hashMap.get("reservationStatus")));
+    if (hashMap.get("reservationStatus") != null) {
+      setReservationStatus(ReservationStatus.valueOf(hashMap.get("reservationStatus")));
+    }
     setNumberOfChildren(Integer.parseInt(hashMap.get("numberOfChildren")));
     setNumberOfAdults(Integer.parseInt(hashMap.get("numberOfAdult")));
     setGuestId(hashMap.get("guestId"));
     setRoomId(hashMap.get("roomId"));
     try {
-      setCheckInDate(sdf.parse(hashMap.get("checkInDate")));
+      if (hashMap.get("createdAt") != null) {
+        setCreatedAt(sdf.parse(hashMap.get("createdAt")));
+      }
+      if (hashMap.get("checkInDate") != null) {
+        setCheckInDate(sdf.parse(hashMap.get("checkInDate")));
+      }
       if (hashMap.get("checkOutDate") != null) {
         setCheckOutDate(sdf.parse(hashMap.get("checkOutDate")));
       }
@@ -298,8 +326,8 @@ public class Reservation extends Entity {
         new PromptModel("reservationStatus", new Menu(
           "Reservation Status",
           new MenuOption[] {
-            new MenuOption("CONFIRMED", "Confirmed"),
             new MenuOption("WAITLIST", "Waitlist"),
+            new MenuOption("CONFIRMED", "Confirmed"),
             new MenuOption("CHECKED_IN", "Check-in"),
             new MenuOption("CHECKED_OUT", "Check-out"),
             new MenuOption("EXPIRED", "Expired"),
@@ -307,6 +335,7 @@ public class Reservation extends Entity {
         )),
         new PromptModel("numberOfChildren", "Number of Children", PromptModel.InputType.POSITIVE_INT),
         new PromptModel("numberOfAdult", "Number of Adults", PromptModel.InputType.POSITIVE_INT),
+        new PromptModel("createdAt", "Created", PromptModel.InputType.DATE),
         new PromptModel("checkInDate", "Check-in Date", PromptModel.InputType.DATE),
         new PromptModel("checkOutDate", "Check-out Date", PromptModel.InputType.DATE),
         new PromptModel("guestId", "Guest Id", PromptModel.InputType.STRING),
@@ -319,20 +348,10 @@ public class Reservation extends Entity {
   public PromptModelContainer creationPromptModelContainer() {
     ArrayList<PromptModel> promptModels = new ArrayList<>();
     for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
-      if (Arrays.asList("reservationId", "checkOutDate", "guestId", "roomId").contains(promptModel.getKey())) {
+      if (Arrays.asList("reservationId", "reservationStatus", "createdAt", "checkOutDate", "guestId", "roomId").contains(
+        promptModel.getKey())
+        ) {
         continue;
-      } else if (promptModel.getKey().equals("reservationStatus")) {
-        promptModels.add(new PromptModel(
-          "reservationStatus",
-          new Menu(
-            "Reservation Status",
-            new MenuOption[] {
-              new MenuOption("CONFIRMED", "Confirmed"),
-              new MenuOption("WAITLIST", "Waitlist"),
-              new MenuOption("CHECKED_IN", "Check-in"),
-            }
-          )
-        ));
       } else {
         promptModels.add(promptModel);
       }
@@ -345,16 +364,9 @@ public class Reservation extends Entity {
 
   @Override
   public PromptModelContainer findingPromptModelContainer() {
-    ArrayList<PromptModel> promptModels = new ArrayList<>();
-    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
-      if (Arrays.asList("reservationId", "guestId", "roomId").contains(promptModel.getKey())) {
-        continue;
-      }
-      promptModels.add(promptModel);
-    }
     return new PromptModelContainer(
       "Search for Reservations",
-      promptModels.toArray(new PromptModel[promptModels.size()])
+      promptModelContainer().getPromptModels()
     );
   }
 
@@ -362,10 +374,24 @@ public class Reservation extends Entity {
   public PromptModelContainer editingPromptModelContainer() {
     ArrayList<PromptModel> promptModels = new ArrayList<>();
     for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
-      if (Arrays.asList("reservationId", "guestId", "roomId").contains(promptModel.getKey())) {
-        continue;
+      if (promptModel.getKey().equals("reservationStatus") &&
+        getReservationStatus().equals(ReservationStatus.WAITLIST)) {
+        promptModels.add(new PromptModel(
+          "reservationStatus",
+          new Menu(
+            "Reservation Status",
+            new MenuOption[] {
+              new MenuOption("WAITLIST", "Waitlist"),
+              new MenuOption("CONFIRMED", "Confirmed"),
+            }
+          )
+        ));
+      } else if (Arrays.asList("reservationId", "reservationStatus", "createdAt", "guestId", "roomId").contains(
+        promptModel.getKey())
+        ) {
+      } else {
+        promptModels.add(promptModel);
       }
-      promptModels.add(promptModel);
     }
     return new PromptModelContainer(
       "Edit Reservation Details",

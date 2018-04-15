@@ -1,22 +1,21 @@
 package com.cz2002.hrps.controls;
 
 import com.cz2002.hrps.boundaries.InputBoundary;
-import com.cz2002.hrps.entities.Guest;
 import com.cz2002.hrps.models.Menu;
 import com.cz2002.hrps.models.MenuOption;
 import com.cz2002.hrps.models.PromptModel;
 
-public class GuestController extends EntityController {
+public class CheckInController extends EntityController {
 
   @Override
   public void index() {
     InputBoundary inputBoundary = new InputBoundary(new PromptModel(
       "",
       new Menu(
-        "Guest Menu",
+        "Check-in",
         new MenuOption[] {
-          new MenuOption("update_guest", "Update"),
-          new MenuOption("search_guest", "Search"),
+          new MenuOption("has_reservation", "Has Reservation"),
+          new MenuOption("walk-in", "Walk In"),
           new MenuOption("back", "Back"),
         }
       )
@@ -27,10 +26,10 @@ public class GuestController extends EntityController {
       menuSelection = inputBoundary.processMenu(true).getValue();
       switch (menuSelection) {
         case 1:
-          update(new Guest());
+          checkInReservation();
           break;
         case 2:
-          findList(new Guest());
+          walkIn();
           break;
         default:
           break;
@@ -38,4 +37,9 @@ public class GuestController extends EntityController {
     } while (menuSelection != 3);
   }
 
+  private void checkInReservation() {
+
+  }
+
+  private void walkIn() {}
 }

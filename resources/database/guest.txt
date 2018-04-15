@@ -72,11 +72,11 @@ id		A0831173
 idType		PASSPORT
 name		Guest H
 address		Address H
-country		Singapore
-gender		F
+country		USA
+gender		M
 nationality		Singaporean
 contact		92831172
-creditCard		8311728311721341
+creditCard		8888999922223333
 
 id		A0831172
 idType		DRIVING_LICENSE
@@ -84,8 +84,8 @@ name		Guest I
 address		Address I
 country		Singapore
 gender		M
-nationality		Singaporean
-contact		92831171
+nationality		Chinese
+contact		87655678
 creditCard		8311718311711341
 
 id		A0831171
@@ -117,3 +117,23 @@ gender		F
 nationality		Vietnamese
 contact		83059394
 creditCard		2840835082940184
+
+id		A84019483
+idType		PASSPORT
+name		Guest M
+address		Address M
+country		Australia
+gender		F
+nationality		French
+contact		91028493
+creditCard		1937778382930283
+
+id		A94810593
+idType		DRIVING_LICENSE
+name		Guest N
+address		Adress N
+country		Canada
+gender		M
+nationality		German
+contact		82950184
+creditCard		3850429502849305
