@@ -120,7 +120,7 @@ public class RoomController extends EntityController {
       }});
       String[] roomIds = new String[statusRoomTypeRooms.length];
       for (int j = 0; j < statusRoomTypeRooms.length; j++) {
-        roomIds[j] = statusRoomTypeRooms[j].getRoomId();
+        roomIds[j] = statusRoomTypeRooms[j].getId();
       }
       models[i] = new RoomTypeOccupancyRateReportModel(
         roomType.toString(),
@@ -141,7 +141,7 @@ public class RoomController extends EntityController {
       }});
       String[] roomIds = new String[statusRooms.length];
       for (int j = 0; j < statusRooms.length; j++) {
-        roomIds[j] = statusRooms[j].getRoomId();
+        roomIds[j] = statusRooms[j].getId();
       }
       models[i] = new RoomStatusReportModel(
         roomStatus.toString(),

@@ -13,7 +13,7 @@ public class Reservation extends Entity {
   }
 
   private ReservationStatus reservationStatus;
-  private String reservationId = null;
+  private String id = null;
   private int numberOfChildren;
   private int numberOfAdults;
   private Date createdAt;
@@ -46,24 +46,24 @@ public class Reservation extends Entity {
   }
 
   /**
-   * Get the value of reservationId
+   * Get the value of id
    *
-   * @return the value of reservationId
+   * @return the value of id
    */
-  public String getReservationId() {
-    if (reservationId == null) {
+  public String getId() {
+    if (id == null) {
       SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-Hm");
-      reservationId = String.format("%s-%s-%s", sdf.format(getCreatedAt()), getGuestId(), getRoomId());
+      id = String.format("%s-%s-%s", sdf.format(getCreatedAt()), getGuestId(), getRoomId());
     }
-    return reservationId;
+    return id;
   }
 
   /**
    * Set Reservation Identifier
-   * @param reservationId
+   * @param id
    */
-  public void setReservationId(String reservationId) {
-    this.reservationId = reservationId;
+  public void setId(String id) {
+    this.id = id;
   }
 
   /**
@@ -160,7 +160,7 @@ public class Reservation extends Entity {
 
   public String getRoomId() {
     if (roomId == null) {
-      roomId = getRoom().getRoomId();
+      roomId = getRoom().getId();
     }
     return roomId;
   }
@@ -198,7 +198,7 @@ public class Reservation extends Entity {
   public ArrayList<RoomService> getRoomServices() {
     if (roomServices == null || roomServices.size() == 0) {
       RoomService[] rss = new RoomService().findRoomServices(new HashMap<>() {{
-        put("reservationId", getReservationId());
+        put("id", getId());
       }});
       roomServices = new ArrayList<>(Arrays.asList(rss));
     }
@@ -275,7 +275,7 @@ public class Reservation extends Entity {
     LinkedHashMap<String, String> results = new LinkedHashMap<>();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
 
-    results.put("reservationId", getReservationId());
+    results.put("id", getId());
     results.put("reservationStatus", getReservationStatus().toString());
     results.put("numberOfChildren", Integer.toString(getNumberOfChildren()));
     results.put("numberOfAdult", Integer.toString(getNumberOfAdults()));
@@ -296,7 +296,7 @@ public class Reservation extends Entity {
   public void fromHashMap(HashMap<String, String> hashMap) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
 
-    setReservationId(hashMap.get("reservationId"));
+    setId(hashMap.get("id"));
     if (hashMap.get("reservationStatus") != null) {
       setReservationStatus(ReservationStatus.valueOf(hashMap.get("reservationStatus")));
     }
@@ -322,7 +322,7 @@ public class Reservation extends Entity {
     return new PromptModelContainer(
       "",
       new PromptModel[] {
-        new PromptModel("reservationId", "Reservation Id", PromptModel.InputType.STRING),
+        new PromptModel("id", "Reservation Id", PromptModel.InputType.STRING),
         new PromptModel("reservationStatus", new Menu(
           "Reservation Status",
           new MenuOption[] {
@@ -348,7 +348,7 @@ public class Reservation extends Entity {
   public PromptModelContainer creationPromptModelContainer() {
     ArrayList<PromptModel> promptModels = new ArrayList<>();
     for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
-      if (Arrays.asList("reservationId", "reservationStatus", "createdAt", "checkOutDate", "guestId", "roomId").contains(
+      if (Arrays.asList("id", "reservationStatus", "createdAt", "checkOutDate", "guestId", "roomId").contains(
         promptModel.getKey())
         ) {
         continue;
@@ -388,7 +388,7 @@ public class Reservation extends Entity {
       } else if ((promptModel.getKey().equals("checkInDate") &&
         !(getReservationStatus().equals(ReservationStatus.WAITLIST) ||
           getReservationStatus().equals(ReservationStatus.CONFIRMED)))) {
-      } else if (Arrays.asList("reservationId", "reservationStatus", "createdAt", "guestId", "roomId").contains(
+      } else if (Arrays.asList("id", "reservationStatus", "createdAt", "guestId", "roomId").contains(
         promptModel.getKey())
         ) {
       } else {
@@ -404,7 +404,7 @@ public class Reservation extends Entity {
   public PromptModelContainer walkInPromptModelContainer() {
     ArrayList<PromptModel> promptModels = new ArrayList<>();
     for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
-      if (Arrays.asList("reservationId", "reservationStatus", "createdAt", "checkInDate", "checkOutDate", "guestId", "roomId").contains(
+      if (Arrays.asList("id", "reservationStatus", "createdAt", "checkInDate", "checkOutDate", "guestId", "roomId").contains(
         promptModel.getKey())
         ) {
         continue;
@@ -419,7 +419,7 @@ public class Reservation extends Entity {
 
   @Override
   public String itemsListKey() {
-    return getReservationId();
+    return getId();
   }
 
   public Reservation[] findReservations(HashMap<String, String> queries) {

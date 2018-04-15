@@ -36,7 +36,7 @@ public class RoomService extends Entity {
   public String getId() {
     if (id == null) {
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
-      return String.format("%s-%s", sdf.format(getCreatedAt()), getReservation().getReservationId());
+      return String.format("%s-%s", sdf.format(getCreatedAt()), getReservation().getId());
     }
     return id;
   }
@@ -71,7 +71,7 @@ public class RoomService extends Entity {
 
   public String getReservationId() {
     if (reservationId == null) {
-      return getReservation().getReservationId();
+      return getReservation().getId();
     }
     return reservationId;
   }

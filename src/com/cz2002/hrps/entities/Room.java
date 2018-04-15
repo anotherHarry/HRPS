@@ -29,6 +29,7 @@ public class Room extends Entity {
   }
 
   // Variable Declaration
+  private String id;
   private RoomType 	roomType;
   private double 		roomRate;
   private double      roomWeekendRate;
@@ -92,8 +93,11 @@ public class Room extends Entity {
     this.roomFloor = roomFloor;
   }
 
-  public String getRoomId() {
-    return String.format("%02d", getRoomFloor()) + String.format("%02d", getRoomNumber());
+  public String getId() {
+    if (id == null) {
+      id = String.format("%02d", getRoomFloor()) + String.format("%02d", getRoomNumber());
+    }
+    return id;
   }
 
   @Override
@@ -109,7 +113,7 @@ public class Room extends Entity {
   @Override
   public HashMap<String, String> toHashMap() {
     LinkedHashMap<String, String> result = new LinkedHashMap<>();
-    result.put("roomId", getRoomId());
+    result.put("id", getId());
     result.put("roomType", getRoomType().toString());
     result.put("roomRate", Double.toString(getRoomRate()));
     result.put("roomWeekendRate", Double.toString(getRoomWeekendRate()));
@@ -143,7 +147,7 @@ public class Room extends Entity {
     return new PromptModelContainer(
       "",
       new PromptModel[] {
-        new PromptModel("roomId", "Room Id", PromptModel.InputType.STRING),
+        new PromptModel("id", "Room Id", PromptModel.InputType.STRING),
         new PromptModel("roomType", new Menu(
           "Room Type",
           new MenuOption[] {
@@ -193,7 +197,7 @@ public class Room extends Entity {
   public PromptModelContainer creationPromptModelContainer() {
     ArrayList<PromptModel> promptModels = new ArrayList<>();
     for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
-      if (promptModel.getKey().equals("roomId")) {
+      if (promptModel.getKey().equals("id")) {
       } else if (promptModel.getKey().equals("status")) {
         promptModels.add(new PromptModel(
           "status",
@@ -227,7 +231,7 @@ public class Room extends Entity {
   public PromptModelContainer editingPromptModelContainer() {
     ArrayList<PromptModel> promptModels = new ArrayList<>();
     for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
-      if (Arrays.asList("roomId", "roomFloor", "roomNumber").contains(promptModel.getKey())) {
+      if (Arrays.asList("id", "roomFloor", "roomNumber").contains(promptModel.getKey())) {
         continue;
       }
       promptModels.add(promptModel);
@@ -240,7 +244,7 @@ public class Room extends Entity {
 
   @Override
   public String itemsListKey() {
-    return getRoomId();
+    return getId();
   }
 
   public Room[] findRooms(HashMap<String, String> queries) {
