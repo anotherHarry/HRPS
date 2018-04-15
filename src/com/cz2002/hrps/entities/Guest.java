@@ -1,8 +1,9 @@
 package com.cz2002.hrps.entities;
 
-import com.cz2002.hrps.models.GuestIdentity;
-import com.cz2002.hrps.models.PromptModelContainer;
+import com.cz2002.hrps.models.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -182,6 +183,11 @@ public class Guest extends Entity {
   }
 
   @Override
+  public Entity newInstance() {
+    return new Guest();
+  }
+
+  @Override
   public Entity newInstance(HashMap<String, String> data) {
     return new Guest(data);
   }
@@ -217,22 +223,69 @@ public class Guest extends Entity {
 
   @Override
   public PromptModelContainer promptModelContainer() {
-    return null;
+    return new PromptModelContainer(
+      "",
+      new PromptModel[] {
+        new PromptModel("id", "Guest Id", PromptModel.InputType.STRING),
+        new PromptModel("idType", new Menu(
+          "Id Type",
+          new MenuOption[] {
+            new MenuOption("PASSPORT", "Passport"),
+            new MenuOption("DRIVING_LICENSE", "Driving License"),
+          }
+        )),
+        new PromptModel("name", "Name", PromptModel.InputType.STRING),
+        new PromptModel("address", "Address", PromptModel.InputType.STRING),
+        new PromptModel("country", "Country", PromptModel.InputType.STRING),
+        new PromptModel("gender", "Gender", PromptModel.InputType.GENDER),
+        new PromptModel("nationality", "Nationality", PromptModel.InputType.STRING),
+        new PromptModel("contact", "Contact", PromptModel.InputType.CONTACT_NUMBER),
+        new PromptModel("creditCard", "Creditcard Number", PromptModel.InputType.CREDITCARD_NUMBER),
+      }
+    );
   }
 
   @Override
   public PromptModelContainer creationPromptModelContainer() {
-    return null;
+    return new PromptModelContainer(
+      "Create New Guest",
+      promptModelContainer().getPromptModels()
+    );
   }
 
   @Override
   public PromptModelContainer findingPromptModelContainer() {
-    return null;
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (Arrays.asList("address", "creditCard").contains(promptModel.getKey())) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Search Guests",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
   }
 
   @Override
   public PromptModelContainer editingPromptModelContainer() {
-    return null;
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (Arrays.asList("id", "idType").contains(promptModel.getKey())) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Edit Guest Details",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
+  }
+
+  @Override
+  public String itemsListKey() {
+    return getId();
   }
 
   public Guest[] findGuests(HashMap<String, String> queries) {

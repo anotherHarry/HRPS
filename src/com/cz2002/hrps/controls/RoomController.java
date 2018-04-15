@@ -82,7 +82,7 @@ public class RoomController implements Control {
     }
     String[] items = new String[rooms.length];
     for (int i = 0; i < rooms.length; i++) {
-      items[i] = rooms[i].getRoomId();
+      items[i] = rooms[i].itemsListKey();
     }
     InputBoundary inputBoundary = new InputBoundary(
       new PromptModel("find", new ItemsList(
@@ -92,7 +92,7 @@ public class RoomController implements Control {
     );
     String key = inputBoundary.getInput(true).getValue();
     for (Room room: rooms) {
-      if (room.getRoomId().equals(key)) {
+      if (room.itemsListKey().equals(key)) {
         return room;
       }
     }
@@ -129,8 +129,10 @@ public class RoomController implements Control {
       hashMap.replace(key, value);
     }
     if (room.update(hashMap)) {
+      new Boundary().alertSuccessful();
       return room;
     }
+    new Boundary().alertFailed();
     return null;
   }
 

@@ -1,6 +1,11 @@
 package com.cz2002.hrps.controls;
 
+import com.cz2002.hrps.boundaries.InputContainerBoundary;
+import com.cz2002.hrps.boundaries.OutputBoundary;
 import com.cz2002.hrps.entities.Entity;
+import com.cz2002.hrps.entities.Room;
+
+import java.util.HashMap;
 
 public interface Control {
 

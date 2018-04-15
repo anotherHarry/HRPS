@@ -80,6 +80,11 @@ public class RoomService extends Entity {
   }
 
   @Override
+  public Entity newInstance() {
+    return new RoomService();
+  }
+
+  @Override
   public Entity newInstance(HashMap<String, String> data) {
     return new RoomService(data);
   }
@@ -129,6 +134,11 @@ public class RoomService extends Entity {
   @Override
   public PromptModelContainer editingPromptModelContainer() {
     return null;
+  }
+
+  @Override
+  public String itemsListKey() {
+    return getId();
   }
 
   public RoomService[] findRoomServices(HashMap<String, String> queries) {

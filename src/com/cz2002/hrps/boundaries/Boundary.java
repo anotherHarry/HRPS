@@ -80,6 +80,32 @@ public class Boundary {
    * @param promptMessage the message to print before input
    * @return input from console
    */
+  public InputModel<Long> inputLong(String promptMessage, boolean inputRequired) {
+    System.out.print(promptMessage);
+    return inputLong(inputRequired);
+  }
+
+  /**
+   * Get an integer from console
+   * @return input from console
+   */
+  public InputModel<Long> inputLong(boolean inputRequired) {
+    try {
+      Long input =  Long.parseLong(inputString(inputRequired).getValue());
+      return new InputModel(true, input);
+    } catch (NumberFormatException e) {}
+    if (!inputRequired) {
+      return new InputModel(false, -1l);
+    }
+    alertInvalidInput();
+    return inputLong(inputRequired);
+  }
+
+  /**
+   * Get an integer from console
+   * @param promptMessage the message to print before input
+   * @return input from console
+   */
   public InputModel<Double> inputDouble(String promptMessage, boolean inputRequired) {
     System.out.print(promptMessage);
     return inputDouble(inputRequired);

@@ -3,7 +3,18 @@ package com.cz2002.hrps.models;
 public class PromptModel {
 
   public enum InputType {
-    STRING, INT, POSITIVE_INT, DOUBLE, POSITIVE_DOUBLE, BOOLEAN, DATE, GENDER, MENU_SELECTION, LIST_SELECTION
+    STRING,
+    INT,
+    POSITIVE_INT,
+    DOUBLE,
+    POSITIVE_DOUBLE,
+    BOOLEAN,
+    DATE,
+    GENDER,
+    CONTACT_NUMBER,
+    CREDITCARD_NUMBER,
+    MENU_SELECTION,
+    LIST_SELECTION
   }
 
   private String key;

@@ -25,6 +25,8 @@ public abstract class Entity {
     loadEntitiesIfNeeded();
   }
 
+  public abstract Entity newInstance();
+
   public abstract Entity newInstance(HashMap<String, String> data);
 
   /**
@@ -170,5 +172,7 @@ public abstract class Entity {
    * @return an array of input models
    */
   public abstract PromptModelContainer editingPromptModelContainer();
+
+  public abstract String itemsListKey();
 
 }

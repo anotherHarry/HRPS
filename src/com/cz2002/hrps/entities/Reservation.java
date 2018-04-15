@@ -192,6 +192,11 @@ public class Reservation extends Entity {
   }
 
   @Override
+  public Entity newInstance() {
+    return new Reservation();
+  }
+
+  @Override
   public Entity newInstance(HashMap<String, String> data) {
     return new Reservation(data);
   }
@@ -254,6 +259,11 @@ public class Reservation extends Entity {
   @Override
   public PromptModelContainer editingPromptModelContainer() {
     return null;
+  }
+
+  @Override
+  public String itemsListKey() {
+    return getReservationId();
   }
 
   public Reservation[] findReservations(HashMap<String, String> queries) {

@@ -54,6 +54,11 @@ public class MenuItem extends Entity {
   }
 
   @Override
+  public Entity newInstance() {
+    return new MenuItem();
+  }
+
+  @Override
   public Entity newInstance(HashMap<String, String> data) {
     return new MenuItem(data);
   }
@@ -95,6 +100,11 @@ public class MenuItem extends Entity {
   @Override
   public PromptModelContainer editingPromptModelContainer() {
     return null;
+  }
+
+  @Override
+  public String itemsListKey() {
+    return getId();
   }
 
   public MenuItem[] findMenuItems(HashMap<String, String> queries) {

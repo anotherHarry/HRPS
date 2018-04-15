@@ -32,6 +32,9 @@ public class InputBoundary extends Boundary {
         alertInvalidInput();
         input = inputInteger(promptModel.getTitle(), inputRequired);
       }
+      if (input.getValue() < 0) {
+        return new InputModel(false, input.getValue().toString());
+      }
       return new InputModel(input.getIsSuccess(), input.getValue().toString());
     } else if (promptModel.getInputType() == PromptModel.InputType.DOUBLE) {
       InputModel input = inputDouble(promptModel.getTitle(), inputRequired);
@@ -41,6 +44,9 @@ public class InputBoundary extends Boundary {
       while (input.getValue() < 0 && inputRequired) {
         alertInvalidInput();
         input = inputDouble(promptModel.getTitle(), inputRequired);
+      }
+      if (input.getValue() < 0) {
+        return new InputModel(false, input.getValue().toString());
       }
       return new InputModel(input.getIsSuccess(), input.getValue().toString());
     } else if (promptModel.getInputType() == PromptModel.InputType.BOOLEAN) {
@@ -52,6 +58,27 @@ public class InputBoundary extends Boundary {
       return new InputModel(input.getIsSuccess(), sdf.format(input.getValue()));
     } else if (promptModel.getInputType() == PromptModel.InputType.GENDER) {
       return inputGender(promptModel.getTitle(), inputRequired);
+    } else if (promptModel.getInputType() == PromptModel.InputType.CONTACT_NUMBER) {
+      InputModel<Integer> input = inputInteger(promptModel.getTitle(), inputRequired);
+      while ((input.getValue() < 80000000 || input.getValue() > 99999999) && inputRequired) {
+        alertInvalidInput();
+        input = inputInteger(promptModel.getTitle(), inputRequired);
+      }
+      if (input.getValue() < 80000000 || input.getValue() > 99999999) {
+        return new InputModel(false, input.getValue().toString());
+      }
+      return new InputModel(input.getIsSuccess(), input.getValue().toString());
+    } else if (promptModel.getInputType() == PromptModel.InputType.CREDITCARD_NUMBER) {
+      InputModel<Long> input = inputLong(promptModel.getTitle(), inputRequired);
+      while ((input.getValue() < 1000000000000000l || input.getValue() > 9999999999999999l) &&
+        inputRequired) {
+        alertInvalidInput();
+        input = inputLong(promptModel.getTitle(), inputRequired);
+      }
+      if (input.getValue() < 1000000000000000l || input.getValue() > 9999999999999999l) {
+        return new InputModel(false, input.getValue().toString());
+      }
+      return new InputModel(input.getIsSuccess(), input.getValue().toString());
     } else if (promptModel.getInputType() == PromptModel.InputType.MENU_SELECTION) {
       Menu menu = promptModel.getMenu();
       InputModel<Integer> input = processMenu(inputRequired);

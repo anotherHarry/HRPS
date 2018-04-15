@@ -83,6 +83,11 @@ public class OrderItem extends Entity {
   }
 
   @Override
+  public Entity newInstance() {
+    return new OrderItem();
+  }
+
+  @Override
   public Entity newInstance(HashMap<String, String> data) {
     return new OrderItem(data);
   }
@@ -123,6 +128,11 @@ public class OrderItem extends Entity {
   @Override
   public PromptModelContainer editingPromptModelContainer() {
     return null;
+  }
+
+  @Override
+  public String itemsListKey() {
+    return getId();
   }
 
   public OrderItem[] findOrderItems(HashMap<String, String> queries) {

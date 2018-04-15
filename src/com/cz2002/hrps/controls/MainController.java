@@ -53,15 +53,7 @@ public class MainController implements Control {
           };
           break;
         case 4:
-          Guest guest = new Guest();
-          Guest guestResult = guest.findGuest(new HashMap<String, String>() {{
-            put("contact", "92831176");
-          }});
-          System.out.println(guestResult.getName());
-          Guest[] allGuests = guest.findGuests(new HashMap<String, String>());
-          for (int i = 0; i < allGuests.length; i++) {
-            System.out.println(allGuests[i].getContact());
-          };
+          new GuestController().index();
           break;
         case 5:
           new RoomController().index();

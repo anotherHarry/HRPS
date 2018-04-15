@@ -98,6 +98,11 @@ public class Room extends Entity {
   }
 
   @Override
+  public Entity newInstance() {
+    return new Room();
+  }
+
+  @Override
   public Entity newInstance(HashMap<String, String> data) {
     return new Room(data);
   }
@@ -230,9 +235,14 @@ public class Room extends Entity {
       promptModels.add(promptModel);
     }
     return new PromptModelContainer(
-      "Create New Room",
+      "Edit Rooms Details",
       promptModels.toArray(new PromptModel[promptModels.size()])
     );
+  }
+
+  @Override
+  public String itemsListKey() {
+    return getRoomId();
   }
 
   public Room[] findRooms(HashMap<String, String> queries) {
