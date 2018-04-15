@@ -30,7 +30,8 @@ public class GuestController extends EntityController {
           update(new Guest());
           break;
         case 2:
-          findList(new Guest());
+          Guest[] guests = findList(new Guest());
+          printEntities("Search Results for Guest", guests);
           break;
         default:
           break;
