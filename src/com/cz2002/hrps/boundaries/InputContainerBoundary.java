@@ -22,7 +22,7 @@ public class InputContainerBoundary extends InputBoundary {
   }
 
   public HashMap<String, String> getInputContainer(boolean inputRequired) {
-    System.out.println("\n==  " + promptModelContainer.getTitle() + "  ==");
+    System.out.println("\n===  " + promptModelContainer.getTitle() + "  ===");
     LinkedHashMap<String, String> result = new LinkedHashMap<>();
     for (InputBoundary inputBoundary: inputBoundaries) {
       InputModel<String> input = inputBoundary.getInput(inputRequired);

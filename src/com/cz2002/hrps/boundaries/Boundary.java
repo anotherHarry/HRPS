@@ -161,7 +161,7 @@ public class Boundary {
    * @return input from console
    */
   public InputModel<Date> inputDate(String promptMessage, boolean inputRequired) {
-    System.out.print(promptMessage);
+    System.out.print(promptMessage + " (Ex: 2018-06-25-17-05)");
     return inputDate(inputRequired);
   }
 

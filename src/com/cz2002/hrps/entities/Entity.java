@@ -121,9 +121,17 @@ public abstract class Entity {
    * Creates a new object and save to database
    * @return true if success, false otherwise
    */
+  public boolean update() {
+    return writeToDatabase();
+  }
+
+  /**
+   * Creates a new object and save to database
+   * @return true if success, false otherwise
+   */
   public boolean update(HashMap<String, String> hashMap) {
     fromHashMap(hashMap);
-    return writeToDatabase();
+    return update();
   }
 
   /**
@@ -131,9 +139,9 @@ public abstract class Entity {
    * @return true if success, false otherwise
    */
   public boolean delete() {
-    ArrayList<Entity> entity = entities.get(this.getClass());
-    entity.remove(this);
-    return databaseManager.write(entity);
+    ArrayList<Entity> entityList = entities.get(this.getClass());
+    entityList.remove(this);
+    return databaseManager.write(entityList);
   }
 
   /**

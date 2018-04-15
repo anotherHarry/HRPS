@@ -5,7 +5,6 @@ import com.cz2002.hrps.models.PromptModel;
 import com.cz2002.hrps.models.PromptModelContainer;
 import com.cz2002.hrps.models.Menu;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -194,9 +193,9 @@ public class Room extends Entity {
   public PromptModelContainer creationPromptModelContainer() {
     ArrayList<PromptModel> promptModels = new ArrayList<>();
     for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
-      if (promptModel.getKey() == "roomId") {
+      if (promptModel.getKey().equals("roomId")) {
         continue;
-      } else if (promptModel.getKey() == "status") {
+      } else if (promptModel.getKey().equals("status")) {
         promptModels.add(new PromptModel(
           "status",
           new Menu(

@@ -8,6 +8,8 @@ import com.cz2002.hrps.entities.Entity;
 import com.cz2002.hrps.entities.Room;
 import com.cz2002.hrps.models.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,6 +82,7 @@ public class RoomController implements Control {
     } else if (rooms.length == 1) {
       return rooms[0];
     }
+    printEntities("Search Results", rooms);
     String[] items = new String[rooms.length];
     for (int i = 0; i < rooms.length; i++) {
       items[i] = rooms[i].itemsListKey();
@@ -106,19 +109,14 @@ public class RoomController implements Control {
     );
     HashMap<String, String> queries = inputContainerBoundary.getInputContainer(false);
     Room[] rooms = new Room().findRooms(queries);
-    HashMap<String, String>[] hashMaps = (HashMap<String, String>[]) new HashMap<?,?>[rooms.length];
-    for (int i = 0; i < rooms.length; i++) {
-      hashMaps[i] = rooms[i].toHashMap();
-    }
-    new OutputBoundary().printHashMaps("Search Results", hashMaps);
     return rooms;
   }
 
   @Override
   public Entity update() {
     Room room = (Room) find();
+    printEntity("Target Room", room);
     HashMap<String, String> hashMap = room.toHashMap();
-    new OutputBoundary().printHashMap("Search Result", room.toHashMap());
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
       room.editingPromptModelContainer()
     );
@@ -237,8 +235,8 @@ public class RoomController implements Control {
 
   private void reportFaultyRoom() {
     Room room = (Room) find();
+    printEntity("Target Room", room);
     HashMap<String, String> hashMap = room.toHashMap();
-    new OutputBoundary().printHashMap("Search Result", room.toHashMap());
     if(new Boundary().inputBoolean(
       "Are you sure you want to report that this room has problem?",
       true).getValue()
@@ -248,6 +246,56 @@ public class RoomController implements Control {
         new Boundary().alertSuccessful();
       }
     }
+  }
+
+  public Room findVacantRoom() {
+    Room[] rooms = findVacantRooms();
+    if (rooms.length == 0) {
+      new Boundary().alertNoItemExisted();
+      return null;
+    } else if (rooms.length == 1) {
+      return rooms[0];
+    }
+    printEntities("Vacant Rooms", rooms);
+    String[] items = new String[rooms.length];
+    for (int i = 0; i < rooms.length; i++) {
+      items[i] = rooms[i].itemsListKey();
+    }
+    InputBoundary inputBoundary = new InputBoundary(
+      new PromptModel("find", new ItemsList(
+        "Choose the item",
+        items
+      ))
+    );
+    String key = inputBoundary.getInput(true).getValue();
+    for (Room room: rooms) {
+      if (room.itemsListKey().equals(key)) {
+        printEntity("Target Room", room);
+        return room;
+      }
+    }
+    return null;
+  }
+
+  private Room[] findVacantRooms() {
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: new Room().findingPromptModelContainer().getPromptModels()) {
+      if (promptModel.getKey().equals("status")) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    PromptModelContainer promptModelContainer = new PromptModelContainer(
+      "Find Vacant Rooms",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
+    InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
+      promptModelContainer
+    );
+    HashMap<String, String> queries = inputContainerBoundary.getInputContainer(false);
+    queries.put("status", "VACANT");
+    Room[] rooms = new Room().findRooms(queries);
+    return rooms;
   }
 
 }

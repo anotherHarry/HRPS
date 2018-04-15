@@ -1,12 +1,12 @@
 package com.cz2002.hrps.entities;
 
+import com.cz2002.hrps.models.Menu;
+import com.cz2002.hrps.models.MenuOption;
+import com.cz2002.hrps.models.PromptModel;
 import com.cz2002.hrps.models.PromptModelContainer;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class Reservation extends Entity {
 
@@ -52,6 +52,10 @@ public class Reservation extends Entity {
    * @return the value of reservationId
    */
   public String getReservationId() {
+    if (reservationId == null) {
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-Hm");
+      reservationId = String.format("%s-%s-%s", sdf.format(getCheckInDate()), getGuestId(), getRoomId());
+    }
     return reservationId;
   }
 
@@ -202,63 +206,165 @@ public class Reservation extends Entity {
   }
 
   @Override
+  public boolean create() {
+    if (!super.create()) {
+      return false;
+    }
+
+    Room room = getRoom();
+    Room.RoomStatus roomStatus = getReservationStatus() == ReservationStatus.CHECKED_IN
+      ? Room.RoomStatus.OCCUPIED
+      : Room.RoomStatus.RESERVED;
+    room.setStatus(roomStatus);
+    return room.update();
+  }
+
+  @Override
+  public boolean update() {
+    if (!super.update()) {
+      return false;
+    }
+
+    Room room = getRoom();
+    Room.RoomStatus roomStatus = getReservationStatus() == ReservationStatus.CHECKED_IN
+      ? Room.RoomStatus.OCCUPIED
+      : getReservationStatus() == ReservationStatus.CONFIRMED ||
+        getReservationStatus() == ReservationStatus.WAITLIST
+        ? Room.RoomStatus.RESERVED
+        : Room.RoomStatus.VACANT;
+    room.setStatus(roomStatus);
+    return room.update();
+  }
+
+  @Override
+  public boolean delete() {
+    if (!super.delete()) {
+      return false;
+    }
+    Room room = getRoom();
+    room.setStatus(Room.RoomStatus.VACANT);
+    return room.update();
+  }
+
+  @Override
   public HashMap<String, String> toHashMap() {
     LinkedHashMap<String, String> results = new LinkedHashMap<>();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HHmm");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
 
     results.put("reservationId", getReservationId());
     results.put("reservationStatus", getReservationStatus().toString());
     results.put("numberOfChildren", Integer.toString(getNumberOfChildren()));
     results.put("numberOfAdult", Integer.toString(getNumberOfAdults()));
     results.put("checkInDate", sdf.format(getCheckInDate()));
-    results.put("checkOutDate", sdf.format(getCheckOutDate()));
+    if (getCheckOutDate() != null) {
+      results.put("checkOutDate", sdf.format(getCheckOutDate()));
+    }
     results.put("guestId", getGuestId());
     results.put("roomId", getRoomId());
 
     return results;
   }
 
-
   @Override
   public void fromHashMap(HashMap<String, String> hashMap) {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HHmm");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
 
+    setReservationId(hashMap.get("reservationId"));
+    setReservationStatus(ReservationStatus.valueOf(hashMap.get("reservationStatus")));
+    setNumberOfChildren(Integer.parseInt(hashMap.get("numberOfChildren")));
+    setNumberOfAdults(Integer.parseInt(hashMap.get("numberOfAdult")));
+    setGuestId(hashMap.get("guestId"));
+    setRoomId(hashMap.get("roomId"));
     try {
-      setNumberOfChildren(Integer.parseInt(hashMap.get("numberOfChildren")));
-      setNumberOfAdults(Integer.parseInt(hashMap.get("numberOfAdult")));
       setCheckInDate(sdf.parse(hashMap.get("checkInDate")));
-      setCheckOutDate(sdf.parse(hashMap.get("checkOutDate")));
-
-      // Caught Exception as this are not user entered data
-      try {
-        setReservationId(hashMap.get("reservationId"));
-        setReservationStatus(ReservationStatus.valueOf(hashMap.get("reservationStatus")));
-        setGuestId(hashMap.get("guestId"));
-        setRoomId(hashMap.get("roomId"));
-      } catch (Exception e) {}
-    } catch (ParseException e) {
-      System.out.println("Error loading Check in or Check out dates");
-    }
+      if (hashMap.get("checkOutDate") != null) {
+        setCheckOutDate(sdf.parse(hashMap.get("checkOutDate")));
+      }
+    } catch (Exception e) {}
   }
 
   @Override
   public PromptModelContainer promptModelContainer() {
-    return null;
+    return new PromptModelContainer(
+      "",
+      new PromptModel[] {
+        new PromptModel("reservationId", "Reservation Id", PromptModel.InputType.STRING),
+        new PromptModel("reservationStatus", new Menu(
+          "Reservation Status",
+          new MenuOption[] {
+            new MenuOption("CONFIRMED", "Confirmed"),
+            new MenuOption("WAITLIST", "Waitlist"),
+            new MenuOption("CHECKED_IN", "Check-in"),
+            new MenuOption("CHECKED_OUT", "Check-out"),
+            new MenuOption("EXPIRED", "Expired"),
+          }
+        )),
+        new PromptModel("numberOfChildren", "Number of Children", PromptModel.InputType.POSITIVE_INT),
+        new PromptModel("numberOfAdult", "Number of Adults", PromptModel.InputType.POSITIVE_INT),
+        new PromptModel("checkInDate", "Check-in Date", PromptModel.InputType.DATE),
+        new PromptModel("checkOutDate", "Check-out Date", PromptModel.InputType.DATE),
+        new PromptModel("guestId", "Guest Id", PromptModel.InputType.STRING),
+        new PromptModel("roomId", "Room Id", PromptModel.InputType.STRING),
+      }
+    );
   }
 
   @Override
   public PromptModelContainer creationPromptModelContainer() {
-    return null;
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (Arrays.asList("reservationId", "checkOutDate", "guestId", "roomId").contains(promptModel.getKey())) {
+        continue;
+      } else if (promptModel.getKey().equals("reservationStatus")) {
+        promptModels.add(new PromptModel(
+          "reservationStatus",
+          new Menu(
+            "Reservation Status",
+            new MenuOption[] {
+              new MenuOption("CONFIRMED", "Confirmed"),
+              new MenuOption("WAITLIST", "Waitlist"),
+              new MenuOption("CHECKED_IN", "Check-in"),
+            }
+          )
+        ));
+      } else {
+        promptModels.add(promptModel);
+      }
+    }
+    return new PromptModelContainer(
+      "Make Reservation",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
   }
 
   @Override
   public PromptModelContainer findingPromptModelContainer() {
-    return null;
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (Arrays.asList("reservationId", "guestId", "roomId").contains(promptModel.getKey())) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Search Reservations",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
   }
 
   @Override
   public PromptModelContainer editingPromptModelContainer() {
-    return null;
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (Arrays.asList("reservationId", "guestId", "roomId").contains(promptModel.getKey())) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Edit Reservation Details",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
   }
 
   @Override

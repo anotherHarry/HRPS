@@ -107,3 +107,13 @@ gender		M
 nationality		Singaporean
 contact		92831169
 creditCard		8311698311691341
+
+id		A0831181
+idType		PASSPORT
+name		Guest L
+address		Address L
+country		Singapore
+gender		F
+nationality		Vietnamese
+contact		83059394
+creditCard		2840835082940184

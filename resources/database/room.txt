@@ -8,7 +8,7 @@ wifiEnabled		false
 smokingAllowed		false
 bedType		SINGLE_BED
 facing		CITY_VIEW
-status		OCCUPIED
+status		VACANT
 
 roomId		0202
 roomType		SINGLE
@@ -200,7 +200,7 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		DOUBLE_BED
 facing		MOUNTAIN_VIEW
-status		OCCUPIED
+status		VACANT
 
 roomId		0402
 roomType		STANDARD

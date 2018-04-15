@@ -3,7 +3,6 @@ package com.cz2002.hrps.controls;
 import com.cz2002.hrps.boundaries.Boundary;
 import com.cz2002.hrps.boundaries.InputBoundary;
 import com.cz2002.hrps.boundaries.InputContainerBoundary;
-import com.cz2002.hrps.boundaries.OutputBoundary;
 import com.cz2002.hrps.entities.Entity;
 import com.cz2002.hrps.entities.Guest;
 import com.cz2002.hrps.models.ItemsList;
@@ -71,6 +70,7 @@ public class GuestController implements Control {
     } else if (guests.length == 1) {
       return guests[0];
     }
+    printEntities("Search Results", guests);
     String[] items = new String[guests.length];
     for (int i = 0; i < guests.length; i++) {
       items[i] = guests[i].itemsListKey();
@@ -97,19 +97,14 @@ public class GuestController implements Control {
     );
     HashMap<String, String> queries = inputContainerBoundary.getInputContainer(false);
     Guest[] guests = new Guest().findGuests(queries);
-    HashMap<String, String>[] hashMaps = (HashMap<String, String>[]) new HashMap<?,?>[guests.length];
-    for (int i = 0; i < guests.length; i++) {
-      hashMaps[i] = guests[i].toHashMap();
-    }
-    new OutputBoundary().printHashMaps("Search Results", hashMaps);
     return guests;
   }
 
   @Override
   public Entity update() {
     Guest guest = (Guest) find();
+    printEntity("Target Guest", guest);
     HashMap<String, String> hashMap = guest.toHashMap();
-    new OutputBoundary().printHashMap("Search Result", guest.toHashMap());
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
       guest.editingPromptModelContainer()
     );

@@ -1,10 +1,7 @@
 package com.cz2002.hrps.controls;
 
-import com.cz2002.hrps.boundaries.Boundary;
 import com.cz2002.hrps.boundaries.InputBoundary;
-import com.cz2002.hrps.entities.Guest;
 import com.cz2002.hrps.entities.OrderItem;
-import com.cz2002.hrps.entities.Reservation;
 import com.cz2002.hrps.models.Menu;
 import com.cz2002.hrps.models.MenuOption;
 import com.cz2002.hrps.models.PromptModel;
@@ -42,15 +39,7 @@ public class MainController implements Control {
           System.out.println(menuSelection);
           break;
         case 3:
-          Reservation reservation = new Reservation();
-          Reservation reservationResult = reservation.findReservation(new HashMap<String, String>() {{
-            put("guestId", "A0831171");
-          }});
-          System.out.println(reservationResult.getReservationStatus());
-          Reservation[] allReservations = reservation.findReservations(new HashMap<String, String>());
-          for (int i = 0; i < allReservations.length; i++) {
-            System.out.println(allReservations[i].getGuestId());
-          };
+          new ReservationController().index();
           break;
         case 4:
           new GuestController().index();
