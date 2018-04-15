@@ -56,11 +56,11 @@ public class ReservationController extends EntityController {
     if (!(t instanceof Reservation)) {
       return null;
     }
-    Guest guest = creationGuest();
+    Guest guest = new GuestController().createGuestIfNeeded();
     if (guest == null) {
       return null;
     }
-    Room room = new RoomController().find(new Room());
+    Room room = find(new Room());
     if (room == null) {
       return null;
     }
@@ -81,43 +81,18 @@ public class ReservationController extends EntityController {
     return null;
   }
 
-  private Guest creationGuest() {
-    InputBoundary inputBoundary = new InputBoundary(new PromptModel(
-      "",
-      new Menu(
-        "Is the guest existed?",
-        new MenuOption[] {
-          new MenuOption("make_reservation_new_guest", "New Guest"),
-          new MenuOption("make_reservation_old_guest", "Existing Guest"),
-          new MenuOption("back", "Back"),
-        }
-      )
-    ));
-
-    int menuSelection = 0;
-    do {
-      menuSelection = inputBoundary.processMenu(true).getValue();
-      switch (menuSelection) {
-        case 1:
-          Guest newGuest = new GuestController().create(new Guest());
-          printEntity("New Guest", newGuest);
-          return newGuest;
-        case 2:
-          Guest oldGuest = new GuestController().find(new Guest());
-          printEntity("Target Guest", oldGuest);
-          return oldGuest;
-        default:
-          break;
-      }
-    } while (menuSelection != 3);
-    return null;
+  public Reservation findConfirmedReservaton() {
+    HashMap<String, String> queries = new HashMap<>() {{
+      put("reservationStatus", Reservation.ReservationStatus.CONFIRMED.toString());
+    }};
+    return findWith(queries, "Confirmed Reservation", new Reservation());
   }
 
-  public Reservation findCheckInReservaton() {
+  public Reservation findCheckedInReservaton() {
     HashMap<String, String> queries = new HashMap<>() {{
       put("reservationStatus", Reservation.ReservationStatus.CHECKED_IN.toString());
     }};
-    return findWith(queries, "Check-in Reservation", new Reservation());
+    return findWith(queries, "Checked-in Reservation", new Reservation());
   }
 
 }

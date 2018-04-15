@@ -99,3 +99,30 @@ numberOfAdult		0
 createdAt		2018-04-15-18-39
 guestId		A94810593
 roomId		0705
+
+reservationId		20180416-06-A0831181-0805
+reservationStatus		CONFIRMED
+numberOfChildren		4
+numberOfAdult		1
+createdAt		2018-04-16-0-6
+checkInDate		2018-04-17-19-23
+guestId		A0831181
+roomId		0805
+
+reservationId		20180416-09-A0831170-0703
+reservationStatus		CHECKED_IN
+numberOfChildren		3
+numberOfAdult		6
+createdAt		2018-04-16-0-9
+checkInDate		2018-04-16-0-10
+guestId		A0831170
+roomId		0703
+
+reservationId		20180416-028-A84019483-0707
+reservationStatus		CHECKED_IN
+numberOfChildren		4
+numberOfAdult		2
+createdAt		2018-04-16-0-28
+checkInDate		2018-04-16-0-28
+guestId		A84019483
+roomId		0707

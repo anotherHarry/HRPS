@@ -38,4 +38,36 @@ public class GuestController extends EntityController {
     } while (menuSelection != 3);
   }
 
+  public Guest createGuestIfNeeded() {
+    InputBoundary inputBoundary = new InputBoundary(new PromptModel(
+      "",
+      new Menu(
+        "Is the guest existed?",
+        new MenuOption[] {
+          new MenuOption("make_reservation_new_guest", "New Guest"),
+          new MenuOption("make_reservation_old_guest", "Existing Guest"),
+          new MenuOption("back", "Back"),
+        }
+      )
+    ));
+
+    int menuSelection = 0;
+    do {
+      menuSelection = inputBoundary.processMenu(true).getValue();
+      switch (menuSelection) {
+        case 1:
+          Guest newGuest = create(new Guest());
+          printEntity("New Guest", newGuest);
+          return newGuest;
+        case 2:
+          Guest oldGuest = find(new Guest());
+          printEntity("Target Guest", oldGuest);
+          return oldGuest;
+        default:
+          break;
+      }
+    } while (menuSelection != 3);
+    return null;
+  }
+
 }

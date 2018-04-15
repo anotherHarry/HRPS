@@ -162,6 +162,8 @@ public class RoomController extends EntityController {
       hashMap.replace("status", Room.RoomStatus.UNDER_MAINTENANCE.toString());
       if (room.update(hashMap)) {
         new Boundary().alertSuccessful();
+      } else {
+        new Boundary().alertFailed();
       }
     }
   }

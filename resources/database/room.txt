@@ -512,7 +512,7 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		MASTER_BED
 facing		CITY_VIEW
-status		VACANT
+status		OCCUPIED
 
 roomId		0704
 roomType		VIP
@@ -560,7 +560,7 @@ wifiEnabled		true
 smokingAllowed		false
 bedType		MASTER_BED
 facing		MOUNTAIN_VIEW
-status		VACANT
+status		OCCUPIED
 
 roomId		0708
 roomType		VIP
@@ -620,7 +620,7 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		SINGLE_BED
 facing		NO_VIEW
-status		VACANT
+status		RESERVED
 
 roomId		0806
 roomType		SINGLE

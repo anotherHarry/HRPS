@@ -352,9 +352,8 @@ public class Reservation extends Entity {
         promptModel.getKey())
         ) {
         continue;
-      } else {
-        promptModels.add(promptModel);
       }
+      promptModels.add(promptModel);
     }
     return new PromptModelContainer(
       "Make Reservation",
@@ -386,6 +385,9 @@ public class Reservation extends Entity {
             }
           )
         ));
+      } else if ((promptModel.getKey().equals("checkInDate") &&
+        !(getReservationStatus().equals(ReservationStatus.WAITLIST) ||
+          getReservationStatus().equals(ReservationStatus.CONFIRMED)))) {
       } else if (Arrays.asList("reservationId", "reservationStatus", "createdAt", "guestId", "roomId").contains(
         promptModel.getKey())
         ) {
@@ -395,6 +397,22 @@ public class Reservation extends Entity {
     }
     return new PromptModelContainer(
       "Edit Reservation Details",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
+  }
+
+  public PromptModelContainer walkInPromptModelContainer() {
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (Arrays.asList("reservationId", "reservationStatus", "createdAt", "checkInDate", "checkOutDate", "guestId", "roomId").contains(
+        promptModel.getKey())
+        ) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Make Reservation",
       promptModels.toArray(new PromptModel[promptModels.size()])
     );
   }
@@ -410,6 +428,21 @@ public class Reservation extends Entity {
 
   public Reservation findReservation(HashMap<String, String> queries) {
     return (Reservation) findEntity(queries);
+  }
+
+  private void checkInConfig() {
+    setReservationStatus(ReservationStatus.CHECKED_IN);
+    setCheckInDate(new Date());
+  }
+
+  public boolean checkIn() {
+    checkInConfig();
+    return update();
+  }
+
+  public boolean walkIn() {
+    checkInConfig();
+    return create();
   }
 
 }

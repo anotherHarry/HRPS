@@ -53,7 +53,7 @@ public class RoomServiceController extends EntityController {
       return null;
     }
 
-    Reservation reservation = new ReservationController().findCheckInReservaton();
+    Reservation reservation = new ReservationController().findCheckedInReservaton();
     if (reservation == null) {
       return null;
     }
@@ -109,7 +109,7 @@ public class RoomServiceController extends EntityController {
   }
 
   private OrderItem createOrderItem(RoomService roomService) {
-    MenuItem menuItem = new MenuItemController().find(new MenuItem());
+    MenuItem menuItem = find(new MenuItem());
     if (menuItem == null) {
       return null;
     }
