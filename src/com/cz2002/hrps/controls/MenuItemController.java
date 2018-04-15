@@ -4,7 +4,7 @@ import com.cz2002.hrps.boundaries.Boundary;
 import com.cz2002.hrps.boundaries.InputBoundary;
 import com.cz2002.hrps.boundaries.InputContainerBoundary;
 import com.cz2002.hrps.entities.Entity;
-import com.cz2002.hrps.entities.Guest;
+import com.cz2002.hrps.entities.MenuItem;
 import com.cz2002.hrps.models.ItemsList;
 import com.cz2002.hrps.models.Menu;
 import com.cz2002.hrps.models.MenuOption;
@@ -13,17 +13,19 @@ import com.cz2002.hrps.models.PromptModel;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GuestController implements Control {
+public class MenuItemController implements Control {
 
   @Override
   public void index() {
     InputBoundary inputBoundary = new InputBoundary(new PromptModel(
       "",
       new Menu(
-        "Guest Menu",
+        "MenuItem Menu",
         new MenuOption[] {
-          new MenuOption("update_guest", "Update"),
-          new MenuOption("search_guest", "Search"),
+          new MenuOption("add_new_menu_item", "Add New Menu Item"),
+          new MenuOption("edit_menu_item", "Edit Menu Item"),
+          new MenuOption("delete_menu_item", "Delete Menu Item"),
+          new MenuOption("print_menu", "Print Menu"),
           new MenuOption("back", "Back"),
         }
       )
@@ -34,28 +36,34 @@ public class GuestController implements Control {
       menuSelection = inputBoundary.processMenu(true).getValue();
       switch (menuSelection) {
         case 1:
-          update();
+          create();
           break;
         case 2:
-          findList();
+          update();
+          break;
+        case 3:
+          delete();
+          break;
+        case 4:
+          printAll();
           break;
         default:
           break;
       }
-    } while (menuSelection != 3);
+    } while (menuSelection != 5);
   }
 
   @Override
   public Entity create() {
-    Guest guest = new Guest();
+    MenuItem menuItem = new MenuItem();
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
-      guest.creationPromptModelContainer()
+      menuItem.creationPromptModelContainer()
     );
     HashMap<String, String> hashMap = inputContainerBoundary.getInputContainer(true);
-    guest.fromHashMap(hashMap);
-    if (guest.create()) {
+    menuItem.fromHashMap(hashMap);
+    if (menuItem.create()) {
       new Boundary().alertSuccessful();
-      return guest;
+      return menuItem;
     }
     new Boundary().alertFailed();
     return null;
@@ -63,17 +71,17 @@ public class GuestController implements Control {
 
   @Override
   public Entity find() {
-    Guest[] guests = (Guest[]) findList();
-    if (guests.length == 0) {
+    MenuItem[] menuItems = (MenuItem[]) findList();
+    if (menuItems.length == 0) {
       new Boundary().alertNotFound();
       return null;
-    } else if (guests.length == 1) {
-      return guests[0];
+    } else if (menuItems.length == 1) {
+      return menuItems[0];
     }
-    printEntities("Search Results", guests);
-    String[] items = new String[guests.length];
-    for (int i = 0; i < guests.length; i++) {
-      items[i] = guests[i].itemsListKey();
+    printEntities("Search Results", menuItems);
+    String[] items = new String[menuItems.length];
+    for (int i = 0; i < menuItems.length; i++) {
+      items[i] = menuItems[i].itemsListKey();
     }
     InputBoundary inputBoundary = new InputBoundary(
       new PromptModel("find", new ItemsList(
@@ -82,9 +90,9 @@ public class GuestController implements Control {
       ))
     );
     String key = inputBoundary.getInput(true).getValue();
-    for (Guest guest: guests) {
-      if (guest.itemsListKey().equals(key)) {
-        return guest;
+    for (MenuItem menuItem: menuItems) {
+      if (menuItem.itemsListKey().equals(key)) {
+        return menuItem;
       }
     }
     return null;
@@ -93,20 +101,20 @@ public class GuestController implements Control {
   @Override
   public Entity[] findList() {
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
-      new Guest().findingPromptModelContainer()
+      new MenuItem().findingPromptModelContainer()
     );
     HashMap<String, String> queries = inputContainerBoundary.getInputContainer(false);
-    Guest[] guests = new Guest().findGuests(queries);
-    return guests;
+    MenuItem[] menuItems = new MenuItem().findMenuItems(queries);
+    return menuItems;
   }
 
   @Override
   public Entity update() {
-    Guest guest = (Guest) find();
-    printEntity("Target Guest", guest);
-    HashMap<String, String> hashMap = guest.toHashMap();
+    MenuItem menuItem = (MenuItem) find();
+    printEntity("Target Menu Item", menuItem);
+    HashMap<String, String> hashMap = menuItem.toHashMap();
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
-      guest.editingPromptModelContainer()
+      menuItem.editingPromptModelContainer()
     );
     HashMap<String, String> updatedHashMap = inputContainerBoundary.getInputContainer(false);
     for (Map.Entry<String, String> entry : updatedHashMap.entrySet()) {
@@ -114,13 +122,35 @@ public class GuestController implements Control {
       String value = entry.getValue();
       hashMap.replace(key, value);
     }
-    if (guest.update(hashMap)) {
+    if (menuItem.update(hashMap)) {
       new Boundary().alertSuccessful();
-      return guest;
+      return menuItem;
     }
     new Boundary().alertFailed();
     return null;
   }
 
+  @Override
+  public Entity delete() {
+    MenuItem menuItem = (MenuItem) find();
+    printEntity("Target Menu Item", menuItem);
+    if(new Boundary().inputBoolean(
+      "Are you sure you want to delete this Menu Item?",
+      true).getValue()
+      ) {
+      if (menuItem.delete()) {
+        new Boundary().alertSuccessful();
+        return menuItem;
+      } else {
+        new Boundary().alertFailed();
+      }
+    }
+    return null;
+  }
 
+  private void printAll() {
+    MenuItem[] menuItems = new MenuItem().findMenuItems(new HashMap<String, String>() {{
+    }});
+    printEntities("Menu", menuItems);
+  }
 }

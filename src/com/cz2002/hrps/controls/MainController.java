@@ -48,33 +48,7 @@ public class MainController implements Control {
           new RoomController().index();
           break;
         case 6:
-//        MenuOption menuItem = new MenuOption();
-//        MenuOption menuItemResult = menuItem.findMenuItem(new HashMap<String, String>() {{
-//          put("name", "Dinner Set");
-//        }});
-//        System.out.println(menuItemResult.getDescription());
-//        MenuOption[] allMenuItems = menuItem.findMenuItems(new HashMap<String, String>());
-//        for (int i = 0; i < allMenuItems.length; i++) {
-//          System.out.println(allMenuItems[i].getDescription());
-//        }
-//        RoomService roomService = new RoomService();
-//        RoomService roomServiceResult = roomService.findRoomService(new HashMap<String, String>() {{
-//          put("reservationId", "20160415-221-A0831180");
-//        }});
-//        System.out.println(roomServiceResult.getCreated() + " " + roomServiceResult.getStatus());
-//        RoomService[] allRoomServices = roomService.findRoomServices(new HashMap<String, String>());
-//        for (int i = 0; i < allRoomServices.length; i++) {
-//          System.out.println(allRoomServices[i].getCreated() + " " + allRoomServices[i].getRemarks());
-//        }
-          OrderItem orderItem = new OrderItem();
-//        OrderItem orderItemResult = orderItem.findOrderItem(new HashMap<String, String>() {{
-//          put("quantity", "2");
-//        }});
-//        System.out.println(orderItemResult.getRoomService().getReservation().getGuest().getName() + " " + orderItemResult.getMenuItem().getName());
-          OrderItem[] allOrderItems = orderItem.findOrderItems(new HashMap<String, String>());
-          for (int i = 0; i < allOrderItems.length; i++) {
-            System.out.println(allOrderItems[i].getRoomService().getReservation().getGuest().getName() + " " + allOrderItems[i].getMenuItem().getName());
-          }
+          new RoomServiceController().index();
           break;
         default:
           break;

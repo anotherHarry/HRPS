@@ -1,19 +1,29 @@
-id               OI20485028
-quantity         2
-roomServiceId    2016-12-04-16-23-0602
-menuItemId       MI63423412
+id		2016-12-04-16-23-0602-0f299cae-7080-4bb8-9629-f49d71a7bfae
+quantity		2
+roomServiceId		2016-12-04-16-23-0602
+menuItemId		0f299cae-7080-4bb8-9629-f49d71a7bfae
 
-id               OI52352462
-quantity         1
-roomServiceId    2016-12-14-13-23-0201
-menuItemId       MI51646145
+id		2016-12-14-13-23-0201-6bd22f1a-e442-4889-ad71-f46169c99787
+quantity		1
+roomServiceId		2016-12-14-13-23-0201
+menuItemId		6bd22f1a-e442-4889-ad71-f46169c99787
 
-id               OI72542363
-quantity         4
-roomServiceId    2016-10-21-13-23-0703
-menuItemId       MI63423412
+id		2016-10-21-13-23-0703-0f299cae-7080-4bb8-9629-f49d71a7bfae
+quantity		4
+roomServiceId		2016-10-21-13-23-0703
+menuItemId		0f299cae-7080-4bb8-9629-f49d71a7bfae
 
-id               OI78245265
-quantity         5
-roomServiceId    2016-04-17-13-23-0402
-menuItemId       MI92058594
+id		2016-04-17-13-23-0402-de4a5feb-8b81-4032-8b9e-a1104aeff6d5
+quantity		5
+roomServiceId		2016-04-17-13-23-0402
+menuItemId		de4a5feb-8b81-4032-8b9e-a1104aeff6d5
+
+id		2018-04-15-18-39-20160415-223-A0831179-0202-6bd22f1a-e442-4889-ad71-f46169c99787
+quantity		2
+roomServiceId		2018-04-15-18-39-20160415-223-A0831179-0202
+menuItemId		6bd22f1a-e442-4889-ad71-f46169c99787
+
+id		2018-04-15-18-39-20160415-223-A0831179-0202-0f299cae-7080-4bb8-9629-f49d71a7bfae
+quantity		1
+roomServiceId		2018-04-15-18-39-20160415-223-A0831179-0202
+menuItemId		0f299cae-7080-4bb8-9629-f49d71a7bfae

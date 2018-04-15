@@ -1,9 +1,14 @@
 package com.cz2002.hrps.entities;
 
+import com.cz2002.hrps.models.Menu;
+import com.cz2002.hrps.models.MenuOption;
+import com.cz2002.hrps.models.PromptModel;
 import com.cz2002.hrps.models.PromptModelContainer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.UUID;
 
 public class MenuItem extends Entity {
 
@@ -22,6 +27,9 @@ public class MenuItem extends Entity {
   }
 
   public String getId() {
+    if (id == null) {
+      id = UUID.randomUUID().toString();
+    }
     return id;
   }
 
@@ -84,22 +92,60 @@ public class MenuItem extends Entity {
 
   @Override
   public PromptModelContainer promptModelContainer() {
-    return null;
+    return new PromptModelContainer(
+      "",
+      new PromptModel[] {
+        new PromptModel("id", "Item Id", PromptModel.InputType.STRING),
+        new PromptModel("name", "Name", PromptModel.InputType.STRING),
+        new PromptModel("description", "Description", PromptModel.InputType.STRING),
+        new PromptModel("price", "price", PromptModel.InputType.POSITIVE_DOUBLE),
+      }
+    );
   }
 
   @Override
   public PromptModelContainer creationPromptModelContainer() {
-    return null;
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (promptModel.getKey().equals("id")) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Add New Menu Item",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
   }
 
   @Override
   public PromptModelContainer findingPromptModelContainer() {
-    return null;
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (promptModel.getKey().equals("description")) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Search for Menu Items",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
   }
 
   @Override
   public PromptModelContainer editingPromptModelContainer() {
-    return null;
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (promptModel.getKey().equals("id")) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Edit Menu Item Details",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
   }
 
   @Override

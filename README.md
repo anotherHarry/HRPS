@@ -25,7 +25,7 @@
 - Hotel staff can order room service meals on guest’s behalf upon his/her request.
 - List of menu items selection will be displayed for selection.
 - Each menu item will have a name, a description of how it is prepared and price.
-- When ordered, there will be a room service order created with a date/time, remarks (eg, less oil, less salt) and the status (confirmed, preparing, delivered). e) The order status will be updated accordingly.
+- When ordered, there will be a room service order createdAt with a date/time, remarks (eg, less oil, less salt) and the status (confirmed, preparing, delivered). e) The order status will be updated accordingly.
 
 **About Payment**
 - When a guest check-out, the total bill will be presented for payment. After payment, the room/s will become available.

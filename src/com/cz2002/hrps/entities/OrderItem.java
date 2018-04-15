@@ -1,7 +1,10 @@
 package com.cz2002.hrps.entities;
 
+import com.cz2002.hrps.models.PromptModel;
 import com.cz2002.hrps.models.PromptModelContainer;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -25,6 +28,9 @@ public class OrderItem extends Entity {
   }
 
   public String getId() {
+    if (id == null) {
+      id = String.format("%s-%s", getRoomServiceId(), getMenuItemId());
+    }
     return id;
   }
 
@@ -41,6 +47,9 @@ public class OrderItem extends Entity {
   }
 
   public String getRoomServiceId() {
+    if (roomServiceId == null) {
+      roomServiceId = getRoomService().getId();
+    }
     return roomServiceId;
   }
 
@@ -49,6 +58,9 @@ public class OrderItem extends Entity {
   }
 
   public String getMenuItemId() {
+    if (menuItemId == null) {
+      menuItemId = getMenuItem().getId();
+    }
     return menuItemId;
   }
 
@@ -112,22 +124,50 @@ public class OrderItem extends Entity {
 
   @Override
   public PromptModelContainer promptModelContainer() {
-    return null;
+    return new PromptModelContainer(
+      "",
+      new PromptModel[] {
+        new PromptModel("id", "Item Id", PromptModel.InputType.STRING),
+        new PromptModel("quantity", "Quantity", PromptModel.InputType.POSITIVE_INT),
+        new PromptModel("roomServiceId", "Room Service Id", PromptModel.InputType.STRING),
+        new PromptModel("menuItemId", "Menu Item Id", PromptModel.InputType.STRING),
+      }
+    );
   }
 
   @Override
   public PromptModelContainer creationPromptModelContainer() {
-    return null;
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (Arrays.asList("id", "roomServiceId", "menuItemId").contains(promptModel.getKey())) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Create Order",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
   }
 
   @Override
   public PromptModelContainer findingPromptModelContainer() {
-    return null;
+    return promptModelContainer();
   }
 
   @Override
   public PromptModelContainer editingPromptModelContainer() {
-    return null;
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (Arrays.asList("id", "roomServiceId", "menuItemId").contains(promptModel.getKey())) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Edit Order",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
   }
 
   @Override

@@ -9,7 +9,6 @@ import com.cz2002.hrps.entities.Room;
 import com.cz2002.hrps.models.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,7 +76,7 @@ public class RoomController implements Control {
   public Entity find() {
     Room[] rooms = (Room[]) findList();
     if (rooms.length == 0) {
-      new Boundary().alertNoItemExisted();
+      new Boundary().alertNotFound();
       return null;
     } else if (rooms.length == 1) {
       return rooms[0];
@@ -251,7 +250,7 @@ public class RoomController implements Control {
   public Room findVacantRoom() {
     Room[] rooms = findVacantRooms();
     if (rooms.length == 0) {
-      new Boundary().alertNoItemExisted();
+      new Boundary().alertNotFound();
       return null;
     } else if (rooms.length == 1) {
       return rooms[0];
@@ -293,7 +292,7 @@ public class RoomController implements Control {
       promptModelContainer
     );
     HashMap<String, String> queries = inputContainerBoundary.getInputContainer(false);
-    queries.put("status", "VACANT");
+    queries.put("status", Room.RoomStatus.VACANT.toString());
     Room[] rooms = new Room().findRooms(queries);
     return rooms;
   }

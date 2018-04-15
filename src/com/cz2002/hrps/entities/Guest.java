@@ -263,7 +263,7 @@ public class Guest extends Entity {
       promptModels.add(promptModel);
     }
     return new PromptModelContainer(
-      "Search Guests",
+      "Search for Guests",
       promptModels.toArray(new PromptModel[promptModels.size()])
     );
   }

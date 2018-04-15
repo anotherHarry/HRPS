@@ -219,7 +219,7 @@ public class Room extends Entity {
   @Override
   public PromptModelContainer findingPromptModelContainer() {
     return new PromptModelContainer(
-      "Search Rooms",
+      "Search for Rooms",
       promptModelContainer().getPromptModels()
     );
   }

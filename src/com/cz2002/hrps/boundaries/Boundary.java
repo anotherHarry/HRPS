@@ -218,8 +218,8 @@ public class Boundary {
     System.out.println("Failed!\n");
   }
 
-  public void alertNoItemExisted() {
-    System.out.println("No item existed!\n");
+  public void alertNotFound() {
+    System.out.println("Item Not Found!\n");
   }
 
   public void alertInvalidInput() {

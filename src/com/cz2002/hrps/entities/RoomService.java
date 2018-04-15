@@ -1,12 +1,13 @@
 package com.cz2002.hrps.entities;
 
+import com.cz2002.hrps.models.Menu;
+import com.cz2002.hrps.models.MenuOption;
+import com.cz2002.hrps.models.PromptModel;
 import com.cz2002.hrps.models.PromptModelContainer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class RoomService extends Entity {
 
@@ -14,9 +15,10 @@ public class RoomService extends Entity {
     CONFIRMED, PREPARING, DELIVERED
   }
 
+  private String id;
   private String remarks;
   private OrderStatus status;
-  private Date created;
+  private Date createdAt;
   private String reservationId;
 
   private Reservation reservation;
@@ -28,6 +30,18 @@ public class RoomService extends Entity {
   public RoomService(HashMap<String, String> data) {
     super("roomservice.txt");
     this.fromHashMap(data);
+  }
+
+  public String getId() {
+    if (id == null) {
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
+      return String.format("%s-%s", sdf.format(getCreatedAt()), getReservation().getReservationId());
+    }
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getRemarks() {
@@ -46,15 +60,18 @@ public class RoomService extends Entity {
     this.status = status;
   }
 
-  public Date getCreated() {
-    return created;
+  public Date getCreatedAt() {
+    return createdAt;
   }
 
-  private void setCreated(Date created) {
-    this.created = created;
+  private void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
   }
 
   public String getReservationId() {
+    if (reservationId == null) {
+      return getReservation().getReservationId();
+    }
     return reservationId;
   }
 
@@ -74,11 +91,6 @@ public class RoomService extends Entity {
     this.reservation = reservation;
   }
 
-  public String getId() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
-    return String.format("%s-%s", sdf.format(getCreated()), getReservation().getRoom().getRoomId());
-  }
-
   @Override
   public Entity newInstance() {
     return new RoomService();
@@ -90,6 +102,13 @@ public class RoomService extends Entity {
   }
 
   @Override
+  public boolean create() {
+    status = OrderStatus.CONFIRMED;
+    createdAt = new Date();
+    return super.create();
+  }
+
+  @Override
   public HashMap<String, String> toHashMap() {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
     LinkedHashMap<String, String> results = new LinkedHashMap<>();
@@ -97,43 +116,91 @@ public class RoomService extends Entity {
     results.put("id", getId());
     results.put("remarks", getRemarks());
     results.put("status", getStatus().toString());
-    results.put("created", sdf.format(getCreated()));
+    results.put("createdAt", sdf.format(getCreatedAt()));
     results.put("reservationId", getReservationId());
     return results;
   }
 
   @Override
   public void fromHashMap(HashMap<String, String> hashMap) {
+    if (hashMap.get("status") != null) {
+      setStatus(OrderStatus.valueOf(hashMap.get("status")));
+    }
+    setReservationId(hashMap.get("reservationId"));
+    setRemarks(hashMap.get("remarks"));
+    setId(hashMap.get("id"));
     try {
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
-
-      setRemarks(hashMap.get("remarks"));
-      setStatus(OrderStatus.valueOf(hashMap.get("status")));
-      setCreated(sdf.parse(hashMap.get("created")));
-      setReservationId(hashMap.get("reservationId"));
-    } catch (ParseException e) {
-      e.printStackTrace();
-    }
+      if (hashMap.get("createdAt") != null) {
+        setCreatedAt(sdf.parse(hashMap.get("createdAt")));
+      }
+    } catch (ParseException e) { }
   }
 
   @Override
   public PromptModelContainer promptModelContainer() {
-    return null;
+    return new PromptModelContainer(
+      "",
+      new PromptModel[] {
+        new PromptModel("id", "Id", PromptModel.InputType.STRING),
+        new PromptModel("remarks", "Remarks", PromptModel.InputType.STRING),
+        new PromptModel("status", new Menu(
+          "Order Status",
+          new MenuOption[] {
+            new MenuOption("CONFIRMED", "Confirmed"),
+            new MenuOption("PREPARING", "Preparing"),
+            new MenuOption("DELIVERED", "Delivered"),
+          }
+        )),
+        new PromptModel("createdAt", "Created", PromptModel.InputType.DATE),
+        new PromptModel("reservationId", "Reservation Id", PromptModel.InputType.STRING),
+      }
+    );
   }
 
   @Override
   public PromptModelContainer creationPromptModelContainer() {
-    return null;
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (Arrays.asList("id", "status", "createdAt", "reservationId").contains(promptModel.getKey())) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Create Room Service",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
   }
 
   @Override
   public PromptModelContainer findingPromptModelContainer() {
-    return null;
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (promptModel.getKey().equals("remarks")) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Search for Room Services",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
   }
 
   @Override
   public PromptModelContainer editingPromptModelContainer() {
-    return null;
+    ArrayList<PromptModel> promptModels = new ArrayList<>();
+    for (PromptModel promptModel: promptModelContainer().getPromptModels()) {
+      if (Arrays.asList("id", "createdAt", "reservationId").contains(promptModel.getKey())) {
+        continue;
+      }
+      promptModels.add(promptModel);
+    }
+    return new PromptModelContainer(
+      "Edit Room Service Details",
+      promptModels.toArray(new PromptModel[promptModels.size()])
+    );
   }
 
   @Override

@@ -141,6 +141,9 @@ public class Reservation extends Entity {
   }
 
   public String getGuestId() {
+    if (guestId == null) {
+      guestId = getGuest().getId();
+    }
     return guestId;
   }
 
@@ -149,6 +152,9 @@ public class Reservation extends Entity {
   }
 
   public String getRoomId() {
+    if (roomId == null) {
+      roomId = getRoom().getRoomId();
+    }
     return roomId;
   }
 
@@ -347,7 +353,7 @@ public class Reservation extends Entity {
       promptModels.add(promptModel);
     }
     return new PromptModelContainer(
-      "Search Reservations",
+      "Search for Reservations",
       promptModels.toArray(new PromptModel[promptModels.size()])
     );
   }

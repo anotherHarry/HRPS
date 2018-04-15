@@ -1,24 +1,24 @@
-id      MI41234214
-name	Breakfast Set
-description	The best way to kick start your day
-price	4.5
+id		68142780-13fb-4961-a868-e34f0b96b0d5
+name		Breakfast Set
+description		The best way to kick start your day
+price		4.5
 
-id      MI51646145
-name	Lunch Set
-description	Western Food
-price	10.5
+id		0f299cae-7080-4bb8-9629-f49d71a7bfae
+name		Lunch Set
+description		Western Food
+price		10.5
 
-id      MI62435235
-name	Dinner Set
-description	Seafood Delight
-price	15.5
+id		6bd22f1a-e442-4889-ad71-f46169c99787
+name		Dinner Set
+description		Seafood Delight
+price		15.5
 
-id      MI63423412
-name	Soup of the Day
-description	Mushroom or Chowder soup
-price	3.5
+id		a96384dc-8e42-49b1-b952-b0e6530fbdeb
+name		Soup of the Day
+description		Mushroom or Chowder soup
+price		3.5
 
-id      MI92058594
-name	Salad
-description	Make your own Salad
-price	7.0
+id		de4a5feb-8b81-4032-8b9e-a1104aeff6d5
+name		Salad
+description		Make your own Salad
+price		7.0
