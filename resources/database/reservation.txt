@@ -1,5 +1,5 @@
 reservationId		20160415-223-A0831179-0202
-reservationStatus		CHECKED_IN
+reservationStatus		EXPIRED
 numberOfChildren		2
 numberOfAdult		5
 createdAt		2018-04-15-18-39
@@ -9,7 +9,7 @@ guestId		A0831179
 roomId		0202
 
 reservationId		20160415-224-A0831177-0402
-reservationStatus		CHECKED_IN
+reservationStatus		EXPIRED
 numberOfChildren		2
 numberOfAdult		5
 createdAt		2018-04-15-18-39
@@ -19,7 +19,7 @@ guestId		A0831177
 roomId		0402
 
 reservationId		20160415-224-A0831176-0601
-reservationStatus		CHECKED_IN
+reservationStatus		EXPIRED
 numberOfChildren		2
 numberOfAdult		5
 createdAt		2018-04-15-18-39
@@ -29,7 +29,7 @@ guestId		A0831176
 roomId		0601
 
 reservationId		20160415-224-A0831175-0602
-reservationStatus		CHECKED_IN
+reservationStatus		EXPIRED
 numberOfChildren		2
 numberOfAdult		5
 createdAt		2018-04-15-18-39
@@ -59,7 +59,7 @@ guestId		A0831173
 roomId		0702
 
 reservationId		20160415-249-A0831172-0403
-reservationStatus		CONFIRMED
+reservationStatus		EXPIRED
 numberOfChildren		0
 numberOfAdult		2
 createdAt		2018-04-15-18-39

@@ -434,6 +434,11 @@ public class Reservation extends Entity {
     getRoomServices().add(roomService);
   }
 
+  public boolean setExpire() {
+    setReservationStatus(ReservationStatus.EXPIRED);
+    return update();
+  }
+
   private void checkInConfig() {
     setReservationStatus(ReservationStatus.CHECKED_IN);
     setCheckInDate(new Date());
@@ -478,7 +483,6 @@ public class Reservation extends Entity {
     double roomServiceFee = 0.0;
     for (RoomService roomService: getRoomServices()) {
       roomServiceFee += roomService.getFee();
-      System.out.println("HARRY Cal Ser");
     }
     return roomServiceFee;
   }

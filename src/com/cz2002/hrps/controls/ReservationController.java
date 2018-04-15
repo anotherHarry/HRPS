@@ -3,22 +3,29 @@ package com.cz2002.hrps.controls;
 import com.cz2002.hrps.boundaries.Boundary;
 import com.cz2002.hrps.boundaries.InputBoundary;
 import com.cz2002.hrps.boundaries.InputContainerBoundary;
-import com.cz2002.hrps.entities.Entity;
-import com.cz2002.hrps.entities.Guest;
-import com.cz2002.hrps.entities.Reservation;
-import com.cz2002.hrps.entities.Room;
+import com.cz2002.hrps.entities.*;
 import com.cz2002.hrps.models.*;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class ReservationController extends EntityController {
+
+  private static Date timeKeeper;
+
+  public ReservationController() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(new Date());
+    calendar.add(Calendar.HOUR_OF_DAY, -2);
+    timeKeeper = calendar.getTime();
+    checkExpiredReservationsIfNeeded();
+  }
 
   @Override
   public void index() {
     InputBoundary inputBoundary = new InputBoundary(new PromptModel(
       "",
       new Menu(
-        "Room Menu",
+        "Reservation Menu",
         new MenuOption[] {
           new MenuOption("make_reservation", "Make Reservation"),
           new MenuOption("update_reservation", "Update Reservation"),
@@ -53,6 +60,7 @@ public class ReservationController extends EntityController {
 
   @Override
   public <T extends Entity> T create(T t) {
+    checkExpiredReservationsIfNeeded();
     if (!(t instanceof Reservation)) {
       return null;
     }
@@ -81,18 +89,58 @@ public class ReservationController extends EntityController {
     return null;
   }
 
+  @Override
+  public <T extends Entity> T[] findList(T t) {
+    checkExpiredReservationsIfNeeded();
+    return super.findList(t);
+  }
+
   public Reservation findConfirmedReservaton() {
-    HashMap<String, String> queries = new HashMap<>() {{
-      put("reservationStatus", Reservation.ReservationStatus.CONFIRMED.toString());
-    }};
-    return findWith(queries, "Confirmed Reservation", new Reservation());
+    return findReservationOfStatus(Reservation.ReservationStatus.CONFIRMED);
   }
 
   public Reservation findCheckedInReservaton() {
+    return findReservationOfStatus(Reservation.ReservationStatus.CHECKED_IN);
+  }
+
+  private Reservation findReservationOfStatus(Reservation.ReservationStatus reservationStatus) {
     HashMap<String, String> queries = new HashMap<>() {{
-      put("reservationStatus", Reservation.ReservationStatus.CHECKED_IN.toString());
+      put("reservationStatus", reservationStatus.toString());
     }};
     return findWith(queries, "Checked-in Reservation", new Reservation());
+  }
+
+  private void checkExpiredReservationsIfNeeded() {
+    if (!isOlderThanOneHour(timeKeeper)) {
+      return;
+    }
+    timeKeeper = new Date();
+    checkExpiredReservations();
+  }
+
+  private boolean isOlderThanOneHour(Date date) {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(date);
+    calendar.add(Calendar.HOUR_OF_DAY, 1);
+    return !calendar.getTime().after(new Date());
+  }
+
+  private void checkExpiredReservations() {
+    checkExpiredReservationsForStatus(Reservation.ReservationStatus.WAITLIST);
+    checkExpiredReservationsForStatus(Reservation.ReservationStatus.CONFIRMED);
+  }
+
+  private void checkExpiredReservationsForStatus(Reservation.ReservationStatus reservationStatus) {
+    Reservation[] reservations = new Reservation().findReservations(new HashMap<>() {{
+      put("reservationStatus", reservationStatus.toString());
+    }});
+
+    for (Reservation reservation: reservations) {
+      if (reservation.getCheckInDate() != null &&
+        isOlderThanOneHour(reservation.getCheckInDate())) {
+        reservation.setExpire();
+      }
+    }
   }
 
 }

@@ -18,7 +18,7 @@ public class RoomServiceController extends EntityController {
     InputBoundary inputBoundary = new InputBoundary(new PromptModel(
       "",
       new Menu(
-        "Room Menu",
+        "Room Service Menu",
         new MenuOption[] {
           new MenuOption("make_order", "Make Order"),
           new MenuOption("update_order", "Update Order"),

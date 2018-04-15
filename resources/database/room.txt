@@ -20,7 +20,7 @@ wifiEnabled		false
 smokingAllowed		false
 bedType		SINGLE_BED
 facing		CITY_VIEW
-status		OCCUPIED
+status		VACANT
 
 roomId		0203
 roomType		SINGLE
@@ -212,7 +212,7 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		DOUBLE_BED
 facing		SEA_VIEW
-status		OCCUPIED
+status		VACANT
 
 roomId		0403
 roomType		STANDARD
@@ -224,7 +224,7 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		DOUBLE_BED
 facing		CITY_VIEW
-status		RESERVED
+status		VACANT
 
 roomId		0404
 roomType		STANDARD
@@ -392,7 +392,7 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		MASTER_BED
 facing		MOUNTAIN_VIEW
-status		OCCUPIED
+status		VACANT
 
 roomId		0602
 roomType		DELUXE
@@ -404,7 +404,7 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		MASTER_BED
 facing		SEA_VIEW
-status		OCCUPIED
+status		VACANT
 
 roomId		0603
 roomType		DELUXE
