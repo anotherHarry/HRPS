@@ -1,9 +1,7 @@
 package com.cz2002.hrps.entities;
 
-import com.cz2002.hrps.models.Menu;
-import com.cz2002.hrps.models.MenuOption;
-import com.cz2002.hrps.models.PromptModel;
-import com.cz2002.hrps.models.PromptModelContainer;
+import com.cz2002.hrps.models.*;
+import com.cz2002.hrps.utilities.DateProcessor;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -26,7 +24,7 @@ public class Reservation extends Entity {
 
   private Guest guest = null;
   private Room room = null;
-  private RoomService roomService;
+  private ArrayList<RoomService> roomServices;
 
 
   public Reservation() {
@@ -197,17 +195,19 @@ public class Reservation extends Entity {
     this.room = room;
   }
 
-  public RoomService getRoomService() {
-    if (roomService == null)
-      roomService = new RoomService().findRoomService(new HashMap<String, String>() {{
+  public ArrayList<RoomService> getRoomServices() {
+    if (roomServices == null || roomServices.size() == 0) {
+      RoomService[] rss = new RoomService().findRoomServices(new HashMap<>() {{
         put("reservationId", getReservationId());
       }});
+      roomServices = new ArrayList<>(Arrays.asList(rss));
+    }
 
-    return roomService;
+    return roomServices;
   }
 
-  public void setRoomService(RoomService roomService) {
-    this.roomService = roomService;
+  public void setRoomServices(ArrayList<RoomService> roomServices) {
+    this.roomServices = roomServices;
   }
 
   @Override
@@ -430,6 +430,10 @@ public class Reservation extends Entity {
     return (Reservation) findEntity(queries);
   }
 
+  public void addRoomService(RoomService roomService) {
+    getRoomServices().add(roomService);
+  }
+
   private void checkInConfig() {
     setReservationStatus(ReservationStatus.CHECKED_IN);
     setCheckInDate(new Date());
@@ -443,6 +447,40 @@ public class Reservation extends Entity {
   public boolean walkIn() {
     checkInConfig();
     return create();
+  }
+
+  public boolean checkOut() {
+    setReservationStatus(ReservationStatus.CHECKED_OUT);
+    setCheckOutDate(new Date());
+    return update();
+  }
+
+  public Bill getBill() {
+    return new Bill(
+      roomChargeWeekday(),
+      roomChargeWeekend(),
+      roomSericeFee()
+    );
+  }
+
+
+  private double roomChargeWeekday() {
+    int weekDays = DateProcessor.getTotalWeekdays(checkInDate, checkOutDate);
+    return getRoom().getRoomRate() * weekDays;
+  }
+
+  private double roomChargeWeekend() {
+    int weekEnds = DateProcessor.getTotalWeekends(checkInDate, checkOutDate);
+    return getRoom().getRoomWeekendRate() * weekEnds;
+  }
+
+  private double roomSericeFee() {
+    double roomServiceFee = 0.0;
+    for (RoomService roomService: getRoomServices()) {
+      roomServiceFee += roomService.getFee();
+      System.out.println("HARRY Cal Ser");
+    }
+    return roomServiceFee;
   }
 
 }

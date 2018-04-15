@@ -12,7 +12,7 @@ import com.cz2002.hrps.models.PromptModel;
 
 import java.util.HashMap;
 
-public class CheckInController extends EntityController {
+public class CheckInController implements Control {
 
   @Override
   public void index() {
@@ -46,7 +46,7 @@ public class CheckInController extends EntityController {
 
   private Reservation checkInReservation() {
     Reservation reservation = new ReservationController().findConfirmedReservaton();
-    printEntity("Selected Reservation", reservation);
+    new EntityController().printEntity("Selected Reservation", reservation);
     if(new Boundary().inputBoolean(
       "Are you sure you want to check-in with this reservation?",
       true).getValue()

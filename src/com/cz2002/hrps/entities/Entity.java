@@ -1,6 +1,6 @@
 package com.cz2002.hrps.entities;
 
-import com.cz2002.hrps.controls.DatabaseManager;
+import com.cz2002.hrps.utilities.DatabaseManager;
 import com.cz2002.hrps.models.PromptModelContainer;
 
 import java.lang.reflect.Array;

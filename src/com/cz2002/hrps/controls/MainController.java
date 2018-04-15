@@ -33,7 +33,7 @@ public class MainController extends EntityController {
           new CheckInController().index();
           break;
         case 2:
-          System.out.println(menuSelection);
+          new CheckOutController().index();
           break;
         case 3:
           new ReservationController().index();

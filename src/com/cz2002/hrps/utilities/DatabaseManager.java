@@ -1,4 +1,4 @@
-package com.cz2002.hrps.controls;
+package com.cz2002.hrps.utilities;
 
 import com.cz2002.hrps.entities.Entity;
 

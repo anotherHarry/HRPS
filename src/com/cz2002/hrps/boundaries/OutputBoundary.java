@@ -1,5 +1,6 @@
 package com.cz2002.hrps.boundaries;
 
+import com.cz2002.hrps.models.Bill;
 import com.cz2002.hrps.models.RoomStatusReportModel;
 import com.cz2002.hrps.models.RoomTypeOccupancyRateReportModel;
 
@@ -48,6 +49,33 @@ public class OutputBoundary extends Boundary {
         System.out.print(roomId + ", ");
       }
       System.out.println();
+    }
+    System.out.println();
+  }
+
+  public void printBill(Bill bill) {
+    printBillLine("Weekday Charge\t\t", bill.getRoomChargeWeekday(), null);
+    printBillLine("Weekend Charge\t\t", bill.getRoomChargeWeekend(), null);
+    printBillLine("Room Service Fee\t", bill.getRoomServiceFee(), null);
+    printBillLine("\t\t\t\t__________________", null, null);
+    printBillLine("\t\t\t\t\t", bill.getTotalFee(), null);
+    printBillLine("Discount\t\t\t-", bill.getDiscountRate()/100, "%");
+    printBillLine("\t\t\t\t__________________", null, null);
+    printBillLine("\t\t\t\t\t", bill.getTotalFeeDiscount(), null);
+    printBillLine("Tax\t\t\t\t\t+", bill.getTaxRate()/100,"%");
+    printBillLine("\t\t\t\t__________________", null, null);
+    printBillLine("Total\t\t\t\t", bill.getTotalFeeDiscountPlusTax(), null);
+  }
+
+  private void printBillLine(String leading, Double value, String trailing) {
+    if (leading != null) {
+      System.out.print(leading);
+    }
+    if (value != null) {
+      System.out.print(String.format("%.2f", value));
+    }
+    if (trailing != null) {
+      System.out.print(trailing);
     }
     System.out.println();
   }

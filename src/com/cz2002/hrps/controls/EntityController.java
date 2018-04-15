@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class EntityController implements Control {
+public class EntityController implements Control {
 
   public void index() { }
 

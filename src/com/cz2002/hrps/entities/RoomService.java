@@ -22,6 +22,7 @@ public class RoomService extends Entity {
   private String reservationId;
 
   private Reservation reservation;
+  private OrderItem[] orderItems;
 
   public RoomService() {
     super("roomservice.txt");
@@ -91,6 +92,19 @@ public class RoomService extends Entity {
     this.reservation = reservation;
   }
 
+  public OrderItem[] getOrderItems() {
+    if (orderItems == null || orderItems.length == 0) {
+      orderItems = new OrderItem().findOrderItems(new HashMap<>() {{
+        put("roomServiceId", getId());
+      }});
+    }
+    return orderItems;
+  }
+
+  public void setOrderItems(OrderItem[] orderItems) {
+    this.orderItems = orderItems;
+  }
+
   @Override
   public Entity newInstance() {
     return new RoomService();
@@ -105,6 +119,7 @@ public class RoomService extends Entity {
   public boolean create() {
     status = OrderStatus.CONFIRMED;
     createdAt = new Date();
+    getReservation().addRoomService(this);
     return super.create();
   }
 
@@ -214,6 +229,14 @@ public class RoomService extends Entity {
 
   public RoomService findRoomService(HashMap<String, String> queries) {
     return (RoomService) findEntity(queries);
+  }
+
+  public double getFee() {
+    double fee = 0.0;
+    for (OrderItem orderItem: getOrderItems()) {
+      fee += orderItem.getMenuItem().getPrice() * orderItem.getQuantity();
+    }
+    return fee;
   }
 
 }
