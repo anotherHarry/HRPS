@@ -268,6 +268,10 @@ public class Boundary {
     System.err.println("ERROR: Item Not Found!\n");
   }
 
+  public void alertEmpty() {
+    System.err.println("ERROR: Empty!\n");
+  }
+
   public void alertInvalidInput() {
     System.err.println("ERROR: Invalid Input!\n");
   }

@@ -182,7 +182,7 @@ public class EntityController implements Control {
     if (ts == null) {
       return;
     } else if (ts.length == 0) {
-      new Boundary().alertNotFound();
+      new Boundary().alertEmpty();
     } else {
       printEntities("All " + object, ts);
     }

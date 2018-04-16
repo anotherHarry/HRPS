@@ -42,7 +42,7 @@ public class GuestController extends EntityController {
   private void searchGuests() {
     Guest[] guests = findList(new Guest());
     if (guests.length == 0) {
-      new Boundary().alertNotFound();
+      new Boundary().alertEmpty();
     } else {
       printEntities("Search Results for Guest", guests);
     }
