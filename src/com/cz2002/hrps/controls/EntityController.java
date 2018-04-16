@@ -5,6 +5,7 @@ import com.cz2002.hrps.boundaries.InputBoundary;
 import com.cz2002.hrps.boundaries.InputContainerBoundary;
 import com.cz2002.hrps.boundaries.OutputBoundary;
 import com.cz2002.hrps.entities.Entity;
+import com.cz2002.hrps.models.InputModel;
 import com.cz2002.hrps.models.ItemsList;
 import com.cz2002.hrps.models.PromptModel;
 import com.cz2002.hrps.models.PromptModelContainer;
@@ -22,7 +23,10 @@ public class EntityController implements Control {
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
       entity.creationPromptModelContainer()
     );
-    HashMap<String, String> hashMap = inputContainerBoundary.getInputContainer(true);
+    HashMap<String, String> hashMap = inputContainerBoundary.getInputContainer(true, true);
+    if (hashMap == null) {
+      return null;
+    }
     entity.fromHashMap(hashMap);
     if (entity.create()) {
       new Boundary().alertSuccessful();
@@ -41,7 +45,10 @@ public class EntityController implements Control {
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
       t.newInstance().findingPromptModelContainer()
     );
-    HashMap<String, String> queries = inputContainerBoundary.getInputContainer(false);
+    HashMap<String, String> queries = inputContainerBoundary.getInputContainer(false, true);
+    if (queries == null) {
+      return null;
+    }
     T[] ts = (T[]) t.newInstance().findEntities(queries);
     return ts;
   }
@@ -56,7 +63,10 @@ public class EntityController implements Control {
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
       entity.editingPromptModelContainer()
     );
-    HashMap<String, String> updatedHashMap = inputContainerBoundary.getInputContainer(false);
+    HashMap<String, String> updatedHashMap = inputContainerBoundary.getInputContainer(false, true);
+    if (updatedHashMap == null) {
+      return null;
+    }
     for (Map.Entry<String, String> entry : updatedHashMap.entrySet()) {
       hashMap.replace(entry.getKey(), entry.getValue());
     }
@@ -77,6 +87,7 @@ public class EntityController implements Control {
     printEntity("Target Item", entity);
     if(new Boundary().inputBoolean(
       "Are you sure you want to delete it?",
+      true,
       true).getValue()
       ) {
       if (entity.delete()) {
@@ -102,7 +113,9 @@ public class EntityController implements Control {
   }
 
   private <T extends Entity> T findWith(T[] ts, String object, T t) {
-    if (ts.length == 0) {
+    if (ts == null) {
+      return null;
+    } else if (ts.length == 0) {
       new Boundary().alertNotFound();
       return null;
     } else if (ts.length == 1) {
@@ -119,7 +132,11 @@ public class EntityController implements Control {
         items
       ))
     );
-    String key = inputBoundary.getInput(true).getValue();
+    InputModel<String> input = inputBoundary.getInput(true, true);
+    if (!input.isSucceed()) {
+      return null;
+    }
+    String key = input.getValue();
     for (T entity: ts) {
       if (entity.itemsListKey().equals(key)) {
         return entity;
@@ -148,7 +165,10 @@ public class EntityController implements Control {
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
       promptModelContainer
     );
-    HashMap<String, String> searchQueries = inputContainerBoundary.getInputContainer(false);
+    HashMap<String, String> searchQueries = inputContainerBoundary.getInputContainer(false, true);
+    if (searchQueries == null) {
+      return null;
+    }
     for (Map.Entry<String, String> entry : queries.entrySet()) {
       searchQueries.put(entry.getKey(), entry.getValue());
     }
@@ -159,7 +179,9 @@ public class EntityController implements Control {
   protected <T extends Entity> void printAll(String object, T t) {
     T[] ts = (T[]) t.newInstance().findEntities(new HashMap<String, String>() {{
     }});
-    if (ts.length == 0) {
+    if (ts == null) {
+      return;
+    } else if (ts.length == 0) {
       new Boundary().alertNotFound();
     } else {
       printEntities("All " + object, ts);

@@ -29,7 +29,7 @@ public class RoomController extends EntityController {
 
     int menuSelection = 0;
     do {
-      menuSelection = inputBoundary.processMenu(true).getValue();
+      menuSelection = inputBoundary.processMenu(true, false).getValue();
       switch (menuSelection) {
         case 1:
           create(new Room());
@@ -78,7 +78,7 @@ public class RoomController extends EntityController {
 
     int menuSelection = 0;
     do {
-      menuSelection = inputBoundary.processMenu(true).getValue();
+      menuSelection = inputBoundary.processMenu(true, false).getValue();
       switch (menuSelection) {
         case 1:
           printRoomTypeOccupancyRate();
@@ -105,7 +105,11 @@ public class RoomController extends EntityController {
         }
       )
     ));
-    String selectedStatus = inputBoundary.getInput(true).getValue();
+    InputModel<String> input = inputBoundary.getInput(true, true);
+    if (!input.isSucceed()) {
+      return;
+    }
+    String selectedStatus = input.getValue();
     HashMap<String, String> statusQuery = new HashMap<String, String>() {{
       put("status", selectedStatus);
     }};
@@ -163,6 +167,7 @@ public class RoomController extends EntityController {
     HashMap<String, String> hashMap = room.toHashMap();
     if(new Boundary().inputBoolean(
       "Are you sure you want to report that this room has problem?",
+      true,
       true).getValue()
       ) {
       hashMap.replace("status", Room.RoomStatus.UNDER_MAINTENANCE.toString());

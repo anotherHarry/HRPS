@@ -20,99 +20,153 @@ public class InputBoundary extends Boundary {
     return promptModel;
   }
 
-  public InputModel<String> getInput(boolean inputRequired) {
+  public InputModel<String> getInput(boolean inputRequired, boolean isCancelable) {
     if (promptModel.getInputType() == PromptModel.InputType.STRING) {
-      return inputString(promptModel.getTitle(), inputRequired);
+      return processString(inputRequired, isCancelable);
     } else if (promptModel.getInputType() == PromptModel.InputType.INT) {
-      InputModel input = inputInteger(promptModel.getTitle(), inputRequired);
-      return new InputModel(input.getIsSuccess(), input.getValue().toString());
+      return processInteger(inputRequired, isCancelable);
     } else if (promptModel.getInputType() == PromptModel.InputType.POSITIVE_INT) {
-      InputModel<Integer> input = inputInteger(promptModel.getTitle(), inputRequired);
-      while (input.getValue() < 0 && inputRequired) {
-        alertInvalidInput();
-        input = inputInteger(promptModel.getTitle(), inputRequired);
-      }
-      if (input.getValue() < 0) {
-        return new InputModel(false, input.getValue().toString());
-      }
-      return new InputModel(input.getIsSuccess(), input.getValue().toString());
+      return processPositiveInteger(inputRequired, isCancelable);
     } else if (promptModel.getInputType() == PromptModel.InputType.DOUBLE) {
-      InputModel input = inputDouble(promptModel.getTitle(), inputRequired);
-      return new InputModel(input.getIsSuccess(), input.getValue().toString());
+      return processDouble(inputRequired, isCancelable);
     } else if (promptModel.getInputType() == PromptModel.InputType.POSITIVE_DOUBLE) {
-      InputModel<Double> input = inputDouble(promptModel.getTitle(), inputRequired);
-      while (input.getValue() < 0 && inputRequired) {
-        alertInvalidInput();
-        input = inputDouble(promptModel.getTitle(), inputRequired);
-      }
-      if (input.getValue() < 0) {
-        return new InputModel(false, input.getValue().toString());
-      }
-      return new InputModel(input.getIsSuccess(), input.getValue().toString());
+      return processPositiveDouble(inputRequired, isCancelable);
     } else if (promptModel.getInputType() == PromptModel.InputType.BOOLEAN) {
-      InputModel input = inputBoolean(promptModel.getTitle(), inputRequired);
-      return new InputModel(input.getIsSuccess(), input.getValue().toString());
+      return processBoolean(inputRequired, isCancelable);
     } else if (promptModel.getInputType() == PromptModel.InputType.DATE) {
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
-      InputModel<Date> input = inputDate(promptModel.getTitle(), inputRequired);
-      return new InputModel(input.getIsSuccess(), sdf.format(input.getValue()));
+      return processDate(inputRequired, isCancelable);
     } else if (promptModel.getInputType() == PromptModel.InputType.GENDER) {
-      return inputGender(promptModel.getTitle(), inputRequired);
+      return processGender(inputRequired, isCancelable);
     } else if (promptModel.getInputType() == PromptModel.InputType.CONTACT_NUMBER) {
-      InputModel<Integer> input = inputInteger(promptModel.getTitle(), inputRequired);
-      while ((input.getValue() < 80000000 || input.getValue() > 99999999) && inputRequired) {
-        alertInvalidInput();
-        input = inputInteger(promptModel.getTitle(), inputRequired);
-      }
-      if (input.getValue() < 80000000 || input.getValue() > 99999999) {
-        return new InputModel(false, input.getValue().toString());
-      }
-      return new InputModel(input.getIsSuccess(), input.getValue().toString());
+      return processContactNumber(inputRequired, isCancelable);
     } else if (promptModel.getInputType() == PromptModel.InputType.CREDITCARD_NUMBER) {
-      InputModel<Long> input = inputLong(promptModel.getTitle(), inputRequired);
-      while ((input.getValue() < 1000000000000000l || input.getValue() > 9999999999999999l) &&
-        inputRequired) {
-        alertInvalidInput();
-        input = inputLong(promptModel.getTitle(), inputRequired);
-      }
-      if (input.getValue() < 1000000000000000l || input.getValue() > 9999999999999999l) {
-        return new InputModel(false, input.getValue().toString());
-      }
-      return new InputModel(input.getIsSuccess(), input.getValue().toString());
+      return processCreditCardNumber(inputRequired, isCancelable);
     } else if (promptModel.getInputType() == PromptModel.InputType.MENU_SELECTION) {
       Menu menu = promptModel.getMenu();
-      InputModel<Integer> input = processMenu(inputRequired);
-      if (!input.getIsSuccess()) {
-        return new InputModel(false, "");
+      InputModel<Integer> input = processMenu(inputRequired, isCancelable);
+      if (!input.isSucceed()) {
+        return new InputModel(input.getInputStatus(), "");
       }
       Integer selectedIndex = input.getValue();
       MenuOption selectedOption = menu.getMenuOptions()[selectedIndex-1];
-      return new InputModel(true, selectedOption.getKey());
+      return new InputModel(InputModel.InputStatus.SUCCEED, selectedOption.getKey());
     } else if (promptModel.getInputType() == PromptModel.InputType.LIST_SELECTION) {
-      return processList(inputRequired);
+      return processList(inputRequired, isCancelable);
     }
-    return new InputModel(false, "");
+    return new InputModel(InputModel.InputStatus.FAILED, "");
+  }
+
+  private InputModel<String> processString(boolean inputRequired, boolean isCancelable) {
+    return inputString(promptModel.getTitle(), inputRequired, isCancelable);
+  }
+
+  private InputModel<String> processInteger(boolean inputRequired, boolean isCancelable) {
+    InputModel input = inputInteger(promptModel.getTitle(), inputRequired, isCancelable);
+    return new InputModel(input.getInputStatus(), input.getValue().toString());
+  }
+
+  private InputModel<String> processPositiveInteger(boolean inputRequired, boolean isCancelable) {
+    InputModel<Integer> input = inputInteger(promptModel.getTitle(), inputRequired, isCancelable);
+    if (input.getInputStatus() == InputModel.InputStatus.CANCELED) {
+      return new InputModel(InputModel.InputStatus.CANCELED, "");
+    }
+    while (input.getValue() < 0 && inputRequired) {
+      alertInvalidInput();
+      input = inputInteger(promptModel.getTitle(), inputRequired, isCancelable);
+    }
+    if (input.getValue() < 0) {
+      return new InputModel(InputModel.InputStatus.FAILED, input.getValue().toString());
+    }
+    return new InputModel(input.getInputStatus(), input.getValue().toString());
+  }
+
+  private InputModel<String> processDouble(boolean inputRequired, boolean isCancelable) {
+    InputModel input = inputDouble(promptModel.getTitle(), inputRequired, isCancelable);
+    return new InputModel(input.getInputStatus(), input.getValue().toString());
+  }
+
+  private InputModel<String> processPositiveDouble(boolean inputRequired, boolean isCancelable) {
+    InputModel<Double> input = inputDouble(promptModel.getTitle(), inputRequired, isCancelable);
+    if (input.getInputStatus() == InputModel.InputStatus.CANCELED) {
+      return new InputModel(InputModel.InputStatus.CANCELED, "");
+    }
+    while (input.getValue() < 0 && inputRequired) {
+      alertInvalidInput();
+      input = inputDouble(promptModel.getTitle(), inputRequired, isCancelable);
+    }
+    if (input.getValue() < 0) {
+      return new InputModel(InputModel.InputStatus.FAILED, input.getValue().toString());
+    }
+    return new InputModel(input.getInputStatus(), input.getValue().toString());
+  }
+
+  private InputModel<String> processBoolean(boolean inputRequired, boolean isCancelable) {
+    InputModel input = inputBoolean(promptModel.getTitle(), inputRequired, isCancelable);
+    return new InputModel(input.getInputStatus(), input.getValue().toString());
+  }
+
+  private InputModel<String> processDate(boolean inputRequired, boolean isCancelable) {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
+    InputModel<Date> input = inputDate(promptModel.getTitle(), inputRequired, isCancelable);
+    return new InputModel(input.getInputStatus(), sdf.format(input.getValue()));
+  }
+
+  private InputModel<String> processGender(boolean inputRequired, boolean isCancelable) {
+    return inputGender(promptModel.getTitle(), inputRequired, isCancelable);
+  }
+
+  private InputModel<String> processContactNumber(boolean inputRequired, boolean isCancelable) {
+    InputModel<Integer> input = inputInteger(promptModel.getTitle(), inputRequired, isCancelable);
+    if (input.getInputStatus() == InputModel.InputStatus.CANCELED) {
+      return new InputModel(InputModel.InputStatus.CANCELED, "");
+    }
+    while ((input.getValue() < 80000000 || input.getValue() > 99999999) && inputRequired) {
+      alertInvalidInput();
+      input = inputInteger(promptModel.getTitle(), inputRequired, isCancelable);
+    }
+    if (input.getValue() < 80000000 || input.getValue() > 99999999) {
+      return new InputModel(InputModel.InputStatus.FAILED, input.getValue().toString());
+    }
+    return new InputModel(input.getInputStatus(), input.getValue().toString());
+  }
+
+  private InputModel<String> processCreditCardNumber(boolean inputRequired, boolean isCancelable) {
+    InputModel<Long> input = inputLong(promptModel.getTitle(), inputRequired, isCancelable);
+    if (input.getInputStatus() == InputModel.InputStatus.CANCELED) {
+      return new InputModel(InputModel.InputStatus.CANCELED, "");
+    }
+    while ((input.getValue() < 1000000000000000l || input.getValue() > 9999999999999999l) &&
+      inputRequired) {
+      alertInvalidInput();
+      input = inputLong(promptModel.getTitle(), inputRequired, isCancelable);
+    }
+    if (input.getValue() < 1000000000000000l || input.getValue() > 9999999999999999l) {
+      return new InputModel(InputModel.InputStatus.FAILED, input.getValue().toString());
+    }
+    return new InputModel(input.getInputStatus(), input.getValue().toString());
   }
 
   /**
    * Print menu and get user selection
    * @return selected menu index
    */
-  public InputModel<Integer> processMenu(boolean inputRequired) {
-    Integer input = -1;
+  public InputModel<Integer> processMenu(boolean inputRequired, boolean isCancelable) {
     Menu menu = promptModel.getMenu();
     printMenu(menu);
 
     do {
-      input = inputInteger(inputRequired).getValue();
-      if (input > 0 && input <= menu.getMenuOptions().length) {
-        return new InputModel(true, input);
+      InputModel<Integer> input = inputInteger(inputRequired, isCancelable);
+      if (input.getInputStatus() == InputModel.InputStatus.CANCELED) {
+        return new InputModel(InputModel.InputStatus.CANCELED, Integer.MAX_VALUE);
+      }
+      if (input.getValue() > 0 && input.getValue() <= menu.getMenuOptions().length) {
+        return new InputModel(InputModel.InputStatus.SUCCEED, input.getValue());
       }
       if (inputRequired) {
         alertInvalidInput();
       }
     } while (inputRequired);
-    return new InputModel(false, -1);
+    return new InputModel(InputModel.InputStatus.FAILED, -1);
   }
 
   /**
@@ -120,7 +174,7 @@ public class InputBoundary extends Boundary {
    * @return selected menu index
    */
   private void printMenu(Menu menu) {
-    System.out.println("\n==  " + menu.getTitle() + "  ==");
+    System.out.println(ANSI_CYAN + ANSI_BOLD + "\n==  " + menu.getTitle() + "  ==" + ANSI_RESET);
     MenuOption[] menuOptions = menu.getMenuOptions();
     for (int i = 0; i < menuOptions.length; i++)
       System.out.printf("%s. %s\n", i+1, menuOptions[i].getTitle());
@@ -130,20 +184,22 @@ public class InputBoundary extends Boundary {
    * Print menu and get user selection
    * @return selected menu index
    */
-  public InputModel<String> processList(boolean inputRequired) {
-    String input;
+  public InputModel<String> processList(boolean inputRequired, boolean isCancelable) {
     ItemsList itemsList = promptModel.getItemsList();
     printList(itemsList);
     do {
-      input = inputString(inputRequired).getValue();
-      if (Arrays.asList(itemsList.getItems()).contains(input)) {
-        return new InputModel(true, input);
+      InputModel<String> input = inputString(inputRequired, isCancelable);
+      if (input.getInputStatus() == InputModel.InputStatus.CANCELED) {
+        return new InputModel(InputModel.InputStatus.CANCELED, -1);
+      }
+      if (Arrays.asList(itemsList.getItems()).contains(input.getValue())) {
+        return new InputModel(InputModel.InputStatus.SUCCEED, input.getValue());
       }
       if (inputRequired) {
         alertInvalidInput();
       }
     } while (inputRequired);
-    return new InputModel(false, "");
+    return new InputModel(InputModel.InputStatus.FAILED, "");
   }
 
   /**

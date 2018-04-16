@@ -1,8 +1,6 @@
 package com.cz2002.hrps.boundaries;
 
 import com.cz2002.hrps.models.InputModel;
-import com.cz2002.hrps.models.Menu;
-import com.cz2002.hrps.models.MenuOption;
 
 import java.util.Date;
 import java.util.Scanner;
@@ -14,6 +12,13 @@ import java.text.SimpleDateFormat;
  * Handle I/O
  */
 public class Boundary {
+
+  protected static final String ANSI_RESET = "\u001B[0m";
+  protected static final String ANSI_BLUE = "\u001B[34m";
+  protected static final String ANSI_CYAN = "\u001B[36m";
+  protected static final String ANSI_YELLOW = "\u001B[33m";
+  protected static final String ANSI_BOLD = "\u001B[1m";
+  protected static final String ANSI_ITALIC = "\033[3m";
 
   private static Scanner scanner;
 
@@ -29,24 +34,33 @@ public class Boundary {
    * @param promptMessage the message to print before input
    * @return input from console
    */
-  public InputModel<String> inputString(String promptMessage, boolean inputRequired) {
+  public InputModel<String> inputString(String promptMessage, boolean inputRequired, boolean isCancelable) {
     printPromptMessage(promptMessage);
-    return inputString(inputRequired);
+    return inputString(inputRequired, isCancelable);
   }
 
   /**
    * Get a string from console
    * @return input from console
    */
-  public InputModel<String> inputString(boolean inputRequired) {
-    System.out.print((!inputRequired ? "\n (Press enter to skip)" : "") + " >> ");
+  public InputModel<String> inputString(boolean inputRequired, boolean isCancelable) {
+    System.out.print(
+      "\n" +
+        ANSI_ITALIC + ANSI_YELLOW +
+        (!inputRequired ? " Press enter to skip |" : "") +
+        (isCancelable ? " Type cancel to cancel |" : "") +
+        " >> " +
+        ANSI_RESET
+    );
     String input = scanner.nextLine();
     System.out.println();
-    if (!input.equals("") || !inputRequired) {
-      return new InputModel(!input.equals(""), input);
+    if (input.equals("cancel") && isCancelable) {
+      return new InputModel(InputModel.InputStatus.CANCELED, input);
+    } else if (!input.equals("") || !inputRequired) {
+      return new InputModel(InputModel.statusFor(!input.equals("")), input);
     }
     alertInvalidInput();
-    return inputString(inputRequired);
+    return inputString(inputRequired, isCancelable);
   }
 
   /**
@@ -54,25 +68,29 @@ public class Boundary {
    * @param promptMessage the message to print before input
    * @return input from console
    */
-  public InputModel<Integer> inputInteger(String promptMessage, boolean inputRequired) {
+  public InputModel<Integer> inputInteger(String promptMessage, boolean inputRequired, boolean isCancelable) {
     printPromptMessage(promptMessage);
-    return inputInteger(inputRequired);
+    return inputInteger(inputRequired, isCancelable);
   }
 
   /**
    * Get an integer from console
    * @return input from console
    */
-  public InputModel<Integer> inputInteger(boolean inputRequired) {
+  public InputModel<Integer> inputInteger(boolean inputRequired, boolean isCancelable) {
+    InputModel<String> stringInput = inputString(inputRequired, isCancelable);
+    if (stringInput.getInputStatus() == InputModel.InputStatus.CANCELED) {
+      return new InputModel(InputModel.InputStatus.CANCELED, -1);
+    }
     try {
-      Integer input =  Integer.parseInt(inputString(inputRequired).getValue());
-      return new InputModel(true, input);
+      Integer input =  Integer.parseInt(stringInput.getValue());
+      return new InputModel(InputModel.InputStatus.SUCCEED, input);
     } catch (NumberFormatException e) {}
     if (!inputRequired) {
-      return new InputModel(false, -1);
+      return new InputModel(InputModel.InputStatus.FAILED, -1);
     }
     alertInvalidInput();
-    return inputInteger(inputRequired);
+    return inputInteger(inputRequired, isCancelable);
   }
 
   /**
@@ -80,25 +98,29 @@ public class Boundary {
    * @param promptMessage the message to print before input
    * @return input from console
    */
-  public InputModel<Long> inputLong(String promptMessage, boolean inputRequired) {
+  public InputModel<Long> inputLong(String promptMessage, boolean inputRequired, boolean isCancelable) {
     printPromptMessage(promptMessage);
-    return inputLong(inputRequired);
+    return inputLong(inputRequired, isCancelable);
   }
 
   /**
    * Get an integer from console
    * @return input from console
    */
-  public InputModel<Long> inputLong(boolean inputRequired) {
+  public InputModel<Long> inputLong(boolean inputRequired, boolean isCancelable) {
+    InputModel<String> stringInput = inputString(inputRequired, isCancelable);
+    if (stringInput.getInputStatus() == InputModel.InputStatus.CANCELED) {
+      return new InputModel(InputModel.InputStatus.CANCELED, -1l);
+    }
     try {
-      Long input =  Long.parseLong(inputString(inputRequired).getValue());
-      return new InputModel(true, input);
+      Long input =  Long.parseLong(stringInput.getValue());
+      return new InputModel(InputModel.InputStatus.SUCCEED, input);
     } catch (NumberFormatException e) {}
     if (!inputRequired) {
-      return new InputModel(false, -1l);
+      return new InputModel(InputModel.InputStatus.FAILED, -1l);
     }
     alertInvalidInput();
-    return inputLong(inputRequired);
+    return inputLong(inputRequired, isCancelable);
   }
 
   /**
@@ -106,25 +128,29 @@ public class Boundary {
    * @param promptMessage the message to print before input
    * @return input from console
    */
-  public InputModel<Double> inputDouble(String promptMessage, boolean inputRequired) {
+  public InputModel<Double> inputDouble(String promptMessage, boolean inputRequired, boolean isCancelable) {
     printPromptMessage(promptMessage);
-    return inputDouble(inputRequired);
+    return inputDouble(inputRequired, isCancelable);
   }
 
   /**
    * Get an integer from console
    * @return input from console
    */
-  public InputModel<Double> inputDouble(boolean inputRequired) {
+  public InputModel<Double> inputDouble(boolean inputRequired, boolean isCancelable) {
+    InputModel<String> stringInput = inputString(inputRequired, isCancelable);
+    if (stringInput.getInputStatus() == InputModel.InputStatus.CANCELED) {
+      return new InputModel(InputModel.InputStatus.CANCELED, -1.0);
+    }
     try {
-      Double input =  Double.parseDouble(inputString(inputRequired).getValue());
-      return new InputModel(true, input);
+      Double input =  Double.parseDouble(stringInput.getValue());
+      return new InputModel(InputModel.InputStatus.SUCCEED, input);
     } catch (NumberFormatException e) {}
     if (!inputRequired) {
-      return new InputModel(false, -1.0);
+      return new InputModel(InputModel.InputStatus.FAILED, -1.0);
     }
     alertInvalidInput();
-    return inputDouble(inputRequired);
+    return inputDouble(inputRequired, isCancelable);
   }
 
   /**
@@ -132,27 +158,31 @@ public class Boundary {
    * @param promptMessage the message to print before input
    * @return input from console
    */
-  public InputModel<Boolean> inputBoolean(String promptMessage, boolean inputRequired) {
+  public InputModel<Boolean> inputBoolean(String promptMessage, boolean inputRequired, boolean isCancelable) {
     printPromptMessage(promptMessage + " (Y/N)");
-    return inputBoolean(inputRequired);
+    return inputBoolean(inputRequired, isCancelable);
   }
 
   /**
    * Get an integer from console
    * @return input from console
    */
-  public InputModel<Boolean> inputBoolean(boolean inputRequired) {
-    String input = inputString(inputRequired).getValue();
+  public InputModel<Boolean> inputBoolean(boolean inputRequired, boolean isCancelable) {
+    InputModel<String> stringInput = inputString(inputRequired, isCancelable);
+    if (stringInput.getInputStatus() == InputModel.InputStatus.CANCELED) {
+      return new InputModel(InputModel.InputStatus.CANCELED, false);
+    }
+    String input = stringInput.getValue();
     if (input.equals("Y")) {
-      return new InputModel(true, true);
+      return new InputModel(InputModel.InputStatus.SUCCEED, true);
     } else if (input.equals("N")) {
-      return new InputModel(true, false);
+      return new InputModel(InputModel.InputStatus.SUCCEED, false);
     }
     if (!inputRequired) {
-      return new InputModel(false, false);
+      return new InputModel(InputModel.InputStatus.FAILED, false);
     }
     alertInvalidInput();
-    return inputBoolean(inputRequired);
+    return inputBoolean(inputRequired, isCancelable);
   }
 
   /**
@@ -160,26 +190,30 @@ public class Boundary {
    * @param promptMessage the message to print before input
    * @return input from console
    */
-  public InputModel<Date> inputDate(String promptMessage, boolean inputRequired) {
+  public InputModel<Date> inputDate(String promptMessage, boolean inputRequired, boolean isCancelable) {
     printPromptMessage(promptMessage + " (Ex: 2018-06-25-17-05)");
-    return inputDate(inputRequired);
+    return inputDate(inputRequired, isCancelable);
   }
 
   /**
    * Get an integer from console
    * @return input from console
    */
-  public InputModel<Date> inputDate(boolean inputRequired) {
+  public InputModel<Date> inputDate(boolean inputRequired, boolean isCancelable) {
+    InputModel<String> stringInput = inputString(inputRequired, isCancelable);
+    if (stringInput.getInputStatus() == InputModel.InputStatus.CANCELED) {
+      return new InputModel(InputModel.InputStatus.CANCELED, new Date());
+    }
     try {
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
-      Date input = sdf.parse(inputString(inputRequired).getValue());
-      return new InputModel(true, input);
+      Date input = sdf.parse(inputString(inputRequired, isCancelable).getValue());
+      return new InputModel(InputModel.InputStatus.SUCCEED, input);
     } catch (ParseException e) {}
     if (!inputRequired) {
-      return new InputModel(false, new Date());
+      return new InputModel(InputModel.InputStatus.FAILED, new Date());
     }
     alertInvalidInput();
-    return inputDate(inputRequired);
+    return inputDate(inputRequired, isCancelable);
   }
 
   /**
@@ -187,27 +221,31 @@ public class Boundary {
    * @param promptMessage the message to print before input
    * @return input from console
    */
-  public InputModel<String> inputGender(String promptMessage, boolean inputRequired) {
-    printPromptMessage(promptMessage);
-    return inputGender(inputRequired);
+  public InputModel<String> inputGender(String promptMessage, boolean inputRequired, boolean isCancelable) {
+    printPromptMessage(promptMessage+ " (M/F)");
+    return inputGender(inputRequired, isCancelable);
   }
 
   /**
    * Get an integer from console
    * @return input from console
    */
-  public InputModel<String> inputGender(boolean inputRequired) {
-    String input = inputString(inputRequired).getValue();
+  public InputModel<String> inputGender(boolean inputRequired, boolean isCancelable) {
+    InputModel<String> stringInput = inputString(inputRequired, isCancelable);
+    if (stringInput.getInputStatus() == InputModel.InputStatus.CANCELED) {
+      return new InputModel(InputModel.InputStatus.CANCELED, "NULL");
+    }
+    String input = inputString(inputRequired, isCancelable).getValue();
     if (input.equals("M")) {
-      return new InputModel(true, "M");
+      return new InputModel(InputModel.InputStatus.SUCCEED, "M");
     } else if (input.equals("F")) {
-      return new InputModel(true, "F");
+      return new InputModel(InputModel.InputStatus.SUCCEED, "F");
     }
     if (!inputRequired) {
-      return new InputModel(false, "NULL");
+      return new InputModel(InputModel.InputStatus.FAILED, "NULL");
     }
     alertInvalidInput();
-    return inputGender(inputRequired);
+    return inputGender(inputRequired, isCancelable);
   }
   
   private void printPromptMessage(String promptMessage) {
@@ -215,18 +253,18 @@ public class Boundary {
   }
 
   public void alertSuccessful() {
-    System.out.println("Successful!\n");
+    System.out.println(ANSI_BLUE + "Successful!\n" + ANSI_RESET);
   }
 
   public void alertFailed() {
-    System.out.println("Failed!\n");
+    System.err.println("Failed!\n");
   }
 
   public void alertNotFound() {
-    System.out.println("ERROR: Item Not Found!\n");
+    System.err.println("ERROR: Item Not Found!\n");
   }
 
   public void alertInvalidInput() {
-    System.out.println("ERROR: Invalid Input!\n");
+    System.err.println("ERROR: Invalid Input!\n");
   }
 }

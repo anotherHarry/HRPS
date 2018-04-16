@@ -80,7 +80,7 @@ wifiEnabled		true
 smokingAllowed		false
 bedType		SINGLE_BED
 facing		MOUNTAIN_VIEW
-status		VACANT
+status		RESERVED
 
 id		0208
 roomType		SINGLE

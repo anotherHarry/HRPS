@@ -38,7 +38,7 @@ public class ReservationController extends EntityController {
 
     int menuSelection = 0;
     do {
-      menuSelection = inputBoundary.processMenu(true).getValue();
+      menuSelection = inputBoundary.processMenu(true, false).getValue();
       switch (menuSelection) {
         case 1:
           create(new Reservation());
@@ -77,7 +77,10 @@ public class ReservationController extends EntityController {
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
       reservation.creationPromptModelContainer()
     );
-    HashMap<String, String> hashMap = inputContainerBoundary.getInputContainer(true);
+    HashMap<String, String> hashMap = inputContainerBoundary.getInputContainer(true, true);
+    if (hashMap == null) {
+      return null;
+    }
     reservation.fromHashMap(hashMap);
     reservation.setGuest(guest);
     reservation.setRoom(room);

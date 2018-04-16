@@ -5,10 +5,7 @@ import com.cz2002.hrps.boundaries.InputBoundary;
 import com.cz2002.hrps.boundaries.OutputBoundary;
 import com.cz2002.hrps.entities.Reservation;
 import com.cz2002.hrps.entities.RoomService;
-import com.cz2002.hrps.models.Bill;
-import com.cz2002.hrps.models.Menu;
-import com.cz2002.hrps.models.MenuOption;
-import com.cz2002.hrps.models.PromptModel;
+import com.cz2002.hrps.models.*;
 
 public class CheckOutController implements Control {
 
@@ -21,6 +18,7 @@ public class CheckOutController implements Control {
     new EntityController().printEntity("Target Reservation", reservation);
     if(new Boundary().inputBoolean(
       "Are you sure you want to check-out?",
+      true,
       true).getValue()
       ) {
       reservation.checkOut();
@@ -44,7 +42,7 @@ public class CheckOutController implements Control {
 
     int menuSelection = 0;
     do {
-      menuSelection = inputBoundary.processMenu(true).getValue();
+      menuSelection = inputBoundary.processMenu(true, false).getValue();
       switch (menuSelection) {
         case 1:
           if (confirmPayWith("Cash")) {
@@ -64,25 +62,27 @@ public class CheckOutController implements Control {
 
   private Bill getBill(Reservation reservation) {
     Bill bill = reservation.getBill();
-    Double taxRate = Double.parseDouble(new InputBoundary(new PromptModel(
-      "",
-      "Tax Rate",
-      PromptModel.InputType.POSITIVE_DOUBLE
-    )).getInput(true).getValue());
+    Double taxRate = getRate("Tax Rate");
+    Double discountRate = getRate("Discount Rate");
     bill.setTaxRate(taxRate);
-    Double discountRate = Double.parseDouble(new InputBoundary(new PromptModel(
-      "",
-      "Discount Rate",
-      PromptModel.InputType.POSITIVE_DOUBLE
-    )).getInput(true).getValue());
     bill.setDiscountRate(discountRate);
     return bill;
+  }
+
+  private Double getRate(String object) {
+    InputModel<String> input = new InputBoundary(new PromptModel(
+      "",
+      object,
+      PromptModel.InputType.POSITIVE_DOUBLE
+    )).getInput(true, false);
+    return input.isSucceed() ? Double.parseDouble(input.getValue()) : 0.0;
   }
 
   private boolean confirmPayWith(String paymentMethod) {
     if(new Boundary().inputBoolean(
       "Are you sure you want to pay by " + paymentMethod + "?",
-      true).getValue()
+      true,
+      false).getValue()
       ) {
       new Boundary().alertSuccessful();
       return true;

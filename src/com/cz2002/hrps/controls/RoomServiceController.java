@@ -30,7 +30,7 @@ public class RoomServiceController extends EntityController {
 
     int menuSelection = 0;
     do {
-      menuSelection = inputBoundary.processMenu(true).getValue();
+      menuSelection = inputBoundary.processMenu(true, false).getValue();
       switch (menuSelection) {
         case 1:
           create(new RoomService());
@@ -60,14 +60,19 @@ public class RoomServiceController extends EntityController {
 
     RoomService roomService = new RoomService();
     OrderItem[] orderItems = createOrderItems(roomService);
-    if (orderItems.length == 0) {
+    if (orderItems == null) {
+      return null;
+    } else if (orderItems.length == 0) {
       new Boundary().alertFailed();
       return null;
     }
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
       roomService.creationPromptModelContainer()
     );
-    HashMap<String, String> hashMap = inputContainerBoundary.getInputContainer(true);
+    HashMap<String, String> hashMap = inputContainerBoundary.getInputContainer(true, true);
+    if (hashMap == null) {
+      return null;
+    }
     roomService.fromHashMap(hashMap);
     roomService.setReservation(reservation);
     if (roomService.create()) {
@@ -96,7 +101,7 @@ public class RoomServiceController extends EntityController {
 
     int menuSelection = 0;
     do {
-      menuSelection = inputBoundary.processMenu(true).getValue();
+      menuSelection = inputBoundary.processMenu(true, true).getValue();
       switch (menuSelection) {
         case 1:
           OrderItem orderItem = createOrderItem(roomService);
@@ -105,6 +110,8 @@ public class RoomServiceController extends EntityController {
             orderItems.add(orderItem);
           }
           break;
+        case Integer.MAX_VALUE:
+          return null;
         default:
           break;
       }
@@ -122,7 +129,10 @@ public class RoomServiceController extends EntityController {
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
       orderItem.creationPromptModelContainer()
     );
-    HashMap<String, String> hashMap = inputContainerBoundary.getInputContainer(true);
+    HashMap<String, String> hashMap = inputContainerBoundary.getInputContainer(true, true);
+    if (hashMap == null) {
+      return null;
+    }
     orderItem.fromHashMap(hashMap);
     orderItem.setRoomService(roomService);
     orderItem.setMenuItem(menuItem);

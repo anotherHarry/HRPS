@@ -28,7 +28,7 @@ public class MenuItemController extends EntityController {
 
     int menuSelection = 0;
     do {
-      menuSelection = inputBoundary.processMenu(true).getValue();
+      menuSelection = inputBoundary.processMenu(true, false).getValue();
       switch (menuSelection) {
         case 1:
           create(new MenuItem());

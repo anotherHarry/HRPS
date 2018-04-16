@@ -30,7 +30,7 @@ public class CheckInController implements Control {
 
     int menuSelection = 0;
     do {
-      menuSelection = inputBoundary.processMenu(true).getValue();
+      menuSelection = inputBoundary.processMenu(true, false).getValue();
       switch (menuSelection) {
         case 1:
           checkInReservation();
@@ -52,6 +52,7 @@ public class CheckInController implements Control {
     new EntityController().printEntity("Selected Reservation", reservation);
     if(new Boundary().inputBoolean(
       "Are you sure you want to check-in with this reservation?",
+      true,
       true).getValue()
       ) {
       if (reservation.checkIn()) {
@@ -78,7 +79,10 @@ public class CheckInController implements Control {
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
       reservation.walkInPromptModelContainer()
     );
-    HashMap<String, String> hashMap = inputContainerBoundary.getInputContainer(true);
+    HashMap<String, String> hashMap = inputContainerBoundary.getInputContainer(true, true);
+    if (hashMap == null) {
+      return null;
+    }
     reservation.fromHashMap(hashMap);
     reservation.setGuest(guest);
     reservation.setRoom(room);

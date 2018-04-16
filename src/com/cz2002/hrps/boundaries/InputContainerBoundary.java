@@ -21,12 +21,21 @@ public class InputContainerBoundary extends InputBoundary {
     }
   }
 
-  public HashMap<String, String> getInputContainer(boolean inputRequired) {
-    System.out.println("\n===  " + promptModelContainer.getTitle() + "  ===");
+  public HashMap<String, String> getInputContainer(boolean inputRequired, boolean isCancelable) {
+    System.out.println(
+      ANSI_CYAN + ANSI_BOLD +
+        "\n===  " +
+        promptModelContainer.getTitle() +
+        "  ===" +
+        ANSI_RESET
+    );
     LinkedHashMap<String, String> result = new LinkedHashMap<>();
     for (InputBoundary inputBoundary: inputBoundaries) {
-      InputModel<String> input = inputBoundary.getInput(inputRequired);
-      if (input.getIsSuccess()) {
+      InputModel<String> input = inputBoundary.getInput(inputRequired, isCancelable);
+      if (input.getInputStatus() == InputModel.InputStatus.CANCELED) {
+        return null;
+      }
+      if (input.isSucceed()) {
         result.put(inputBoundary.getPromptModel().getKey(), input.getValue());
       }
     }
