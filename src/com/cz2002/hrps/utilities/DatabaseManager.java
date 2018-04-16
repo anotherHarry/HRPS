@@ -119,10 +119,7 @@ public class DatabaseManager {
       }
 
       return entityList;
-    } catch (Exception e) {
-      e.printStackTrace();
-      //System.out.printf("Error loading File to Object. \nFilename: %s\nClass: %s\n", filename, t.getClass());
-    }
+    } catch (Exception e) {}
 
     return null;
   }
