@@ -121,7 +121,7 @@ public class InputBoundary extends Boundary {
       return new InputModel(InputModel.InputStatus.CANCELED, "");
     }
     while ((input.getValue() < 80000000 || input.getValue() > 99999999) && inputRequired) {
-      alertInvalidInput();
+      alertInvalidContactInput();
       input = inputInteger(promptModel.getTitle(), inputRequired, isCancelable);
     }
     if (input.getValue() < 80000000 || input.getValue() > 99999999) {
@@ -137,7 +137,7 @@ public class InputBoundary extends Boundary {
     }
     while ((input.getValue() < 1000000000000000l || input.getValue() > 9999999999999999l) &&
       inputRequired) {
-      alertInvalidInput();
+      alertInvalidCreditCardInput();
       input = inputLong(promptModel.getTitle(), inputRequired, isCancelable);
     }
     if (input.getValue() < 1000000000000000l || input.getValue() > 9999999999999999l) {

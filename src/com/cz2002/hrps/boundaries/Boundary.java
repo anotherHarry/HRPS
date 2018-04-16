@@ -275,4 +275,13 @@ public class Boundary {
   public void alertInvalidInput() {
     System.err.println("ERROR: Invalid Input!\n");
   }
+
+  protected void alertInvalidContactInput() {
+    System.err.println("ERROR: Invalid Input! Contact number has 8 digits starting with 8 or 9\n");
+  }
+
+  protected void alertInvalidCreditCardInput() {
+    System.err.println("ERROR: Invalid Input! Creditcard number has 16 digits\n");
+  }
+
 }
