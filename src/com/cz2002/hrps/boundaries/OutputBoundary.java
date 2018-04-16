@@ -10,7 +10,7 @@ import java.util.Map;
 public class OutputBoundary extends Boundary {
 
   public void printHashMap(String title, HashMap<String, String> hashMap) {
-    System.out.println(title);
+    printHeader(title);
     for (Map.Entry<String, String> entry : hashMap.entrySet()) {
       String key = entry.getKey();
       String value = entry.getValue();
@@ -20,7 +20,7 @@ public class OutputBoundary extends Boundary {
   }
 
   public void printHashMaps(String title, HashMap<String, String>[] hashMaps) {
-    System.out.println("► " + title);
+    printHeader(title);
     for (int i = 0; i < hashMaps.length; i++) {
       printHashMap("", hashMaps[i]);
     }
@@ -28,7 +28,7 @@ public class OutputBoundary extends Boundary {
   }
 
   public void printRoomTypeOccupancyRateReport(RoomTypeOccupancyRateReportModel[] models) {
-    System.out.println("► Room Type Occupancy Rate Report");
+    printHeader("Room Type Occupancy Rate Report");
     for(RoomTypeOccupancyRateReportModel model: models) {
       System.out.println(model.getRoomType() + " :\tNumber : " + model.getNumber() + " out of " + model.getTotal());
       System.out.print("\t\t\tRooms : ");
@@ -41,7 +41,7 @@ public class OutputBoundary extends Boundary {
   }
 
   public void printRoomStatusReport(RoomStatusReportModel[] models) {
-    System.out.println("► Room Status Report");
+    printHeader("Room Status Report");
     for(RoomStatusReportModel model: models) {
       System.out.println(model.getStatus() + " :");
       System.out.print("\t\tRooms : ");
@@ -78,6 +78,13 @@ public class OutputBoundary extends Boundary {
       System.out.print(trailing);
     }
     System.out.println();
+  }
+
+  private void printHeader(String header) {
+    if (header.equals("")) {
+      return;
+    }
+    System.out.println(ANSI_BLUE + "► " + header + ANSI_RESET);
   }
 
 }
