@@ -156,6 +156,20 @@ public abstract class Entity {
    */
   public abstract void fromHashMap(HashMap<String, String> hashMap);
 
+  public boolean isAleadyExisted() {
+    Entity[] entities = findEntities(new HashMap<>() {{
+    }});
+    if (entities == null) {
+      return false;
+    }
+    for (Entity entity: entities) {
+      if (entity.itemsListKey().equals(itemsListKey())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /**
    * Create input models for creating an entity
    * @return an array of input models

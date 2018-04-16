@@ -260,6 +260,10 @@ public class Boundary {
     System.err.println("Failed!\n");
   }
 
+  public void alertAlreadyExist() {
+    System.err.println("ERROR: Item Already Exists!\n");
+  }
+
   public void alertNotFound() {
     System.err.println("ERROR: Item Not Found!\n");
   }

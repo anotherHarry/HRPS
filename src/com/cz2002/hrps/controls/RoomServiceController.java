@@ -75,6 +75,10 @@ public class RoomServiceController extends EntityController {
     }
     roomService.fromHashMap(hashMap);
     roomService.setReservation(reservation);
+    if (roomService.isAleadyExisted()) {
+      new Boundary().alertAlreadyExist();
+      return null;
+    }
     if (roomService.create()) {
       for (OrderItem orderItem: orderItems) {
         orderItem.create();

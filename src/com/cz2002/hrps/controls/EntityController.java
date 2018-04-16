@@ -28,6 +28,10 @@ public class EntityController implements Control {
       return null;
     }
     entity.fromHashMap(hashMap);
+    if (entity.isAleadyExisted()) {
+      new Boundary().alertAlreadyExist();
+      return null;
+    }
     if (entity.create()) {
       new Boundary().alertSuccessful();
       return entity;
