@@ -107,7 +107,7 @@ public class ReservationController extends EntityController {
     HashMap<String, String> queries = new HashMap<>() {{
       put("reservationStatus", reservationStatus.toString());
     }};
-    return findWith(queries, "Checked-in Reservation", new Reservation());
+    return findWith(queries, "Checked-in Reservations", new Reservation());
   }
 
   private void checkExpiredReservationsIfNeeded() {

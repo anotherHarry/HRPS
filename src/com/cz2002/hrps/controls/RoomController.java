@@ -178,7 +178,7 @@ public class RoomController extends EntityController {
     HashMap<String, String> queries = new HashMap<>() {{
       put("status", Room.RoomStatus.VACANT.toString());
     }};
-    return findWith(queries, "Vacant Room", new Room());
+    return findWith(queries, "Vacant Rooms", new Room());
   }
 
 }

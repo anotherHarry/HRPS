@@ -30,7 +30,7 @@ public class Boundary {
    * @return input from console
    */
   public InputModel<String> inputString(String promptMessage, boolean inputRequired) {
-    System.out.print(promptMessage);
+    printPromptMessage(promptMessage);
     return inputString(inputRequired);
   }
 
@@ -39,7 +39,7 @@ public class Boundary {
    * @return input from console
    */
   public InputModel<String> inputString(boolean inputRequired) {
-    System.out.print(" >> ");
+    System.out.print((!inputRequired ? "\n (Press enter to skip)" : "") + " >> ");
     String input = scanner.nextLine();
     System.out.println();
     if (!input.equals("") || !inputRequired) {
@@ -55,7 +55,7 @@ public class Boundary {
    * @return input from console
    */
   public InputModel<Integer> inputInteger(String promptMessage, boolean inputRequired) {
-    System.out.print(promptMessage);
+    printPromptMessage(promptMessage);
     return inputInteger(inputRequired);
   }
 
@@ -81,7 +81,7 @@ public class Boundary {
    * @return input from console
    */
   public InputModel<Long> inputLong(String promptMessage, boolean inputRequired) {
-    System.out.print(promptMessage);
+    printPromptMessage(promptMessage);
     return inputLong(inputRequired);
   }
 
@@ -107,7 +107,7 @@ public class Boundary {
    * @return input from console
    */
   public InputModel<Double> inputDouble(String promptMessage, boolean inputRequired) {
-    System.out.print(promptMessage);
+    printPromptMessage(promptMessage);
     return inputDouble(inputRequired);
   }
 
@@ -133,7 +133,7 @@ public class Boundary {
    * @return input from console
    */
   public InputModel<Boolean> inputBoolean(String promptMessage, boolean inputRequired) {
-    System.out.print(promptMessage + " (Y/N)");
+    printPromptMessage(promptMessage + " (Y/N)");
     return inputBoolean(inputRequired);
   }
 
@@ -161,7 +161,7 @@ public class Boundary {
    * @return input from console
    */
   public InputModel<Date> inputDate(String promptMessage, boolean inputRequired) {
-    System.out.print(promptMessage + " (Ex: 2018-06-25-17-05)");
+    printPromptMessage(promptMessage + " (Ex: 2018-06-25-17-05)");
     return inputDate(inputRequired);
   }
 
@@ -188,7 +188,7 @@ public class Boundary {
    * @return input from console
    */
   public InputModel<String> inputGender(String promptMessage, boolean inputRequired) {
-    System.out.print(promptMessage);
+    printPromptMessage(promptMessage);
     return inputGender(inputRequired);
   }
 
@@ -208,6 +208,10 @@ public class Boundary {
     }
     alertInvalidInput();
     return inputGender(inputRequired);
+  }
+  
+  private void printPromptMessage(String promptMessage) {
+    System.out.print("○ " + promptMessage);
   }
 
   public void alertSuccessful() {

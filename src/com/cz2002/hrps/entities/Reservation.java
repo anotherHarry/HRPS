@@ -335,7 +335,7 @@ public class Reservation extends Entity {
         )),
         new PromptModel("numberOfChildren", "Number of Children", PromptModel.InputType.POSITIVE_INT),
         new PromptModel("numberOfAdult", "Number of Adults", PromptModel.InputType.POSITIVE_INT),
-        new PromptModel("createdAt", "Created", PromptModel.InputType.DATE),
+        new PromptModel("createdAt", "Created At", PromptModel.InputType.DATE),
         new PromptModel("checkInDate", "Check-in Date", PromptModel.InputType.DATE),
         new PromptModel("checkOutDate", "Check-out Date", PromptModel.InputType.DATE),
         new PromptModel("guestId", "Guest Id", PromptModel.InputType.STRING),

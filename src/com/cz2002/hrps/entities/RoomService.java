@@ -167,7 +167,7 @@ public class RoomService extends Entity {
             new MenuOption("DELIVERED", "Delivered"),
           }
         )),
-        new PromptModel("createdAt", "Created", PromptModel.InputType.DATE),
+        new PromptModel("createdAt", "Created At", PromptModel.InputType.DATE),
         new PromptModel("reservationId", "Reservation Id", PromptModel.InputType.STRING),
       }
     );

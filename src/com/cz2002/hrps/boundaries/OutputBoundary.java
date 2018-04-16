@@ -20,7 +20,7 @@ public class OutputBoundary extends Boundary {
   }
 
   public void printHashMaps(String title, HashMap<String, String>[] hashMaps) {
-    System.out.println("* " + title);
+    System.out.println("► " + title);
     for (int i = 0; i < hashMaps.length; i++) {
       printHashMap("", hashMaps[i]);
     }
@@ -28,7 +28,7 @@ public class OutputBoundary extends Boundary {
   }
 
   public void printRoomTypeOccupancyRateReport(RoomTypeOccupancyRateReportModel[] models) {
-    System.out.println("*");
+    System.out.println("► Room Type Occupancy Rate Report");
     for(RoomTypeOccupancyRateReportModel model: models) {
       System.out.println(model.getRoomType() + " :\tNumber : " + model.getNumber() + " out of " + model.getTotal());
       System.out.print("\t\t\tRooms : ");
@@ -41,9 +41,9 @@ public class OutputBoundary extends Boundary {
   }
 
   public void printRoomStatusReport(RoomStatusReportModel[] models) {
-    System.out.println("*");
+    System.out.println("► Room Status Report");
     for(RoomStatusReportModel model: models) {
-      System.out.println(model.getStatus() + "\t:");
+      System.out.println(model.getStatus() + " :");
       System.out.print("\t\tRooms : ");
       for (String roomId: model.getRoomIds()) {
         System.out.print(roomId + ", ");

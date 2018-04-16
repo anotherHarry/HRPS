@@ -142,7 +142,7 @@ public class EntityController implements Control {
       promptModels.add(promptModel);
     }
     PromptModelContainer promptModelContainer = new PromptModelContainer(
-      "Find " + object,
+      "Search for " + object,
       promptModels.toArray(new PromptModel[promptModels.size()])
     );
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
