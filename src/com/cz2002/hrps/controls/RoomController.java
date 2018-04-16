@@ -93,24 +93,11 @@ public class RoomController extends EntityController {
   }
 
   private void printRoomTypeOccupancyRate() {
-    InputBoundary inputBoundary = new InputBoundary(new PromptModel(
-      "status",
-      new Menu(
-        "Choose Room Status",
-        new MenuOption[] {
-          new MenuOption("VACANT", "Vacant"),
-          new MenuOption("OCCUPIED", "Occupied"),
-          new MenuOption("RESERVED", "Reserved"),
-          new MenuOption("UNDER_MAINTENANCE", "Under Maintainance"),
-        }
-      )
-    ));
-    InputModel<String> input = inputBoundary.getInput(true, true);
-    if (!input.isSucceed()) {
+    String selectedStatus = selectRoomStatus();
+    if (selectedStatus == null) {
       return;
     }
-    String selectedStatus = input.getValue();
-    HashMap<String, String> statusQuery = new HashMap<String, String>() {{
+    HashMap<String, String> statusQuery = new HashMap<>() {{
       put("status", selectedStatus);
     }};
     RoomTypeOccupancyRateReportModel[] models = new RoomTypeOccupancyRateReportModel[
@@ -156,6 +143,26 @@ public class RoomController extends EntityController {
       );
     }
     new OutputBoundary().printRoomStatusReport(models);
+  }
+
+  private String selectRoomStatus() {
+    InputBoundary inputBoundary = new InputBoundary(new PromptModel(
+      "status",
+      new Menu(
+        "Choose Room Status",
+        new MenuOption[] {
+          new MenuOption("VACANT", "Vacant"),
+          new MenuOption("OCCUPIED", "Occupied"),
+          new MenuOption("RESERVED", "Reserved"),
+          new MenuOption("UNDER_MAINTENANCE", "Under Maintainance"),
+        }
+      )
+    ));
+    InputModel<String> input = inputBoundary.getInput(true, true);
+    if (!input.isSucceed()) {
+      return null;
+    }
+    return input.getValue();
   }
 
   private void reportFaultyRoom() {
