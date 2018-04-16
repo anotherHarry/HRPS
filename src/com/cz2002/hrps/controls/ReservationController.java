@@ -103,18 +103,24 @@ public class ReservationController extends EntityController {
   }
 
   public Reservation findConfirmedReservaton() {
-    return findReservationOfStatus(Reservation.ReservationStatus.CONFIRMED);
+    return findReservationOfStatus(
+      Reservation.ReservationStatus.CONFIRMED,
+      "Confirmed Reservations"
+    );
   }
 
   public Reservation findCheckedInReservaton() {
-    return findReservationOfStatus(Reservation.ReservationStatus.CHECKED_IN);
+    return findReservationOfStatus(
+      Reservation.ReservationStatus.CHECKED_IN,
+      "Checked-in Reservations"
+    );
   }
 
-  private Reservation findReservationOfStatus(Reservation.ReservationStatus reservationStatus) {
+  private Reservation findReservationOfStatus(Reservation.ReservationStatus reservationStatus, String object) {
     HashMap<String, String> queries = new HashMap<>() {{
       put("reservationStatus", reservationStatus.toString());
     }};
-    return findWith(queries, "Checked-in Reservations", new Reservation());
+    return findWith(queries, object, new Reservation());
   }
 
   private void checkExpiredReservationsIfNeeded() {

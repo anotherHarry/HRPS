@@ -71,9 +71,7 @@ public class EntityController implements Control {
     if (updatedHashMap == null) {
       return null;
     }
-    for (Map.Entry<String, String> entry : updatedHashMap.entrySet()) {
-      hashMap.replace(entry.getKey(), entry.getValue());
-    }
+    hashMap.putAll(updatedHashMap);
     if (entity.update(hashMap)) {
       new Boundary().alertSuccessful();
       return entity;
@@ -173,9 +171,7 @@ public class EntityController implements Control {
     if (searchQueries == null) {
       return null;
     }
-    for (Map.Entry<String, String> entry : queries.entrySet()) {
-      searchQueries.put(entry.getKey(), entry.getValue());
-    }
+    searchQueries.putAll(queries);
     T[] ts = (T[]) t.newInstance().findEntities(searchQueries);
     return ts;
   }
