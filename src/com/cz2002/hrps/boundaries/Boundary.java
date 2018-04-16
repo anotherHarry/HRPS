@@ -206,7 +206,7 @@ public class Boundary {
     }
     try {
       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-H-m");
-      Date input = sdf.parse(inputString(inputRequired, isCancelable).getValue());
+      Date input = sdf.parse(stringInput.getValue());
       return new InputModel(InputModel.InputStatus.SUCCEED, input);
     } catch (ParseException e) {}
     if (!inputRequired) {
@@ -235,7 +235,7 @@ public class Boundary {
     if (stringInput.getInputStatus() == InputModel.InputStatus.CANCELED) {
       return new InputModel(InputModel.InputStatus.CANCELED, "NULL");
     }
-    String input = inputString(inputRequired, isCancelable).getValue();
+    String input = stringInput.getValue();
     if (input.equals("M")) {
       return new InputModel(InputModel.InputStatus.SUCCEED, "M");
     } else if (input.equals("F")) {
