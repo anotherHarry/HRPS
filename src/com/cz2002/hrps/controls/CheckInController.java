@@ -46,6 +46,9 @@ public class CheckInController implements Control {
 
   private Reservation checkInReservation() {
     Reservation reservation = new ReservationController().findConfirmedReservaton();
+    if (reservation == null) {
+      return null;
+    }
     new EntityController().printEntity("Selected Reservation", reservation);
     if(new Boundary().inputBoolean(
       "Are you sure you want to check-in with this reservation?",

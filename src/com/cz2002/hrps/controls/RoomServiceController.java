@@ -60,6 +60,10 @@ public class RoomServiceController extends EntityController {
 
     RoomService roomService = new RoomService();
     OrderItem[] orderItems = createOrderItems(roomService);
+    if (orderItems.length == 0) {
+      new Boundary().alertFailed();
+      return null;
+    }
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
       roomService.creationPromptModelContainer()
     );

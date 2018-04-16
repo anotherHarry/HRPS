@@ -48,6 +48,9 @@ public class EntityController implements Control {
 
   public <T extends Entity> T update(T t) {
     T entity = find(t);
+    if (entity == null) {
+      return null;
+    }
     printEntity("Target Item", entity);
     HashMap<String, String> hashMap = entity.toHashMap();
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
@@ -68,6 +71,9 @@ public class EntityController implements Control {
 
   public <T extends Entity> T delete(T t) {
     T entity = find(t);
+    if (entity == null) {
+      return null;
+    }
     printEntity("Target Item", entity);
     if(new Boundary().inputBoolean(
       "Are you sure you want to delete it?",
@@ -153,7 +159,11 @@ public class EntityController implements Control {
   protected <T extends Entity> void printAll(String object, T t) {
     T[] ts = (T[]) t.newInstance().findEntities(new HashMap<String, String>() {{
     }});
-    printEntities("All " + object, ts);
+    if (ts.length == 0) {
+      new Boundary().alertNotFound();
+    } else {
+      printEntities("All " + object, ts);
+    }
   }
 
 }

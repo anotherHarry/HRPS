@@ -49,12 +49,12 @@ guestId		A0831174
 roomId		0701
 
 id		20160415-224-A0831173-0702
-reservationStatus		CHECKED_IN
+reservationStatus		CHECKED_OUT
 numberOfChildren		2
 numberOfAdult		5
 createdAt		2018-04-15-18-39
 checkInDate		2016-04-15-2-0
-checkOutDate		2016-04-18-2-24
+checkOutDate		2018-04-16-12-35
 guestId		A0831173
 roomId		0702
 

@@ -15,6 +15,9 @@ public class CheckOutController implements Control {
   @Override
   public void index() {
     Reservation reservation = new ReservationController().findCheckedInReservaton();
+    if (reservation == null) {
+      return;
+    }
     new EntityController().printEntity("Target Reservation", reservation);
     if(new Boundary().inputBoolean(
       "Are you sure you want to check-out?",

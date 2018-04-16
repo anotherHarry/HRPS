@@ -219,10 +219,10 @@ public class Boundary {
   }
 
   public void alertNotFound() {
-    System.out.println("Item Not Found!\n");
+    System.out.println("ERROR: Item Not Found!\n");
   }
 
   public void alertInvalidInput() {
-    System.out.println("Invalid Input!\n");
+    System.out.println("ERROR: Invalid Input!\n");
   }
 }

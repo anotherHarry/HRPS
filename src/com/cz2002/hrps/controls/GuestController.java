@@ -1,5 +1,6 @@
 package com.cz2002.hrps.controls;
 
+import com.cz2002.hrps.boundaries.Boundary;
 import com.cz2002.hrps.boundaries.InputBoundary;
 import com.cz2002.hrps.entities.Guest;
 import com.cz2002.hrps.models.Menu;
@@ -30,13 +31,21 @@ public class GuestController extends EntityController {
           update(new Guest());
           break;
         case 2:
-          Guest[] guests = findList(new Guest());
-          printEntities("Search Results for Guest", guests);
+          searchGuests();
           break;
         default:
           break;
       }
     } while (menuSelection != 3);
+  }
+
+  private void searchGuests() {
+    Guest[] guests = findList(new Guest());
+    if (guests.length == 0) {
+      new Boundary().alertNotFound();
+    } else {
+      printEntities("Search Results for Guest", guests);
+    }
   }
 
   public Guest createGuestIfNeeded() {
@@ -62,6 +71,9 @@ public class GuestController extends EntityController {
           return newGuest;
         case 2:
           Guest oldGuest = find(new Guest());
+          if (oldGuest == null) {
+            return null;
+          }
           printEntity("Target Guest", oldGuest);
           return oldGuest;
         default:

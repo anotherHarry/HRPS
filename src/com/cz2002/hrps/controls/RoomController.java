@@ -54,6 +54,9 @@ public class RoomController extends EntityController {
 
   private boolean checkAvailability() {
     Room room = find(new Room());
+    if (room == null) {
+      return false;
+    }
     new OutputBoundary().printHashMap("Room Status", new HashMap<>() {{
       put("status", room.getStatus().toString());
     }});
@@ -153,6 +156,9 @@ public class RoomController extends EntityController {
 
   private void reportFaultyRoom() {
     Room room = find(new Room());
+    if (room == null) {
+      return;
+    }
     printEntity("Target Room", room);
     HashMap<String, String> hashMap = room.toHashMap();
     if(new Boundary().inputBoolean(
