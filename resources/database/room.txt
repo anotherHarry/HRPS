@@ -572,4 +572,4 @@ wifiEnabled		false
 smokingAllowed		true
 bedType		MASTER_BED
 facing		CITY_VIEW
-status		VACANT
+status		RESERVED

@@ -318,6 +318,24 @@ public class Reservation extends Entity {
   }
 
   @Override
+  public boolean isAleadyExisted() {
+    Reservation[] reservations = findReservations(new HashMap<>() {{
+    }});
+    if (reservations == null) {
+      return false;
+    }
+    for (Reservation reservation: reservations) {
+      if (reservation.getGuestId().equals(getGuestId()) &&
+        reservation.getRoomId().equals(getRoomId()) &&
+        reservation.getReservationStatus() != ReservationStatus.CHECKED_OUT &&
+        reservation.getReservationStatus() != ReservationStatus.EXPIRED) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Override
   public PromptModelContainer promptModelContainer() {
     return new PromptModelContainer(
       "",

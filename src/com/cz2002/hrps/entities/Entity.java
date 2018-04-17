@@ -85,7 +85,6 @@ public abstract class Entity {
    * @return null if not found, Object Array of size results if found
    */
   public Entity[] findEntities(HashMap<String, String> queries) {
-
     // Get Objects of Entities and create a resultList
     ArrayList<Entity> resultList = entities.get(this.getClass());
     ArrayList<Entity> bufferList = new ArrayList<>();

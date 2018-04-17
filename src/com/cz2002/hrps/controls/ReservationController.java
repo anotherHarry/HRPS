@@ -13,11 +13,13 @@ public class ReservationController extends EntityController {
   private static Date timeKeeper;
 
   public ReservationController() {
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(new Date());
-    calendar.add(Calendar.HOUR_OF_DAY, -2);
-    timeKeeper = calendar.getTime();
-    checkExpiredReservationsIfNeeded();
+    if (timeKeeper == null) {
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTime(new Date());
+      calendar.add(Calendar.HOUR_OF_DAY, -2);
+      timeKeeper = calendar.getTime();
+      checkExpiredReservationsIfNeeded();
+    }
   }
 
   @Override
@@ -84,10 +86,10 @@ public class ReservationController extends EntityController {
     reservation.fromHashMap(hashMap);
     reservation.setGuest(guest);
     reservation.setRoom(room);
-//    if (reservation.isAleadyExisted()) {
-//      new Boundary().alertAlreadyExist();
-//      return null;
-//    }
+    if (reservation.isAleadyExisted()) {
+      new Boundary().alertAlreadyExist();
+      return null;
+    }
     if (reservation.create()) {
       new Boundary().alertSuccessful();
       return (T) reservation;
