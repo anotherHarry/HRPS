@@ -102,6 +102,31 @@ public class ReservationController extends EntityController {
     return super.findList(t);
   }
 
+  @Override
+  protected <T extends Entity> void printAll(String object, T t) {
+    ArrayList<Reservation> reservations = new ArrayList<>();
+    reservations.addAll(Arrays.asList(new Reservation().findReservations(new HashMap<>() {{
+      put("reservationStatus", Reservation.ReservationStatus.WAITLIST.toString());
+    }})));
+    reservations.addAll(Arrays.asList(new Reservation().findReservations(new HashMap<>() {{
+      put("reservationStatus", Reservation.ReservationStatus.CONFIRMED.toString());
+    }})));
+    reservations.addAll(Arrays.asList(new Reservation().findReservations(new HashMap<>() {{
+      put("reservationStatus", Reservation.ReservationStatus.CHECKED_IN.toString());
+    }})));
+    reservations.addAll(Arrays.asList(new Reservation().findReservations(new HashMap<>() {{
+      put("reservationStatus", Reservation.ReservationStatus.CHECKED_OUT.toString());
+    }})));
+    if (reservations.size() == 0) {
+      new Boundary().alertEmpty();
+    } else {
+      printEntities(
+        "All Reservations",
+        reservations.toArray(new Reservation[reservations.size()])
+      );
+    }
+  }
+
   public Reservation findConfirmedReservaton() {
     return findReservationOfStatus(
       Reservation.ReservationStatus.CONFIRMED,
