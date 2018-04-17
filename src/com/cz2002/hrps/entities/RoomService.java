@@ -83,7 +83,7 @@ public class RoomService extends Entity {
   public Reservation getReservation() {
     if (reservation == null)
       reservation = new Reservation().findReservation(new HashMap<String, String>() {{
-        put("reservationId", reservationId);
+        put("id", reservationId);
       }});
     return reservation;
   }

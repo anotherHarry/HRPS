@@ -548,7 +548,7 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		DOUBLE_BED
 facing		NO_VIEW
-status		VACANT
+status		OCCUPIED
 
 id		0707
 roomType		SINGLE
@@ -572,4 +572,4 @@ wifiEnabled		false
 smokingAllowed		true
 bedType		MASTER_BED
 facing		CITY_VIEW
-status		VACANT
+status		RESERVED

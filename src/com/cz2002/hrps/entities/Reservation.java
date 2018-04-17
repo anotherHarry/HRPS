@@ -185,7 +185,7 @@ public class Reservation extends Entity {
   public Room getRoom() {
     if (room == null)
       room = new Room().findRoom(new HashMap<String, String>() {{
-        put("roomId", roomId);
+        put("id", roomId);
       }});
 
     return room;
