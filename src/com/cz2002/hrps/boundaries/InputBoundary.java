@@ -10,7 +10,7 @@ public class InputBoundary extends Boundary {
 
   private PromptModel promptModel;
 
-  protected InputBoundary() {}
+  public InputBoundary() {}
 
   public InputBoundary(PromptModel promptModel) {
     this.promptModel = promptModel;

@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
  * Super Class of all Boundaries
  * Handle I/O
  */
-public class Boundary {
+public abstract class Boundary {
 
   protected static final String ANSI_RESET = "\u001B[0m";
   protected static final String ANSI_BLUE = "\u001B[34m";
@@ -250,26 +250,6 @@ public class Boundary {
   
   private void printPromptMessage(String promptMessage) {
     System.out.print("○ " + promptMessage);
-  }
-
-  public void alertSuccessful() {
-    System.out.println(ANSI_BLUE + "Successful!\n" + ANSI_RESET);
-  }
-
-  public void alertFailed() {
-    System.err.println("Failed!\n");
-  }
-
-  public void alertAlreadyExist() {
-    System.err.println("ERROR: Item Already Exists!\n");
-  }
-
-  public void alertNotFound() {
-    System.err.println("ERROR: Item Not Found!\n");
-  }
-
-  public void alertEmpty() {
-    System.err.println("ERROR: Empty!\n");
   }
 
   public void alertInvalidInput() {

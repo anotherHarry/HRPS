@@ -3,6 +3,7 @@ package com.cz2002.hrps.controls;
 import com.cz2002.hrps.boundaries.Boundary;
 import com.cz2002.hrps.boundaries.InputBoundary;
 import com.cz2002.hrps.boundaries.InputContainerBoundary;
+import com.cz2002.hrps.boundaries.OutputBoundary;
 import com.cz2002.hrps.entities.Guest;
 import com.cz2002.hrps.entities.Reservation;
 import com.cz2002.hrps.entities.Room;
@@ -50,16 +51,16 @@ public class CheckInController implements AppController {
       return null;
     }
 
-    if(new Boundary().inputBoolean(
+    if(new InputBoundary().inputBoolean(
       "Are you sure you want to check-in with this reservation?",
       true,
       true).getValue()
       ) {
       if (reservation.checkIn()) {
-        new Boundary().alertSuccessful();
+        new OutputBoundary().alertSuccessful();
         return reservation;
       } else {
-        new Boundary().alertFailed();
+        new OutputBoundary().alertFailed();
       }
     }
     return null;
@@ -87,10 +88,10 @@ public class CheckInController implements AppController {
     reservation.setGuest(guest);
     reservation.setRoom(room);
     if (reservation.walkIn()) {
-      new Boundary().alertSuccessful();
+      new OutputBoundary().alertSuccessful();
       return reservation;
     }
-    new Boundary().alertFailed();
+    new OutputBoundary().alertFailed();
     return null;
   }
 }

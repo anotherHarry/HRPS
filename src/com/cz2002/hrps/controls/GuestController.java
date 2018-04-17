@@ -2,6 +2,7 @@ package com.cz2002.hrps.controls;
 
 import com.cz2002.hrps.boundaries.Boundary;
 import com.cz2002.hrps.boundaries.InputBoundary;
+import com.cz2002.hrps.boundaries.OutputBoundary;
 import com.cz2002.hrps.entities.Guest;
 import com.cz2002.hrps.models.Menu;
 import com.cz2002.hrps.models.MenuOption;
@@ -42,7 +43,7 @@ public class GuestController extends EntityController implements AppController {
   private void searchGuests() {
     Guest[] guests = findList(new Guest());
     if (guests.length == 0) {
-      new Boundary().alertEmpty();
+      new OutputBoundary().alertEmpty();
     } else {
       printEntities("Search Results for Guest", guests);
     }

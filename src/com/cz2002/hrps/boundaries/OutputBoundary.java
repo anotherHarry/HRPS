@@ -9,6 +9,26 @@ import java.util.Map;
 
 public class OutputBoundary extends Boundary {
 
+  public void alertSuccessful() {
+    System.out.println(ANSI_BLUE + "Successful!\n" + ANSI_RESET);
+  }
+
+  public void alertFailed() {
+    System.err.println("Failed!\n");
+  }
+
+  public void alertAlreadyExist() {
+    System.err.println("ERROR: Item Already Exists!\n");
+  }
+
+  public void alertNotFound() {
+    System.err.println("ERROR: Item Not Found!\n");
+  }
+
+  public void alertEmpty() {
+    System.err.println("ERROR: Empty!\n");
+  }
+
   public void printHashMap(String title, HashMap<String, String> hashMap) {
     printHeader(title);
     for (Map.Entry<String, String> entry : hashMap.entrySet()) {

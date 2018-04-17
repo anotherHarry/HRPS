@@ -172,16 +172,16 @@ public class RoomController extends EntityController implements AppController {
     }
     printEntity("Selected Room", room);
     HashMap<String, String> hashMap = room.toHashMap();
-    if(new Boundary().inputBoolean(
+    if(new InputBoundary().inputBoolean(
       "Are you sure you want to report that this room has problem?",
       true,
       true).getValue()
       ) {
       hashMap.replace("status", Room.RoomStatus.UNDER_MAINTENANCE.toString());
       if (room.update(hashMap)) {
-        new Boundary().alertSuccessful();
+        new OutputBoundary().alertSuccessful();
       } else {
-        new Boundary().alertFailed();
+        new OutputBoundary().alertFailed();
       }
     }
   }

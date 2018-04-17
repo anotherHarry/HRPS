@@ -3,6 +3,7 @@ package com.cz2002.hrps.controls;
 import com.cz2002.hrps.boundaries.Boundary;
 import com.cz2002.hrps.boundaries.InputBoundary;
 import com.cz2002.hrps.boundaries.InputContainerBoundary;
+import com.cz2002.hrps.boundaries.OutputBoundary;
 import com.cz2002.hrps.entities.*;
 import com.cz2002.hrps.models.Menu;
 import com.cz2002.hrps.models.MenuOption;
@@ -63,7 +64,7 @@ public class RoomServiceController extends EntityController implements AppContro
     if (orderItems == null) {
       return null;
     } else if (orderItems.length == 0) {
-      new Boundary().alertFailed();
+      new OutputBoundary().alertFailed();
       return null;
     }
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
@@ -79,10 +80,10 @@ public class RoomServiceController extends EntityController implements AppContro
       for (OrderItem orderItem: orderItems) {
         orderItem.create();
       }
-      new Boundary().alertSuccessful();
+      new OutputBoundary().alertSuccessful();
       return (T) roomService;
     }
-    new Boundary().alertFailed();
+    new OutputBoundary().alertFailed();
     return null;
   }
 
@@ -106,7 +107,7 @@ public class RoomServiceController extends EntityController implements AppContro
         case 1:
           OrderItem orderItem = createOrderItem(roomService);
           if (orderItem != null) {
-            new Boundary().alertSuccessful();
+            new OutputBoundary().alertSuccessful();
             orderItems.add(orderItem);
           }
           break;

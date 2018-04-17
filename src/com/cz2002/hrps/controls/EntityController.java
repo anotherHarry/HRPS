@@ -26,14 +26,14 @@ public abstract class EntityController {
     }
     entity.fromHashMap(hashMap);
     if (entity.isAlreadyExisted()) {
-      new Boundary().alertAlreadyExist();
+      new OutputBoundary().alertAlreadyExist();
       return null;
     }
     if (entity.create()) {
-      new Boundary().alertSuccessful();
+      new OutputBoundary().alertSuccessful();
       return entity;
     }
-    new Boundary().alertFailed();
+    new OutputBoundary().alertFailed();
     return null;
   }
 
@@ -70,10 +70,10 @@ public abstract class EntityController {
     }
     hashMap.putAll(updatedHashMap);
     if (entity.update(hashMap)) {
-      new Boundary().alertSuccessful();
+      new OutputBoundary().alertSuccessful();
       return entity;
     }
-    new Boundary().alertFailed();
+    new OutputBoundary().alertFailed();
     return null;
   }
 
@@ -84,16 +84,16 @@ public abstract class EntityController {
       return null;
     }
     printEntity("Selected Item", entity);
-    if(new Boundary().inputBoolean(
+    if(new InputBoundary().inputBoolean(
       "Are you sure you want to delete it?",
       true,
       true).getValue()
       ) {
       if (entity.delete()) {
-        new Boundary().alertSuccessful();
+        new OutputBoundary().alertSuccessful();
         return entity;
       } else {
-        new Boundary().alertFailed();
+        new OutputBoundary().alertFailed();
       }
     }
     return null;
@@ -115,7 +115,7 @@ public abstract class EntityController {
     if (ts == null) {
       return null;
     } else if (ts.length == 0) {
-      new Boundary().alertNotFound();
+      new OutputBoundary().alertNotFound();
       return null;
     } else if (ts.length == 1) {
       return ts[0];
@@ -179,7 +179,7 @@ public abstract class EntityController {
     if (ts == null) {
       return;
     } else if (ts.length == 0) {
-      new Boundary().alertEmpty();
+      new OutputBoundary().alertEmpty();
     } else {
       printEntities("All " + object, ts);
     }

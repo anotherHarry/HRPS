@@ -3,6 +3,7 @@ package com.cz2002.hrps.controls;
 import com.cz2002.hrps.boundaries.Boundary;
 import com.cz2002.hrps.boundaries.InputBoundary;
 import com.cz2002.hrps.boundaries.InputContainerBoundary;
+import com.cz2002.hrps.boundaries.OutputBoundary;
 import com.cz2002.hrps.entities.*;
 import com.cz2002.hrps.models.*;
 
@@ -87,14 +88,14 @@ public class ReservationController extends EntityController implements AppContro
     reservation.setGuest(guest);
     reservation.setRoom(room);
     if (reservation.isAlreadyExisted()) {
-      new Boundary().alertAlreadyExist();
+      new OutputBoundary().alertAlreadyExist();
       return null;
     }
     if (reservation.create()) {
-      new Boundary().alertSuccessful();
+      new OutputBoundary().alertSuccessful();
       return (T) reservation;
     }
-    new Boundary().alertFailed();
+    new OutputBoundary().alertFailed();
     return null;
   }
 
@@ -120,7 +121,7 @@ public class ReservationController extends EntityController implements AppContro
       put("reservationStatus", Reservation.ReservationStatus.CHECKED_OUT.toString());
     }})));
     if (reservations.size() == 0) {
-      new Boundary().alertEmpty();
+      new OutputBoundary().alertEmpty();
     } else {
       printEntities(
         "All Reservations",

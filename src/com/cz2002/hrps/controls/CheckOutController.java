@@ -15,7 +15,7 @@ public class CheckOutController implements AppController {
       return;
     }
 
-    if(new Boundary().inputBoolean(
+    if(new InputBoundary().inputBoolean(
       "Are you sure you want to check-out?",
       true,
       true).getValue()
@@ -78,12 +78,12 @@ public class CheckOutController implements AppController {
   }
 
   private boolean confirmPayWith(String paymentMethod) {
-    if(new Boundary().inputBoolean(
+    if(new InputBoundary().inputBoolean(
       "Are you sure you want to pay by " + paymentMethod + "?",
       true,
       false).getValue()
       ) {
-      new Boundary().alertSuccessful();
+      new OutputBoundary().alertSuccessful();
       return true;
     }
     return false;
