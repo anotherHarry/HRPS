@@ -1,6 +1,7 @@
 package com.cz2002.hrps.entities;
 
 import com.cz2002.hrps.utilities.DatabaseManager;
+import com.cz2002.hrps.utilities.FileDatabaseManager;
 import com.cz2002.hrps.models.PromptModelContainer;
 
 import java.lang.reflect.Array;
@@ -21,7 +22,7 @@ public abstract class Entity {
    * @param database is the name of database file
    */
   Entity(String database) {
-    this.databaseManager = new DatabaseManager(database);
+    this.databaseManager = new FileDatabaseManager(database);
     loadEntitiesIfNeeded();
   }
 
