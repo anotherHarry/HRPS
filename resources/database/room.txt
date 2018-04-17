@@ -13,7 +13,7 @@ status		VACANT
 id		0202
 roomType		SINGLE
 roomRate		140.0
-roomWeekendRate		140.0
+roomWeekendRate		145.0
 roomFloor		2
 roomNumber		2
 wifiEnabled		true
@@ -61,7 +61,7 @@ status		VACANT
 id		0206
 roomType		STANDARD
 roomRate		280.0
-roomWeekendRate		280.0
+roomWeekendRate		290.0
 roomFloor		2
 roomNumber		6
 wifiEnabled		false
@@ -85,14 +85,14 @@ status		VACANT
 id		0208
 roomType		STANDARD
 roomRate		290.0
-roomWeekendRate		290.0
+roomWeekendRate		295.0
 roomFloor		2
 roomNumber		8
 wifiEnabled		true
 smokingAllowed		true
 bedType		MASTER_BED
 facing		CITY_VIEW
-status		UNDER_MAINTENANCE
+status		VACANT
 
 id		0301
 roomType		DELUXE
@@ -133,19 +133,19 @@ status		UNDER_MAINTENANCE
 id		0304
 roomType		VIP
 roomRate		600.0
-roomWeekendRate		600.0
+roomWeekendRate		620.0
 roomFloor		3
 roomNumber		4
 wifiEnabled		false
 smokingAllowed		false
 bedType		MASTER_BED
 facing		CITY_VIEW
-status		UNDER_MAINTENANCE
+status		VACANT
 
 id		0305
 roomType		STANDARD
 roomRate		270.0
-roomWeekendRate		270.0
+roomWeekendRate		290.0
 roomFloor		3
 roomNumber		5
 wifiEnabled		false
@@ -176,12 +176,12 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		MASTER_BED
 facing		MOUNTAIN_VIEW
-status		UNDER_MAINTENANCE
+status		VACANT
 
 id		0308
 roomType		STANDARD
 roomRate		310.0
-roomWeekendRate		310.0
+roomWeekendRate		320.0
 roomFloor		3
 roomNumber		8
 wifiEnabled		true
@@ -205,7 +205,7 @@ status		VACANT
 id		0402
 roomType		DELUXE
 roomRate		420.0
-roomWeekendRate		420.0
+roomWeekendRate		440.0
 roomFloor		4
 roomNumber		2
 wifiEnabled		false
@@ -253,7 +253,7 @@ status		VACANT
 id		0406
 roomType		SINGLE
 roomRate		130.0
-roomWeekendRate		130.0
+roomWeekendRate		150.0
 roomFloor		4
 roomNumber		6
 wifiEnabled		true
@@ -337,19 +337,19 @@ status		VACANT
 id		0505
 roomType		DELUXE
 roomRate		420.0
-roomWeekendRate		420.0
+roomWeekendRate		430.0
 roomFloor		5
 roomNumber		5
 wifiEnabled		true
 smokingAllowed		false
 bedType		DOUBLE_BED
 facing		NO_VIEW
-status		RESERVED
+status		VACANT
 
 id		0506
 roomType		DELUXE
 roomRate		470.0
-roomWeekendRate		470.0
+roomWeekendRate		490.0
 roomFloor		5
 roomNumber		6
 wifiEnabled		true
@@ -368,12 +368,12 @@ wifiEnabled		false
 smokingAllowed		true
 bedType		SINGLE_BED
 facing		MOUNTAIN_VIEW
-status		UNDER_MAINTENANCE
+status		VACANT
 
 id		0508
 roomType		VIP
 roomRate		590.0
-roomWeekendRate		590.0
+roomWeekendRate		595.0
 roomFloor		5
 roomNumber		8
 wifiEnabled		false
@@ -385,7 +385,7 @@ status		UNDER_MAINTENANCE
 id		0601
 roomType		DELUXE
 roomRate		440.0
-roomWeekendRate		440.0
+roomWeekendRate		460.0
 roomFloor		6
 roomNumber		1
 wifiEnabled		false
@@ -421,7 +421,7 @@ status		UNDER_MAINTENANCE
 id		0604
 roomType		DELUXE
 roomRate		420.0
-roomWeekendRate		420.0
+roomWeekendRate		430.0
 roomFloor		6
 roomNumber		4
 wifiEnabled		true
@@ -440,12 +440,12 @@ wifiEnabled		false
 smokingAllowed		false
 bedType		DOUBLE_BED
 facing		NO_VIEW
-status		OCCUPIED
+status		VACANT
 
 id		0606
 roomType		VIP
 roomRate		600.0
-roomWeekendRate		600.0
+roomWeekendRate		640.0
 roomFloor		6
 roomNumber		6
 wifiEnabled		true
@@ -457,7 +457,7 @@ status		VACANT
 id		0607
 roomType		STANDARD
 roomRate		290.0
-roomWeekendRate		290.0
+roomWeekendRate		295.0
 roomFloor		6
 roomNumber		7
 wifiEnabled		false
@@ -476,7 +476,7 @@ wifiEnabled		false
 smokingAllowed		true
 bedType		MASTER_BED
 facing		NO_VIEW
-status		UNDER_MAINTENANCE
+status		VACANT
 
 id		0701
 roomType		STANDARD
@@ -524,7 +524,7 @@ wifiEnabled		true
 smokingAllowed		true
 bedType		MASTER_BED
 facing		NO_VIEW
-status		UNDER_MAINTENANCE
+status		VACANT
 
 id		0705
 roomType		SINGLE
@@ -541,7 +541,7 @@ status		UNDER_MAINTENANCE
 id		0706
 roomType		STANDARD
 roomRate		270.0
-roomWeekendRate		270.0
+roomWeekendRate		290.0
 roomFloor		7
 roomNumber		6
 wifiEnabled		true
@@ -553,7 +553,7 @@ status		VACANT
 id		0707
 roomType		SINGLE
 roomRate		120.0
-roomWeekendRate		120.0
+roomWeekendRate		135.0
 roomFloor		7
 roomNumber		7
 wifiEnabled		false
@@ -565,7 +565,7 @@ status		UNDER_MAINTENANCE
 id		0708
 roomType		SINGLE
 roomRate		170.0
-roomWeekendRate		170.0
+roomWeekendRate		180.0
 roomFloor		7
 roomNumber		8
 wifiEnabled		false
