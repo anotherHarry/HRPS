@@ -4,7 +4,6 @@ import com.cz2002.hrps.boundaries.Boundary;
 import com.cz2002.hrps.boundaries.InputBoundary;
 import com.cz2002.hrps.boundaries.OutputBoundary;
 import com.cz2002.hrps.entities.Reservation;
-import com.cz2002.hrps.entities.RoomService;
 import com.cz2002.hrps.models.*;
 
 public class CheckOutController implements Control {
@@ -15,7 +14,7 @@ public class CheckOutController implements Control {
     if (reservation == null) {
       return;
     }
-    new EntityController().printEntity("Target Reservation", reservation);
+
     if(new Boundary().inputBoolean(
       "Are you sure you want to check-out?",
       true,

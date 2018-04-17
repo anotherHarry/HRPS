@@ -18,11 +18,12 @@ guestId		08732324
 roomId		0708
 
 id		20180417-2134-08732324-0708
-reservationStatus		CHECKED_IN
+reservationStatus		CHECKED_OUT
 numberOfChildren		1
 numberOfAdult		4
 createdAt		2018-04-17-21-34
 checkInDate		2018-04-17-21-37
+checkOutDate		2018-04-17-22-13
 guestId		08732324
 roomId		0708
 
@@ -34,3 +35,12 @@ createdAt		2018-04-17-21-36
 checkInDate		2018-04-17-21-36
 guestId		55794212
 roomId		0605
+
+id		20180417-2211-55794212-0505
+reservationStatus		CONFIRMED
+numberOfChildren		2
+numberOfAdult		4
+createdAt		2018-04-17-22-11
+checkInDate		2018-04-21-15-16
+guestId		55794212
+roomId		0505

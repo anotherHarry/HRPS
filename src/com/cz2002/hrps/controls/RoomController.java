@@ -170,7 +170,7 @@ public class RoomController extends EntityController {
     if (room == null) {
       return;
     }
-    printEntity("Target Room", room);
+    printEntity("Selected Room", room);
     HashMap<String, String> hashMap = room.toHashMap();
     if(new Boundary().inputBoolean(
       "Are you sure you want to report that this room has problem?",

@@ -62,7 +62,7 @@ public class EntityController implements Control {
     if (entity == null) {
       return null;
     }
-    printEntity("Target Item", entity);
+    printEntity("Selected Item", entity);
     HashMap<String, String> hashMap = entity.toHashMap();
     InputContainerBoundary inputContainerBoundary = new InputContainerBoundary(
       entity.editingPromptModelContainer()
@@ -86,7 +86,7 @@ public class EntityController implements Control {
     if (entity == null) {
       return null;
     }
-    printEntity("Target Item", entity);
+    printEntity("Selected Item", entity);
     if(new Boundary().inputBoolean(
       "Are you sure you want to delete it?",
       true,

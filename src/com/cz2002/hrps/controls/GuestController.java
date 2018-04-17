@@ -67,14 +67,15 @@ public class GuestController extends EntityController {
       switch (menuSelection) {
         case 1:
           Guest newGuest = create(new Guest());
-          printEntity("New Guest", newGuest);
+          if (newGuest != null) {
+            printEntity("New Guest", newGuest);
+          }
           return newGuest;
         case 2:
           Guest oldGuest = find(new Guest());
-          if (oldGuest == null) {
-            return null;
+          if (oldGuest != null) {
+            printEntity("Seleted Guest", oldGuest);
           }
-          printEntity("Target Guest", oldGuest);
           return oldGuest;
         default:
           break;

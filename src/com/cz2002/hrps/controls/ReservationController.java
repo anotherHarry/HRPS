@@ -147,7 +147,11 @@ public class ReservationController extends EntityController {
     HashMap<String, String> queries = new HashMap<>() {{
       put("reservationStatus", reservationStatus.toString());
     }};
-    return findWith(queries, object, new Reservation());
+    Reservation reservation = findWith(queries, object, new Reservation());
+    if (reservation != null) {
+      printEntity("Selected Reservation", reservation);
+    }
+    return  reservation;
   }
 
   private void checkExpiredReservationsIfNeeded() {

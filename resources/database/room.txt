@@ -344,7 +344,7 @@ wifiEnabled		true
 smokingAllowed		false
 bedType		DOUBLE_BED
 facing		NO_VIEW
-status		VACANT
+status		RESERVED
 
 id		0506
 roomType		DELUXE
@@ -572,4 +572,4 @@ wifiEnabled		false
 smokingAllowed		true
 bedType		MASTER_BED
 facing		CITY_VIEW
-status		OCCUPIED
+status		VACANT
