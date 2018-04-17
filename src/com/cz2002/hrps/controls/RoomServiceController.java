@@ -11,7 +11,7 @@ import com.cz2002.hrps.models.PromptModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class RoomServiceController extends EntityController {
+public class RoomServiceController extends EntityController implements AppController {
 
   @Override
   public void index() {

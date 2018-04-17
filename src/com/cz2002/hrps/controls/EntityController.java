@@ -12,11 +12,8 @@ import com.cz2002.hrps.models.PromptModelContainer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
-public class EntityController implements Control {
-
-  public void index() { }
+public abstract class EntityController {
 
   public <T extends Entity> T create(T t) {
     T entity = (T) t.newInstance();

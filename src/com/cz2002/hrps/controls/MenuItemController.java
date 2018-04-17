@@ -6,9 +6,7 @@ import com.cz2002.hrps.models.Menu;
 import com.cz2002.hrps.models.MenuOption;
 import com.cz2002.hrps.models.PromptModel;
 
-import java.util.HashMap;
-
-public class MenuItemController extends EntityController {
+public class MenuItemController extends EntityController implements AppController {
 
   @Override
   public void index() {

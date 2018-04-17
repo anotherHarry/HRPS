@@ -7,7 +7,7 @@ import com.cz2002.hrps.models.Menu;
 import com.cz2002.hrps.models.MenuOption;
 import com.cz2002.hrps.models.PromptModel;
 
-public class GuestController extends EntityController {
+public class GuestController extends EntityController implements AppController {
 
   @Override
   public void index() {

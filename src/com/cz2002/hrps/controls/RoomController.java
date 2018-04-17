@@ -8,7 +8,7 @@ import com.cz2002.hrps.models.*;
 
 import java.util.HashMap;
 
-public class RoomController extends EntityController {
+public class RoomController extends EntityController implements AppController {
 
   @Override
   public void index() {

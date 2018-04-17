@@ -12,7 +12,7 @@ import com.cz2002.hrps.models.PromptModel;
 
 import java.util.HashMap;
 
-public class CheckInController implements Control {
+public class CheckInController implements AppController {
 
   @Override
   public void index() {

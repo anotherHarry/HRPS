@@ -6,7 +6,7 @@ import com.cz2002.hrps.boundaries.OutputBoundary;
 import com.cz2002.hrps.entities.Reservation;
 import com.cz2002.hrps.models.*;
 
-public class CheckOutController implements Control {
+public class CheckOutController implements AppController {
 
   @Override
   public void index() {

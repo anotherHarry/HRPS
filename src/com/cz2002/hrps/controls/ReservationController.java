@@ -8,7 +8,7 @@ import com.cz2002.hrps.models.*;
 
 import java.util.*;
 
-public class ReservationController extends EntityController {
+public class ReservationController extends EntityController implements AppController {
 
   private static Date timeKeeper;
 
