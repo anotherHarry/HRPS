@@ -318,7 +318,7 @@ public class Reservation extends Entity {
   }
 
   @Override
-  public boolean isAleadyExisted() {
+  public boolean isAlreadyExisted() {
     Reservation[] reservations = findReservations(new HashMap<>() {{
     }});
     if (reservations == null) {

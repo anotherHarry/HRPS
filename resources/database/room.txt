@@ -440,7 +440,7 @@ wifiEnabled		false
 smokingAllowed		false
 bedType		DOUBLE_BED
 facing		NO_VIEW
-status		VACANT
+status		OCCUPIED
 
 id		0606
 roomType		VIP
@@ -572,4 +572,4 @@ wifiEnabled		false
 smokingAllowed		true
 bedType		MASTER_BED
 facing		CITY_VIEW
-status		RESERVED
+status		OCCUPIED

@@ -155,7 +155,7 @@ public abstract class Entity {
    */
   public abstract void fromHashMap(HashMap<String, String> hashMap);
 
-  public boolean isAleadyExisted() {
+  public boolean isAlreadyExisted() {
     Entity[] entities = findEntities(new HashMap<>() {{
     }});
     if (entities == null) {

@@ -28,7 +28,7 @@ public class EntityController implements Control {
       return null;
     }
     entity.fromHashMap(hashMap);
-    if (entity.isAleadyExisted()) {
+    if (entity.isAlreadyExisted()) {
       new Boundary().alertAlreadyExist();
       return null;
     }
