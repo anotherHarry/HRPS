@@ -1,0 +1,49 @@
+id		99d6565e-489a-4daf-b871-29f4a917cae0
+name		Basted Soy Chicken
+description		Roasted bison with ajowan seeds, star anise and bell peppers. 
+price		24.5
+
+id		727bc135-4e90-42e4-9385-75491acf2145
+name		Poached Blueberry Tuna
+description		Broiled ox brisket with bush mango nuts, shallots and black pepper. Served with brined gouda, bison pie, tortillas, horseradish soup and scrambled eggs.
+price		14.0
+
+id		9776c799-8919-468e-856b-a0323d329a8a
+name		Stewed Soy Clams
+description		Salted werecat with chili powder, caraway seeds and snowberries. Served with cantaloupe soup, pumpernickel with jam and gouda.
+price		21.0
+
+id		cb9ce139-52e1-4dea-89fb-cc90c286049d
+name		Brined Fennel Buns
+description		Poached asp with almonds and lemons. Served with lizard soup and goat pie.
+price		21.0
+
+id		fbe0ff72-a3c2-4e8b-8a8a-bfdd157b178c
+name		Coconut Toffee
+description		Pan-fried brown rice with kola nut, ricebean and horse gram with a salad of cooked scorzonera, ginger and avocados. Served with whisky, white bread, curry powder soup, scrambled eggs and cheddar.
+price		10.5
+
+id		685cc5d6-2107-4595-b182-80bc9af72444
+name		Guava Crispies
+description		Stir-fried thick acorn noodles with albatross, green bean and acorn. Served with jarlsberg, rum and challah with jam.
+price		17.5
+
+id		56501ad8-a0bd-4e23-8d00-58825818686b
+name		Infused Mint Risotto
+description		Boiled raven with huckleberries, snowberries and tallow nuts with a salad of sauteed elephant garlic and strawberries.
+price		21.0
+
+id		c5696405-4725-46de-9b18-be8c00df6186
+name		Vanilla Waffles
+description		Pan-fried flat rice noodles with garbanzo, mozuku, ahipa, pigeon pea and plum. Served with hard boiled eggs, tigernut pie, seed cakes, beer and beaver soup. 
+price		17.5
+
+id		70950dad-9003-4cd2-9952-1087c6744a85
+name		Lemon and Rum Surprise
+description		Stir-fried brown rice with canna and carob.
+price		21.0
+
+id		dd8afd8d-d2c2-49ab-aa8b-2a5be1c811c7
+name		Infused Yogurt Lobster
+description		Tortoise with cardamom, olives and nutmeg with a salad of sliced swede, broccoli and figs. Served with beer, dog soup, napa cabbage pie and potato bread with honey. 
+price		21.0
