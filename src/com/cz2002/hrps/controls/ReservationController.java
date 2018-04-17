@@ -84,10 +84,10 @@ public class ReservationController extends EntityController {
     reservation.fromHashMap(hashMap);
     reservation.setGuest(guest);
     reservation.setRoom(room);
-    if (reservation.isAleadyExisted()) {
-      new Boundary().alertAlreadyExist();
-      return null;
-    }
+//    if (reservation.isAleadyExisted()) {
+//      new Boundary().alertAlreadyExist();
+//      return null;
+//    }
     if (reservation.create()) {
       new Boundary().alertSuccessful();
       return (T) reservation;
